@@ -68,6 +68,7 @@ public class PushbotTeleopTest extends LinearOpMode {
         double drive;
         double turn;
         double max;
+        double straf;
 
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
@@ -110,13 +111,13 @@ public class PushbotTeleopTest extends LinearOpMode {
                 fRight = rRight = -drive;
             }
 
-            // Normalize the values so neither exceed +/- 1.0
-            max = Math.max(Math.abs(left), Math.abs(right));
-            if (max > 1.0)
-            {
-                left /= max;
-                right /= max;
-            }
+//            // Normalize the values so neither exceed +/- 1.0
+//            max = Math.max(Math.abs(fleft), Math.abs(right));
+//            if (max > 1.0)
+//            {
+//                left /= max;
+//                right /= max;
+//            }
 
             // Output the safe vales to the motor drives.
             //robot.leftDrive.setPower(left);
@@ -161,8 +162,8 @@ public class PushbotTeleopTest extends LinearOpMode {
 */
             // Send telemetry message to signify robot running;
             //telemetry.addData("claw",  "Offset = %.2f", clawOffset);
-            telemetry.addData("left",  "%.2f", left);
-            telemetry.addData("right", "%.2f", right);
+//            telemetry.addData("left",  "%.2f", left);
+//            telemetry.addData("right", "%.2f", right);
             telemetry.update();
 
             // Pace this loop so jaw action is reasonable speed.

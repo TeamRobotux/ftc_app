@@ -61,8 +61,10 @@ public class PushbotTeleopTest extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        double left;
-        double right;
+        double fLeft;
+        double fRight;
+        double rLeft;
+        double rRight;
         double drive;
         double turn;
         double max;
@@ -87,16 +89,25 @@ public class PushbotTeleopTest extends LinearOpMode {
             // This way it's also easy to just drive straight, or just turn.
             drive = -gamepad1.left_stick_y;
             turn  =  gamepad1.right_stick_x;
+            straf = gamepad1.left_stick_x;
 
             //Driving.
             if(Math.abs(turn) > 0) {
                 // Turning in place.
-                left = turn;
-                right = turn;
+                fLeft = rLeft = turn;
+                fRight = rRight = turn;
+            } else if (2 * drive <= straf) {
+                // Strafing. The left joystick is biased to vertical movement to give driver so leeway.
+                // Each turns in the opposite direction of the two adjacent wheels adjacent to it.
+                fLeft = straf;
+                rLeft = -straf;
+
+                fRight = straf;
+                rRight = -straf;
             } else {
                 // Driving straight.
-                left  = drive;
-                right = -drive;
+                fLeft = rLeft = drive;
+                fRight = rRight = -drive;
             }
 
             // Normalize the values so neither exceed +/- 1.0
@@ -109,10 +120,10 @@ public class PushbotTeleopTest extends LinearOpMode {
 
             // Output the safe vales to the motor drives.
             //robot.leftDrive.setPower(left);
-            robot.driveFrontR.setPower(right);
-            robot.driveRearR.setPower(right);
-            robot.driveFrontL.setPower(left);
-            robot.driveRearL.setPower(left);
+            robot.driveFrontR.setPower(fRight);
+            robot.driveRearR.setPower(rRight);
+            robot.driveFrontL.setPower(fLeft);
+            robot.driveRearL.setPower(rLeft);
 
 
             //Move flywheel, grabber

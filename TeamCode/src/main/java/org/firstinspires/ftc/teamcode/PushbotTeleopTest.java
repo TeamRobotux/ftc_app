@@ -88,9 +88,16 @@ public class PushbotTeleopTest extends LinearOpMode {
             drive = -gamepad1.left_stick_y;
             turn  =  gamepad1.right_stick_x;
 
-            // Combine drive and turn for blended motion.
-            left  = drive + turn;
-            right = drive - turn;
+            //Driving.
+            if(Math.abs(turn) > 0) {
+                // Turning in place.
+                left = turn;
+                right = turn;
+            } else {
+                // Driving straight.
+                left  = drive;
+                right = -drive;
+            }
 
             // Normalize the values so neither exceed +/- 1.0
             max = Math.max(Math.abs(left), Math.abs(right));
@@ -102,7 +109,25 @@ public class PushbotTeleopTest extends LinearOpMode {
 
             // Output the safe vales to the motor drives.
             //robot.leftDrive.setPower(left);
-            robot.driveR.setPower(right);
+            robot.driveFrontR.setPower(right);
+            robot.driveRearR.setPower(right);
+            robot.driveFrontL.setPower(left);
+            robot.driveRearL.setPower(left);
+
+
+            //Move flywheel, grabber
+            if(gamepad1.a) {
+                robot.flywheel.setPower(1);
+            }
+            else {
+                robot.flywheel.setPower(0);
+            }
+            if(gamepad1.b) {
+                robot.grabber.setPower(1);
+            }
+            else {
+                robot.grabber.setPower(0);
+            }
 
             /*// Use gamepad left & right Bumpers to open and close the claw
             if (gamepad1.right_bumper)

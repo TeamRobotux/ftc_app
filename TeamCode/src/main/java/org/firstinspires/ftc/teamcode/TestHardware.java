@@ -54,7 +54,15 @@ public class TestHardware
 {
     /* Public OpMode members. */
    // public DcMotor  leftDrive   = null;
-    public DcMotor  driveR  = null;
+    public DcMotor  driveFrontR  = null;
+    public DcMotor  driveRearR  = null;
+    public DcMotor  driveFrontL  = null;
+    public DcMotor  driveRearL  = null;
+
+    public DcMotor  flywheel = null;
+    //public Servo    latch = null;
+    public DcMotor  grabber = null;
+
     //public DcMotor  leftArm     = null;
     //public Servo    leftClaw    = null;
     //public Servo    rightClaw   = null;
@@ -79,23 +87,44 @@ public class TestHardware
 
         // Define and Initialize Motors
        // leftDrive  = hwMap.get(DcMotor.class, "left_drive");
-        driveR = hwMap.get(DcMotor.class, "flywheelL");
+        driveFrontR = hwMap.get(DcMotor.class, "driveFrontR");
+        driveRearR = hwMap.get(DcMotor.class, "driveRearR");
+
+        driveFrontL = hwMap.get(DcMotor.class, "driveFrontL");
+        driveRearL = hwMap.get(DcMotor.class, "driveRearL");
+
+        flywheel = hwMap.get(DcMotor.class, "flywheel");
+        grabber = hwMap.get(DcMotor.class, "grabber");
         //leftArm    = hwMap.get(DcMotor.class, "left_arm");
        // leftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         //rightDrive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
 
         // Set all motors to zero power
         //leftDrive.setPower(0);
-        driveR.setPower(0);
+        driveFrontR.setPower(0);
+        driveRearR.setPower(0);
+        driveFrontL.setPower(0);
+        driveRearL.setPower(0);
+
+        flywheel.setPower(0);
+        grabber.setPower(0);
         //leftArm.setPower(0);
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
 //        leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        driveR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        driveFrontR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        driveRearR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        driveFrontL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        driveRearL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+
+        flywheel.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        grabber.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 //        leftArm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         // Define and initialize ALL installed servos.
+
 //        leftClaw  = hwMap.get(Servo.class, "left_hand");
 //        rightClaw = hwMap.get(Servo.class, "right_hand");
 //        leftClaw.setPosition(MID_SERVO);

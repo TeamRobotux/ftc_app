@@ -145,6 +145,12 @@ public class PushbotTeleopTest extends LinearOpMode {
                 robot.grabber.setPower(0);
             }
 
+//            if(robot.colorSensor.blue() > 255) {
+//                robot.flywheel.setPower(1);
+//            }
+
+            telemetry.addData("Color value", robot.colorSensor.blue());
+
             /*// Use gamepad left & right Bumpers to open and close the claw
             if (gamepad1.right_bumper)
                 clawOffset += CLAW_SPEED;

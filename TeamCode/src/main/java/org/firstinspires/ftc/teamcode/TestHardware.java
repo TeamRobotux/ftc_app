@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -62,6 +63,7 @@ public class TestHardware
     public DcMotor  flywheel = null;
     //public Servo    latch = null;
     public DcMotor  grabber = null;
+    public ColorSensor colorSensor = null;
 
     //public DcMotor  leftArm     = null;
     //public Servo    leftClaw    = null;
@@ -95,6 +97,8 @@ public class TestHardware
 
         flywheel = hwMap.get(DcMotor.class, "flywheel");
         grabber = hwMap.get(DcMotor.class, "grabber");
+
+        colorSensor = hwMap.get(ColorSensor.class, "colorSensor");
         //leftArm    = hwMap.get(DcMotor.class, "left_arm");
        // leftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         //rightDrive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors

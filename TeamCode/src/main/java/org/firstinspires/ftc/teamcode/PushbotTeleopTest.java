@@ -95,9 +95,11 @@ public class PushbotTeleopTest extends LinearOpMode {
             //Driving.
             if(Math.abs(turn) > 0) {
                 // Turning in place.
-                fLeft = rLeft = turn;
-                fRight = rRight = turn;
-            } else if (2 * drive <= straf) {
+                fLeft = turn;
+                rLeft = turn;
+                rRight = turn;
+                fRight = turn;
+            } else if (2 * Math.abs(drive) <= Math.abs(straf)) {
                 // Strafing. The left joystick is biased to vertical movement to give driver so leeway.
                 // Each turns in the opposite direction of the two adjacent wheels adjacent to it.
                 fLeft = straf;
@@ -107,8 +109,10 @@ public class PushbotTeleopTest extends LinearOpMode {
                 rRight = -straf;
             } else {
                 // Driving straight.
-                fLeft = rLeft = drive;
-                fRight = rRight = -drive;
+                fLeft = drive;
+                rLeft = drive;
+                fRight = -drive;
+                rRight = -drive;
             }
 
 //            // Normalize the values so neither exceed +/- 1.0

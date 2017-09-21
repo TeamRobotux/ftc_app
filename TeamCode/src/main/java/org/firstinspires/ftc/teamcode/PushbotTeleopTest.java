@@ -61,6 +61,9 @@ public class PushbotTeleopTest extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+        int toggleDelay = 0;
+        int tickCount = 0;
+
         double fLeft;
         double fRight;
         double rLeft;
@@ -69,6 +72,8 @@ public class PushbotTeleopTest extends LinearOpMode {
         double turn;
         double max;
         double straf;
+
+        boolean grabberState = false;
 
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
@@ -133,16 +138,26 @@ public class PushbotTeleopTest extends LinearOpMode {
 
             //Move flywheel, grabber
             if(gamepad1.a) {
-                robot.flywheel.setPower(1);
-            }
-            else {
-                robot.flywheel.setPower(0);
-            }
-            if(gamepad1.b) {
                 robot.grabber.setPower(1);
             }
             else {
                 robot.grabber.setPower(0);
+            }
+
+            if(toggleDelay > 0) {
+                toggleDelay--;
+            }
+
+            if(gamepad1.b && toggleDelay == 0) {
+                grabberState = !grabberState;
+                toggleDelay = 10;
+            }
+
+            if(grabberState) {
+                robot.flywheel.setPower(1);
+            }
+            else {
+                robot.flywheel.setPower(0);
             }
 
 //            if(robot.colorSensor.blue() > 255) {
@@ -170,10 +185,12 @@ public class PushbotTeleopTest extends LinearOpMode {
             else
                 robot.leftArm.setPower(0.0);
 */
+            tickCount++;
             // Send telemetry message to signify robot running;
             //telemetry.addData("claw",  "Offset = %.2f", clawOffset);
 //            telemetry.addData("left",  "%.2f", left);
 //            telemetry.addData("right", "%.2f", right);
+            telemetry.addData("ticks", tickCount);
             telemetry.update();
 
             // Pace this loop so jaw action is reasonable speed.

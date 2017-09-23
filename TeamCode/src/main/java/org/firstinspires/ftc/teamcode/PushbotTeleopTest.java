@@ -110,8 +110,16 @@ public class PushbotTeleopTest extends LinearOpMode {
                 fRight = straf - drive;
                 rRight = -straf - drive;
 
+<<<<<<< HEAD
                 max = Math.max(Math.abs(straf + drive), Math.abs(-straf + drive));
                 max = Math.max(Math.abs(straf + drive), Math.abs(-straf + drive));
+=======
+<<<<<<< HEAD
+                max = Math.max(Math.abs(straf + drive), Math.abs(-straf + drive));
+=======
+                double max = Math.max(Math.abs(straf + drive), Math.abs(-straf + drive));
+>>>>>>> 453faf98b5a0422ddfddbf20d3b21286f876779d
+>>>>>>> b9a5ff31a3d96cfbd05fb17305c2674c0f9243e0
 
                 if(max > 1.0) {
                     fLeft /= max;

@@ -80,6 +80,7 @@ public class AutonomousTest extends LinearOpMode {
 
             telemetry.addData("column", column);
             telemetry.addData("target", targetColumn);
+            telemetry.update();
 
             if(column == targetColumn) {
                 //MOVE SOME WAY TO GET THE BLOCK PLACER IN POSITION

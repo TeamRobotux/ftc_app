@@ -73,11 +73,11 @@ public class AutonomousTest extends LinearOpMode {
         while (opModeIsActive()) {
             //Move right, scanning for the colored edges of each column
             double red = robot.colorSensor.red();
-            if(red > 2) {
+            if(red > 0) {
                 column++;
 
             }
-
+            telemetry.addData("color", red);
             telemetry.addData("column", column);
             telemetry.addData("target", targetColumn);
             telemetry.update();
@@ -85,15 +85,17 @@ public class AutonomousTest extends LinearOpMode {
             if(column == targetColumn) {
                 //MOVE SOME WAY TO GET THE BLOCK PLACER IN POSITION
                 //THEN, STOP THE OPMODE, STAYING IN THE SAFEZONE
+
+
                 stop();
 
             }
             else {
                 //Move the robot right some more
-                robot.driveFrontL.setPower(.5);
-                robot.driveFrontR.setPower(-.5);
-                robot.driveRearL.setPower(.5);
-                robot.driveRearR.setPower(-.5);
+                robot.driveFrontL.setPower(-.15);
+                robot.driveFrontR.setPower(.15);
+                robot.driveRearL.setPower(-.15);
+                robot.driveRearR.setPower(.15);
                 sleep(100);
             }
 

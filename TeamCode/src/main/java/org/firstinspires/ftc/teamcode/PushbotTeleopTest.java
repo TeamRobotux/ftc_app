@@ -118,7 +118,7 @@ public class PushbotTeleopTest extends LinearOpMode {
                     fRight /= max;
                     rRight /= max;
                 }
-            }
+            } 0
 
 //            // Normalize the values so neither exceed +/- 1.0
 //            max = Math.max(Math.abs(fleft), Math.abs(right));

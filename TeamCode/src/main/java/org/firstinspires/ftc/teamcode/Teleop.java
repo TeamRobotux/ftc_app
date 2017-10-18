@@ -52,7 +52,6 @@ public class Teleop extends LinearOpMode {
         double rRight;
         double drive;
         double turn;
-        double max;
         double straf;
 
         /* Initialize the hardware variables.
@@ -80,10 +79,10 @@ public class Teleop extends LinearOpMode {
             //Driving.
             if(Math.abs(turn) > 0) {
                 // Turning in place.
-                fLeft = drive - turn;
-                rLeft = drive - turn;
-                rRight = drive + turn;
-                fRight = drive + turn;
+                fLeft = turn;
+                rLeft = turn;
+                rRight = turn;
+                fRight = turn;
             }
             else {
 

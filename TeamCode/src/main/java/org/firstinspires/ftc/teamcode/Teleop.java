@@ -36,6 +36,19 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 
+/**
+ * This OpMode uses the common Pushbot hardware class to define the devices on the robot.
+ * All device access is managed through the HardwarePushbot class.
+ * The code is structured as a LinearOpMode
+ *
+ * This particular OpMode executes a POV Game style Teleop for a PushBot
+ * In this mode the left stick moves the robot FWD and back, the Right stick turns left and right.
+ * It raises and lowers the claw using the Gampad Y and A buttons respectively.
+ * It also opens and closes the claws slowly using the left and right Bumper buttons.
+ *
+ * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
+ * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
+ */
 
 @TeleOp(name="TELEOP Test 1", group="Pushbot")
 public class Teleop extends LinearOpMode {
@@ -80,33 +93,31 @@ public class Teleop extends LinearOpMode {
             //Driving.
             if(Math.abs(turn) > 0) {
                 // Turning in place.
-                fLeft = drive - turn;
-                rLeft = drive - turn;
-                rRight = drive + turn;
-                fRight = drive + turn;
-            }
-            else {
+                fLeft = turn;
+                rLeft = turn;
+                rRight = turn;
+                fRight = turn;
+            } else {
+                fLeft = straf + drive;
+                rLeft = -straf + drive;
+                fRight = straf - drive;
+                rRight = -straf - drive;
 
-                if(straf+drive > 1.0) {
-                    fLeft = 1.0;
-                    rLeft = 1.0;
-                    fRight = 1.0;
-                    rRight = 1.0;
-                }
-                else {
-                    fLeft = straf + drive;
-                    rLeft = straf + drive;
-                    fRight = straf + drive;
-                    rRight = straf + drive;
-                }
+                max = Math.max(Math.abs(straf + drive), Math.abs(-straf + drive));
 
+                if(max > 1.0) {
+                    fLeft /= max;
+                    rLeft /= max;
+                    fRight /= max;
+                    rRight /= max;
+                }
             }
 
             //robot.leftDrive.setPower(left);
             robot.driveFrontR.setPower(fRight);
             robot.driveRearR.setPower(rRight);
-            robot.driveFrontL.setPower(-fLeft);
-            robot.driveRearL.setPower(-rLeft);
+            robot.driveFrontL.setPower(fLeft);
+            robot.driveRearL.setPower(rLeft);
 
             sleep(50);
         }

@@ -29,36 +29,19 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class RobotHardware
 {
     /* Public OpMode members. */
-    // public DcMotor  leftDrive   = null;
     public DcMotor  driveFrontR  = null;
     public DcMotor  driveRearR  = null;
     public DcMotor  driveFrontL  = null;
     public DcMotor  driveRearL  = null;
 
-    public DcMotor  flywheel = null;
-    //public Servo    latch = null;
-    public DcMotor  grabber = null;
-    public ColorSensor colorSensor = null;
-
-    //public DcMotor  leftArm     = null;
-    //public Servo    leftClaw    = null;
-    //public Servo    rightClaw   = null;
-
-    //public static final double MID_SERVO       =  0.5 ;
-    //public static final double ARM_UP_POWER    =  0.45 ;
-    //public static final double ARM_DOWN_POWER  = -0.45 ;
-
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
-    private ElapsedTime period  = new ElapsedTime();
 
     /* Constructor */
     public RobotHardware(){
@@ -89,10 +72,10 @@ public class RobotHardware
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
 //        leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        driveFrontR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        driveRearR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        driveFrontL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        driveRearL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        driveFrontR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        driveRearR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        driveFrontL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        driveRearL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
     }
 }

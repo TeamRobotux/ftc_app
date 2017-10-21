@@ -72,10 +72,10 @@ public class RobotHardware
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
 //        leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        driveFrontR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        driveRearR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        driveFrontL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        driveRearL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        driveFrontR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        driveRearR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        driveFrontL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        driveRearL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
     }
 }

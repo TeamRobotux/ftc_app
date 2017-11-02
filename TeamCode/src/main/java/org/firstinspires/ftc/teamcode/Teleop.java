@@ -99,37 +99,6 @@ public class Teleop extends LinearOpMode {
             }
             else {
                 robot.pulley.setPower(0);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             }
 
             //Driving.

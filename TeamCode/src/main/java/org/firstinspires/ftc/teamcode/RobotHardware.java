@@ -40,6 +40,8 @@ public class RobotHardware
     public DcMotor  driveFrontL  = null;
     public DcMotor  driveRearL  = null;
 
+    public DcMotor pulley = null;
+
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
 
@@ -61,6 +63,8 @@ public class RobotHardware
         driveFrontL = hwMap.get(DcMotor.class, "driveFrontL");
         driveRearL = hwMap.get(DcMotor.class, "driveRearL");
 
+        pulley = hwMap.get(DcMotor.class, "pulley");
+
 
         // Set all motors to zero power
         //leftDrive.setPower(0);
@@ -69,13 +73,16 @@ public class RobotHardware
         driveFrontL.setPower(0);
         driveRearL.setPower(0);
 
+        pulley.setPower(0);
+
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
 //        leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        driveFrontR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        driveRearR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        driveFrontL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        driveRearL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        driveFrontR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        driveRearR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        driveFrontL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        driveRearL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        pulley.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
     }
 }

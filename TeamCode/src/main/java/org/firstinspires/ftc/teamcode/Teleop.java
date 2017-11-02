@@ -90,6 +90,48 @@ public class Teleop extends LinearOpMode {
             turn  =  gamepad1.right_stick_x;
             straf = gamepad1.left_stick_x;
 
+            //Pulley Movement
+            if(gamepad1.x) {
+                robot.pulley.setPower(-1);
+            }
+            else if(gamepad1.y) {
+                robot.pulley.setPower(1);
+            }
+            else {
+                robot.pulley.setPower(0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            }
+
             //Driving.
             if(Math.abs(turn) > 0) {
                 // Turning in place.

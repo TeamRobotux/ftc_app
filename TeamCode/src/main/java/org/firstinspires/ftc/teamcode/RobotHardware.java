@@ -31,6 +31,8 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
+
 
 public class RobotHardware
 {
@@ -39,6 +41,8 @@ public class RobotHardware
     public DcMotor  driveRearR  = null;
     public DcMotor  driveFrontL  = null;
     public DcMotor  driveRearL  = null;
+    public Servo    rightGrabber = null;
+    public Servo    leftGrabber = null;
 
     public DcMotor pulley = null;
 
@@ -65,15 +69,20 @@ public class RobotHardware
 
         pulley = hwMap.get(DcMotor.class, "pulley");
 
-
+        rightGrabber = hwMap.get(Servo.class, "rightGrabber");
+        leftGrabber = hwMap.get(Servo.class, "leftGrabber");
         // Set all motors to zero power
         //leftDrive.setPower(0);
+
         driveFrontR.setPower(0);
         driveRearR.setPower(0);
         driveFrontL.setPower(0);
         driveRearL.setPower(0);
 
         pulley.setPower(0);
+
+        leftGrabber.scaleRange(0.0, 1.0);
+        rightGrabber.scaleRange(0.0, 1.0);
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.

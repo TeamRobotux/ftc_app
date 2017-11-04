@@ -74,7 +74,9 @@ public class Teleop extends LinearOpMode {
         robot.init(hardwareMap);
 
         // Send telemetry message to signify robot waiting;
-        telemetry.addData("Say", "ITS GO TIME");    //
+        telemetry.addData("servo", "Left: %3f, Right: %3f",
+                robot.leftGrabber.getPosition(),
+                robot.rightGrabber.getPosition());    //
         telemetry.update();
 
         // Wait for the game to start (driver presses PLAY)
@@ -99,38 +101,47 @@ public class Teleop extends LinearOpMode {
             }
             else {
                 robot.pulley.setPower(0);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             }
+            if (gamepad1.a) {
+                robot.rightGrabber.setPosition(180);
+                robot.rightGrabber.setPosition(180);
+            } else if (gamepad1.b) {
+                robot.rightGrabber.setPosition(0);
+                robot.rightGrabber.setPosition(0);
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             //Driving.
             if(Math.abs(turn) > 0) {

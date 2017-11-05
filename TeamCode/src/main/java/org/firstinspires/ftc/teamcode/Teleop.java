@@ -91,44 +91,23 @@ public class Teleop extends LinearOpMode {
             straf = gamepad1.left_stick_x;
 
             //Pulley Movement
-            if(gamepad1.x) {
+            if(gamepad1.dpad_down) {
                 robot.pulley.setPower(-1);
             }
-            else if(gamepad1.y) {
+            else if(gamepad1.dpad_up) {
                 robot.pulley.setPower(1);
             }
             else {
                 robot.pulley.setPower(0);
             }
 
-            //Driving.
-            if(Math.abs(turn) > 0) {
-                // Turning in place.
-                fLeft = turn;
-                rLeft = turn;
-                rRight = turn;
-                fRight = turn;
-            } else {
-                fLeft = straf + drive;
-                rLeft = -straf + drive;
-                fRight = straf - drive;
-                rRight = -straf - drive;
+//            int encoder_value = robot.pulley.getEncoderVal();
+//            if(encoder_value % 100 == 0) {
+//                System.out.println(encoder_value);
+//            }
 
-                max = Math.max(Math.abs(straf + drive), Math.abs(-straf + drive));
+            int pulse = robot.pulley.getEncoderVal();
 
-                if(max > 1.0) {
-                    fLeft /= max;
-                    rLeft /= max;
-                    fRight /= max;
-                    rRight /= max;
-                }
-            }
-
-            //robot.leftDrive.setPower(left);
-            robot.driveFrontR.setPower(fRight);
-            robot.driveRearR.setPower(rRight);
-            robot.driveFrontL.setPower(fLeft);
-            robot.driveRearL.setPower(rLeft);
 
             sleep(50);
         }

@@ -35,15 +35,12 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 public class RobotHardware
 {
     /* Public OpMode members. */
-    public DcMotor  driveFrontR  = null;
-    public DcMotor  driveRearR  = null;
-    public DcMotor  driveFrontL  = null;
-    public DcMotor  driveRearL  = null;
 
-    public DcMotor pulley = null;
+    //Pulley ticks from top to bottom 3880, length = 29.75, ticks per block = 784
+    public TuxMotor pulley;
+    public Drivetrain wheels;
 
     /* local OpMode members. */
-    HardwareMap hwMap           =  null;
 
     /* Constructor */
     public RobotHardware(){
@@ -51,39 +48,15 @@ public class RobotHardware
     }
 
     /* Initialize standard Hardware interfaces */
-    public void init(HardwareMap ahwMap) {
-        // Save reference to Hardware map
-        hwMap = ahwMap;
-
+    public void init(HardwareMap hwMap) {
         // Define and Initialize Motors
-        // leftDrive  = hwMap.get(DcMotor.class, "left_drive");
-        driveFrontR = hwMap.get(DcMotor.class, "driveFrontR");
-        driveRearR = hwMap.get(DcMotor.class, "driveRearR");
+        //Pulley motor = gear ratio 40;1, radius 1.975/2
+        pulley = new TuxMotor("pulley", hwMap, 40, 1.975/2, 1);
 
-        driveFrontL = hwMap.get(DcMotor.class, "driveFrontL");
-        driveRearL = hwMap.get(DcMotor.class, "driveRearL");
+        wheels = new Drivetrain(hwMap);
 
-        pulley = hwMap.get(DcMotor.class, "pulley");
-
-
-        // Set all motors to zero power
-        //leftDrive.setPower(0);
-        driveFrontR.setPower(0);
-        driveRearR.setPower(0);
-        driveFrontL.setPower(0);
-        driveRearL.setPower(0);
-
-        pulley.setPower(0);
-
-        // Set all motors to run without encoders.
-        // May want to use RUN_USING_ENCODERS if encoders are installed.
-//        leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        driveFrontR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        driveRearR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        driveFrontL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        driveRearL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        pulley.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
     }
+
 }
 

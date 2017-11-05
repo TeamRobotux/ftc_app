@@ -43,7 +43,6 @@ public class EncoderTest extends LinearOpMode {
 
     /* Declare OpMode members. */
     RobotHardware robot           = new RobotHardware();   // Use a Pushbot's hardware
-    DcMotor[] wheels = {robot.driveFrontR, robot.driveFrontL, robot.driveRearR, robot.driveRearL};
 
 
     @Override
@@ -60,33 +59,21 @@ public class EncoderTest extends LinearOpMode {
         telemetry.update();
 
         // Wait for the game to start (driver presses PLAY)
-        waitForStart();
+//        robot.pulley.setPower((float) .5);
+//        while(robot.pulley.getEncoderVal() < 784 ) {
+////            telemetry.addData("ticks", robot.pulley.getEncoderVal());
+////            telemetry.update();
+//            sleep(50);
+//        }
 
-       moveStraight(wheels, 10, 1);
+        robot.pulley.moveDistance(6);
+        while(robot.pulley.isBusy()) {
+            telemetry.addData("ticks", robot.pulley.getEncoderVal());
+            telemetry.update();
+        }
+        robot.pulley.setPower(0);
+        stop();
     }
 
-    public void moveStraight(DcMotor[] motors, int location, double power) {
-        int tempLocation = location;
-        double tempPower = power;
-        for(DcMotor m : motors) {
-            m.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-            //We have to negate the location everytime as the wheels on opposite sides need to "move the other way"
-            m.setTargetPosition(tempLocation);
-            tempLocation = -tempLocation;
-
-            m.setPower(tempPower);
-            tempPower = -tempPower;
-
-            m.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        }
-
-        for(int i = 0; i < 1000; i++) {
-            if(!motors[0].isBusy() && !motors[1].isBusy() && !motors[2].isBusy() && !motors[3].isBusy()) {
-                return;
-            }
-            sleep(50);
-        }
-        return;
-    }
 }

@@ -32,7 +32,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
@@ -51,8 +50,8 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="TELEOP Test 1", group="Pushbot")
-public class Teleop extends LinearOpMode {
+@TeleOp(name="TELEOP Test 2 - motors", group="Pushbot")
+public class TeleOpMotorTest extends LinearOpMode {
 
     /* Declare OpMode members. */
     RobotHardware robot           = new RobotHardware();   // Use a Pushbot's hardware
@@ -60,14 +59,7 @@ public class Teleop extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        double fLeft;
-        double fRight;
-        double rLeft;
-        double rRight;
-        double drive;
-        double turn;
-        double max;
-        double straf;
+
 
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
@@ -87,33 +79,26 @@ public class Teleop extends LinearOpMode {
             // Run wheels in POV mode (note: The joystick goes negative when pushed forwards, so negate it)
             // In this mode the Left stick moves the robot fwd and back, the Right stick turns left and right.
             // This way it's also easy to just drive straight, or just turn.
-            drive = -gamepad1.left_stick_y;
-            turn  =  gamepad1.right_stick_x;
-            straf = gamepad1.left_stick_x;
 
-            //Pulley Movement
-            if(gamepad1.dpad_down) {
-                robot.pulley.setPower(-1);
-            }
-            else if(gamepad1.dpad_up) {
-                robot.pulley.setPower(1);
-            }
-            else {
-                robot.pulley.setPower(0);
-            }
 
-            if(Math.abs(turn) > .25) {
-                robot.wheels.turn((float) turn);
-            }
-            else {
-                robot.wheels.drivePower((float) drive);
-                robot.wheels.strafe((float) straf);
-            }
 
-            telemetry.addData("PID coeffs - Using", robot.pulley.getPIDCoefficients(DcMotor.RunMode.RUN_USING_ENCODER));
-            telemetry.addData("PID coeffs - Position", robot.pulley.getPIDCoefficients(DcMotor.RunMode.RUN_TO_POSITION));
+//            int encoder_value = robot.pulley.getEncoderVal();
+//            if(encoder_value % 100 == 0) {
+//                System.out.println(encoder_value);
+//            }
 
-            sleep(50);
+            if(gamepad1.a) {
+                robot.wheels.driveTicks((int) Math.round(210/(2*2*Math.PI))*6);
+            }
+            else if(gamepad1.b) {
+                robot.wheels.driveTicks((int) Math.round(-210/(2*2*Math.PI))*6);
+            }
+            else if(gamepad1.x) {
+                robot.pulley.moveTicks(130*6);
+            }
+            else if(gamepad1.y) {
+                robot.pulley.moveTicks(-130*6);
+            }
         }
     }
 }

@@ -50,10 +50,12 @@ public class RobotHardware
     /* Initialize standard Hardware interfaces */
     public void init(HardwareMap hwMap) {
         // Define and Initialize Motors
-        //Pulley motor = gear ratio 40;1, radius 1.975/2
-        pulley = new TuxMotor("pulley", hwMap, 40, 1.975/2, 1);
+        //Pulley motor lift length = 35.2
+        pulley = new TuxMotor("pulley", hwMap, 130, 1);
 
         wheels = new Drivetrain(hwMap);
+
+
 
 
     }

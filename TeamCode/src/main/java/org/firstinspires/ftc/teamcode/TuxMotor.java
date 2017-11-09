@@ -5,47 +5,40 @@ package org.firstinspires.ftc.teamcode;
  */
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.PIDCoefficients;
 
-public class TuxMotor{
-    private DcMotor motor;
+public class TuxMotor {
+    private DcMotorEx motor;
     //Number of encoder pulses per revolution
-    private long ppr;
+    private long ticksPerInch;
     //length of radius in inches
-    private double circumfrence;
 
     int reverse;
 
     //Radius is in inches.
-    public TuxMotor(String name, HardwareMap map, int gearRatio, double r, int reversed) {
-        motor = map.get(DcMotor.class, name);
+    public TuxMotor(String name, HardwareMap map, long tpi, int reversed) {
+        motor = (DcMotorEx) map.get(DcMotor.class, name);
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        circumfrence = r*2*Math.PI;
-        ppr = 7*gearRatio;
+        ticksPerInch = tpi;
         setPower(0);
         reverse = reversed;
     }
 
     public void moveDistance(double inches) {
-        double revolutions = inches/circumfrence;
+        int ticks = (int) Math.round(inches*ticksPerInch);
 
-        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        motor.setTargetPosition((int) Math.round(revolutions*ppr*reverse));
-
-        motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        motor.setPower(.4);
+        moveTicks(ticks);
     }
 
     public void moveTicks(int ticks) {
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
+        motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor.setTargetPosition(ticks*reverse);
 
-        motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        motor.setPower(.4);
+        motor.setPower(1);
     }
 
     public int getEncoderVal() {
@@ -61,5 +54,11 @@ public class TuxMotor{
         return motor.isBusy();
     }
 
+    public String getPIDCoefficients(DcMotor.RunMode r) {
+        String returnString = ""+ motor.getPIDCoefficients(r).p;
+        returnString += " " + motor.getPIDCoefficients(r).i;
+        returnString += " " + motor.getPIDCoefficients(r).d;
+        return returnString;
+    }
+
 }
-000

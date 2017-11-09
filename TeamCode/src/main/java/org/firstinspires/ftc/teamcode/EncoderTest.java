@@ -38,12 +38,11 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  * A test to check the capabilites of encoders
  */
 
-@Autonomous(name="Encoder Test", group="Pushbot")
+@Autonomous(name="AutoTest", group="Pushbot")
 public class EncoderTest extends LinearOpMode {
 
     /* Declare OpMode members. */
     RobotHardware robot           = new RobotHardware();   // Use a Pushbot's hardware
-
 
     @Override
     public void runOpMode() {
@@ -53,6 +52,7 @@ public class EncoderTest extends LinearOpMode {
          * The init() method of the hardware class does all the work here
          */
         robot.init(hardwareMap);
+        robot.grabber.close();
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Say", "ITS GO TIME");    //
@@ -71,6 +71,7 @@ public class EncoderTest extends LinearOpMode {
             telemetry.addData("ticks", robot.pulley.getEncoderVal());
             telemetry.update();
         }
+
         robot.pulley.setPower(0);
         stop();
     }

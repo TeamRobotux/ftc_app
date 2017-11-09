@@ -25,8 +25,8 @@ public class GlyphGrabber {
 
         left.setDirection(Servo.Direction.REVERSE);
 
-        left.moveTo(lClosed);
-        right.moveTo(rClosed);
+        left.moveTo(lOpen);
+        right.moveTo(rOpen);
     }
 
     public void open() {

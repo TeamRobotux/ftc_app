@@ -46,7 +46,7 @@ public class TuxMotor {
         return motor.getCurrentPosition();
     }
 
-    public void setPower(float power) {
+    public void setPower(double power) {
         if(motor.getMode() != DcMotor.RunMode.RUN_WITHOUT_ENCODER) {
             motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }

@@ -100,7 +100,7 @@ public class Teleop extends LinearOpMode {
                 robot.wheels.turn((float) turn);
             }
             else {
-                if(Math.abs(straf) > .25) {
+                if(Math.abs(straf) > .5) {
                     robot.wheels.strafe((float) straf);
                 }
                 else {

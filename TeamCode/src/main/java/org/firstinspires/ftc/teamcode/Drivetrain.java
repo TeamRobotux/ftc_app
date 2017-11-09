@@ -35,7 +35,7 @@ public class Drivetrain {
 
     public void drivePower(float power) {
         for(TuxMotor m : wheels) {
-            m.setPower(power);
+            m.setPower(power*0.8);
         }
     }
 
@@ -50,13 +50,14 @@ public class Drivetrain {
     }
 
     public void turn(float power) {
-        driveFrontR.setPower(power);
-        driveRearR.setPower(power);
-        driveFrontL.setPower(-power);
-        driveRearL.setPower(-power);
+        driveFrontR.setPower(-power);
+        driveRearR.setPower(-power);
+        driveFrontL.setPower(power);
+        driveRearL.setPower(power);
     }
 
-    public void strafe(float power) {
+    public void strafe(float powerInit) {
+        double power = powerInit*.8;
         driveFrontR.setPower(-power);
         driveRearR.setPower(power);
         driveFrontL.setPower(power);

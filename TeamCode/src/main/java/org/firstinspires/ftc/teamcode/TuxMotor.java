@@ -28,6 +28,7 @@ public class TuxMotor {
     }
 
     public void moveDistance(double inches) {
+
         int ticks = (int) Math.round(inches*ticksPerInch);
 
         moveTicks(ticks);
@@ -46,7 +47,9 @@ public class TuxMotor {
     }
 
     public void setPower(float power) {
-        motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        if(motor.getMode() != DcMotor.RunMode.RUN_WITHOUT_ENCODER) {
+            motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        }
         motor.setPower(power*reverse);
     }
 

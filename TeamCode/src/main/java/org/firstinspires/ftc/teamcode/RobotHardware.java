@@ -40,6 +40,9 @@ public class RobotHardware
     public TuxMotor pulley;
     public Drivetrain wheels;
 
+
+    public GlyphGrabber grabber;
+
     /* local OpMode members. */
 
     /* Constructor */
@@ -54,6 +57,8 @@ public class RobotHardware
         pulley = new TuxMotor("pulley", hwMap, 130, 1);
 
         wheels = new Drivetrain(hwMap);
+
+        grabber = new GlyphGrabber(hwMap);
 
 
 

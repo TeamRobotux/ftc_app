@@ -59,14 +59,8 @@ public class Teleop extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-
-        double fLeft;
-        double fRight;
-        double rLeft;
-        double rRight;
         double drive;
         double turn;
-        double max;
         double straf;
 
         /* Initialize the hardware variables.
@@ -106,13 +100,26 @@ public class Teleop extends LinearOpMode {
                 robot.wheels.turn((float) turn);
             }
             else {
-                robot.wheels.drivePower((float) drive);
-                robot.wheels.strafe((float) straf);
+                if(Math.abs(straf) > .25) {
+                    robot.wheels.strafe((float) straf);
+                }
+                else {
+                    robot.wheels.drivePower((float) drive);
+                }
+            }
+
+            if(gamepad1.a) {
+                robot.grabber.open();
+            }
+            else if(gamepad1.b) {
+                robot.grabber.close();
             }
 
             telemetry.addData("PID coeffs - Using", robot.pulley.getPIDCoefficients(DcMotor.RunMode.RUN_USING_ENCODER));
             telemetry.addData("PID coeffs - Position", robot.pulley.getPIDCoefficients(DcMotor.RunMode.RUN_TO_POSITION));
+            telemetry.addData("Grabber pos: ", robot.grabber.toString());
 
+            telemetry.update();
             sleep(50);
         }
     }

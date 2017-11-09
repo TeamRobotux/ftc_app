@@ -30,40 +30,50 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
+/**
+ * A test to check the capabilites of encoders
+ */
+
+@Autonomous(name="Encoder Test", group="Pushbot")
+public class EncoderTest extends LinearOpMode {
+
+    /* Declare OpMode members. */
+    RobotHardware robot           = new RobotHardware();   // Use a Pushbot's hardware
 
 
-public class RobotHardware
-{
-    /* Public OpMode members. */
-
-    //Pulley ticks from top to bottom 3880, length = 29.75, ticks per block = 784
-    public TuxMotor pulley;
-    public Drivetrain wheels;
+    @Override
+    public void runOpMode() {
 
 
-    public GlyphGrabber grabber;
+        /* Initialize the hardware variables.
+         * The init() method of the hardware class does all the work here
+         */
+        robot.init(hardwareMap);
 
-    /* local OpMode members. */
+        // Send telemetry message to signify robot waiting;
+        telemetry.addData("Say", "ITS GO TIME");    //
+        telemetry.update();
 
-    /* Constructor */
-    public RobotHardware(){
+        // Wait for the game to start (driver presses PLAY)
+//        robot.pulley.setPower((float) .5);
+//        while(robot.pulley.getEncoderVal() < 784 ) {
+////            telemetry.addData("ticks", robot.pulley.getEncoderVal());
+////            telemetry.update();
+//            sleep(50);
+//        }
 
+        robot.pulley.moveDistance(6);
+        while(robot.pulley.isBusy()) {
+            telemetry.addData("ticks", robot.pulley.getEncoderVal());
+            telemetry.update();
+        }
+        robot.pulley.setPower(0);
+        stop();
     }
 
-    /* Initialize standard Hardware interfaces */
-    public void init(HardwareMap hwMap) {
-        // Define and Initialize Motors
-        //Pulley motor lift length = 35.2
-        pulley = new TuxMotor("pulley", hwMap, 130, 1);
-
-        wheels = new Drivetrain(hwMap);
-
-        grabber = new GlyphGrabber(hwMap);
-
-
-    }
 
 }
-

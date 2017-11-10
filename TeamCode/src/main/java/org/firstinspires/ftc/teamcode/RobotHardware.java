@@ -29,10 +29,13 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.lynx.LynxI2cColorRangeSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.GyroSensor;
+import com.qualcomm.robotcore.hardware.HardwareDevice;
+
 
 
 
@@ -50,7 +53,9 @@ public class RobotHardware
     public Servo jewelL;
     public Servo jewelR;
 
-    public ColorSensor colorSensor;
+    public TuxGyro gyro;
+
+    public LynxI2cColorRangeSensor colorSensor;
 
     /* local OpMode members. */
 
@@ -69,10 +74,15 @@ public class RobotHardware
 
         grabber = new GlyphGrabber(hwMap);
 
+        //gyro = hwMap.get(GyroSensor.class, "imu 1");
+       // gyro.calibrate();
+
         jewelL  = hwMap.get(Servo.class, "jewelL");
         jewelR  = hwMap.get(Servo.class, "jewelR");
 
-        colorSensor = hwMap.get(ColorSensor.class, "colorSensor");
+        gyro = new TuxGyro(hwMap);
+
+        //colorSensor = (LynxI2cColorRangeSensor) hwMap.get("colorSensor");
 
         jewelL.setDirection(Servo.Direction.FORWARD);
         jewelR.setDirection(Servo.Direction.REVERSE);

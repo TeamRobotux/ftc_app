@@ -34,6 +34,7 @@ public class TuxMotor {
         moveTicks(ticks);
     }
 
+
     public void moveTicks(int ticks) {
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);

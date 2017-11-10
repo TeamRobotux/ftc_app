@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 public class GlyphGrabber {
     private TuxServo right;
     private TuxServo left;
-    private final double rOpen = .34;
+    private final double rOpen = .5;
     private final double rClosed = .2;
     private final double lOpen = .55;
     private final double lClosed = .3;

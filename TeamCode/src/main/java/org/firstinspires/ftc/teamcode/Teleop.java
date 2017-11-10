@@ -129,8 +129,9 @@ public class Teleop extends LinearOpMode {
                 sleep(100);
             }
 
-            telemetry.addData("PID coeffs - Using", robot.pulley.getPIDCoefficients(DcMotor.RunMode.RUN_USING_ENCODER));
-            telemetry.addData("PID coeffs - Position", robot.pulley.getPIDCoefficients(DcMotor.RunMode.RUN_TO_POSITION));
+            telemetry.addData("blue value:", robot.colorSensor.blue());
+            //telemetry.addData("PID coeffs - Using", robot.pulley.getPIDCoefficients(DcMotor.RunMode.RUN_USING_ENCODER));
+            //telemetry.addData("PID coeffs - Position", robot.pulley.getPIDCoefficients(DcMotor.RunMode.RUN_TO_POSITION));
             telemetry.addData("Grabber pos: ", robot.grabber.toString());
 
             telemetry.update();

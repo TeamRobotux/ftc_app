@@ -32,6 +32,8 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.ColorSensor;
+
 
 
 public class RobotHardware
@@ -47,6 +49,8 @@ public class RobotHardware
 
     public Servo jewelL;
     public Servo jewelR;
+
+    public ColorSensor colorSensor;
 
     /* local OpMode members. */
 
@@ -67,6 +71,8 @@ public class RobotHardware
 
         jewelL  = hwMap.get(Servo.class, "jewelL");
         jewelR  = hwMap.get(Servo.class, "jewelR");
+
+        colorSensor = hwMap.get(ColorSensor.class, "colorSensor");
 
         jewelL.setDirection(Servo.Direction.FORWARD);
         jewelR.setDirection(Servo.Direction.REVERSE);

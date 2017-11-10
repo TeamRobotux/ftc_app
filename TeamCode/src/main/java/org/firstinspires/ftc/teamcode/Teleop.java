@@ -111,6 +111,24 @@ public class Teleop extends LinearOpMode {
                 robot.grabber.close();
             }
 
+
+
+            if(gamepad1.left_bumper && Math.round(robot.jewelL.getPosition()) == 1) {
+                robot.jewelL.setPosition(0);
+                sleep(100);
+            } else if(gamepad1.left_bumper) {
+                robot.jewelL.setPosition(1);
+                sleep(100);
+            }
+
+            if(gamepad1.right_bumper && Math.round(robot.jewelR.getPosition()) == 1) {
+                robot.jewelR.setPosition(0);
+                sleep(100);
+            } else if(gamepad1.right_bumper) {
+                robot.jewelR.setPosition(1);
+                sleep(100);
+            }
+
             telemetry.addData("PID coeffs - Using", robot.pulley.getPIDCoefficients(DcMotor.RunMode.RUN_USING_ENCODER));
             telemetry.addData("PID coeffs - Position", robot.pulley.getPIDCoefficients(DcMotor.RunMode.RUN_TO_POSITION));
             telemetry.addData("Grabber pos: ", robot.grabber.toString());

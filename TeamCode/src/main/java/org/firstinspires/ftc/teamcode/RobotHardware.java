@@ -45,6 +45,9 @@ public class RobotHardware
 
     public GlyphGrabber grabber;
 
+    public Servo jewelL;
+    public Servo jewelR;
+
     /* local OpMode members. */
 
     /* Constructor */
@@ -62,7 +65,14 @@ public class RobotHardware
 
         grabber = new GlyphGrabber(hwMap);
 
+        jewelL  = hwMap.get(Servo.class, "jewelL");
+        jewelR  = hwMap.get(Servo.class, "jewelR");
 
+        jewelL.setDirection(Servo.Direction.FORWARD);
+        jewelR.setDirection(Servo.Direction.REVERSE);
+
+//        jewelL.setPosition(0);
+      //  jewelL.setPosition(0);
     }
 
 }

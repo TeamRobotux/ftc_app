@@ -29,11 +29,14 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.ams.AMSColorSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 
 import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 
@@ -70,6 +73,9 @@ public class Teleop extends LinearOpMode {
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
+
+        robot.gyro.composeTelemetry(telemetry);
+
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
@@ -129,7 +135,9 @@ public class Teleop extends LinearOpMode {
                 sleep(100);
             }
 
-            telemetry.addData("blue value:", robot.colorSensor.blue());
+
+            //telemetry.addData("heading: ", robot.gyro.getHeading());
+            //telemetry.addData("blue value:", robot.colorSensor.read8(AMSColorSensor.Register.RED));
             //telemetry.addData("PID coeffs - Using", robot.pulley.getPIDCoefficients(DcMotor.RunMode.RUN_USING_ENCODER));
             //telemetry.addData("PID coeffs - Position", robot.pulley.getPIDCoefficients(DcMotor.RunMode.RUN_TO_POSITION));
             telemetry.addData("Grabber pos: ", robot.grabber.toString());

@@ -18,11 +18,12 @@ public class Drivetrain {
 
     public Drivetrain(HardwareMap hwMap) {
 
+        int tpi = 160;
         //Wheel motors; Gear Ratio of sprockets = 3:4, motor gearratio 40:1, 2 inch radii
-        driveFrontR = new TuxMotor("driveFrontR", hwMap, 1, -1);
-        driveRearR = new TuxMotor("driveRearR", hwMap, 1, -1);
-        driveFrontL = new TuxMotor("driveFrontL", hwMap, 1, 1);
-        driveRearL = new TuxMotor("driveRearL", hwMap, 1, 1);
+        driveFrontR = new TuxMotor("driveFrontR", hwMap, tpi, -1);
+        driveRearR = new TuxMotor("driveRearR", hwMap, tpi, -1);
+        driveFrontL = new TuxMotor("driveFrontL", hwMap, tpi, 1);
+        driveRearL = new TuxMotor("driveRearL", hwMap, tpi, 1);
 
         wheels = new TuxMotor[4];
 
@@ -49,20 +50,27 @@ public class Drivetrain {
         }
     }
 
-    public void turn(float power) {
+    public void turn(double power) {
         driveFrontR.setPower(-power);
         driveRearR.setPower(-power);
         driveFrontL.setPower(power);
         driveRearL.setPower(power);
     }
 
-    public void strafe(float powerInit) {
+    public void strafe(double powerInit) {
         double power = powerInit*.8;
         driveFrontR.setPower(-power);
         driveRearR.setPower(power);
         driveFrontL.setPower(power);
         driveRearL.setPower(-power);
 
+    }
+
+    public void strafeDistance(double inches) {
+        driveFrontR.moveDistance(-inches);
+        driveRearR.moveDistance(inches);
+        driveFrontL.moveDistance(inches);
+        driveRearL.moveDistance(-inches);
     }
 
     //move a distance (in inches)

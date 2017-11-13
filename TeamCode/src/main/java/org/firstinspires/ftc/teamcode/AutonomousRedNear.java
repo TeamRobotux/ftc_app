@@ -73,12 +73,17 @@ public class AutonomousRedNear extends LinearOpMode {
             float xAngle = robot.gyro.imu.getAngularOrientation().firstAngle;
 
             while (xAngle < -92 || xAngle > -88) {
-                if (xAngle < -90) {
+                xAngle = robot.gyro.imu.getAngularOrientation().firstAngle;
+                if (xAngle > -90) {
                     robot.wheels.turn(.5);
                 } else {
                     robot.wheels.turn(-.25);
                 }
-                xAngle = robot.gyro.imu.getAngularOrientation().firstAngle;
+
+
+                if(isStopRequested()) {
+                    break;
+                }
 
                 telemetry.addData("heading: ", xAngle);
                 telemetry.update();
@@ -86,12 +91,16 @@ public class AutonomousRedNear extends LinearOpMode {
 
             robot.wheels.turn(0);
 
-            robot.wheels.driveDistance(3.75);
+            robot.wheels.driveDistance(3);
             while (robot.wheels.isBusy()) {
                 sleep(100);
             }
             robot.grabber.open();
             sleep(500);
+
+            robot.wheels.driveDistance(-3);
+            while(robot.wheels.isBusy()); { sleep(100); }
+
             stop();
 
         }

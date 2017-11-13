@@ -38,8 +38,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  * A test to check the capabilites of encoders
  */
 
-@Autonomous(name="AutoBlueNear", group="Pushbot")
-public class AutonomousBlueNear extends LinearOpMode {
+@Autonomous(name="AutoBlueFar", group="Pushbot")
+public class AutonomousBlueFar extends LinearOpMode {
 
     /* Declare OpMode members. */
     RobotHardware robot = new RobotHardware();   // Use a Pushbot's hardware
@@ -66,45 +66,21 @@ public class AutonomousBlueNear extends LinearOpMode {
 
             // Wait for the game to start (driver presses PLAY)
             //Inches == 37.25
-            robot.wheels.driveDistance(32.4);
+            robot.wheels.driveDistance(22);
             while (robot.wheels.isBusy()) {
                 sleep(100);
             }
-            float xAngle = robot.gyro.imu.getAngularOrientation().firstAngle;
 
-            while (xAngle > 92 || xAngle < 88) {
-                xAngle = robot.gyro.imu.getAngularOrientation().firstAngle;
 
-                if (xAngle < 90) {
-                    robot.wheels.turn(-.5);
-                } else {
-                    robot.wheels.turn(.25);
-                }
+            robot.wheels.strafeDistance(12);
 
-                if(isStopRequested()) {
-                    break;
-                }
-
-                telemetry.addData("heading: ", xAngle);
-                telemetry.update();
-            }
-
-            robot.wheels.turn(0);
-
-            robot.wheels.driveDistance(3);
+            robot.wheels.driveDistance(5);
             while (robot.wheels.isBusy()) {
                 sleep(100);
             }
             robot.grabber.open();
             sleep(500);
-
-            robot.wheels.driveDistance(-3);
-            while(robot.wheels.isBusy()); { sleep(100); }
-
-
             stop();
-
-
 
         }
     }

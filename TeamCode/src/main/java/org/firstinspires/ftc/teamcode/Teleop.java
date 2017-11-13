@@ -89,7 +89,7 @@ public class Teleop extends LinearOpMode {
 
             //Pulley Movement
             if(gamepad1.dpad_down) {
-                robot.pulley.setPower(-1);
+                robot.pulley.setPower(-.5);
             }
             else if(gamepad1.dpad_up) {
                 robot.pulley.setPower(1);
@@ -118,7 +118,7 @@ public class Teleop extends LinearOpMode {
             }
 
 
-
+/*
             if(gamepad1.left_bumper && Math.round(robot.jewelL.getPosition()) == 1) {
                 robot.jewelL.setPosition(0);
                 sleep(100);
@@ -134,7 +134,7 @@ public class Teleop extends LinearOpMode {
                 robot.jewelR.setPosition(1);
                 sleep(100);
             }
-
+*/
 
             //telemetry.addData("heading: ", robot.gyro.getHeading());
             //telemetry.addData("blue value:", robot.colorSensor.read8(AMSColorSensor.Register.RED));

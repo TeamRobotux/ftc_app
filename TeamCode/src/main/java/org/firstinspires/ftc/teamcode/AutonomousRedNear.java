@@ -34,6 +34,12 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+
 /**
  * A test to check the capabilites of encoders
  */
@@ -64,15 +70,59 @@ public class AutonomousRedNear extends LinearOpMode {
 
         while(opModeIsActive()) {
 
-            // Wait for the game to start (driver presses PLAY)
-            //Inches == 37.25
-            robot.wheels.driveDistance(28.4);
+            // Wait for the game to start (driver presses PLAY;
+
+
+            double columnAdd = scanColumn();
+
+
+
+            robot.wheels.strafeDistance(2.5);
+            while(robot.wheels.isBusy()) {
+                sleep(100);
+            }
+
+            robot.jewelR.setPosition(0);
+            for(int i = 0; i < 12; i++) {
+                sleep(100);
+            }
+
+            robot.colorSensor.enableLed(true);
+
+            int distCompensation = 5;
+            if(robot.colorSensor.blue() > 12) {
+                robot.wheels.driveDistance(5);
+                distCompensation *= -1;
+            }
+            else {
+                robot.wheels.driveDistance(-5);
+
+            }
+
+            robot.colorSensor.enableLed(false);
+
+
+            while(robot.wheels.isBusy()) {
+                sleep(100);
+            }
+
+            robot.jewelR.setPosition(1);
+            for(int i = 0; i < 12; i++) {
+                sleep(100);
+            }
+
+
+
+            robot.wheels.driveDistance(36.95  + distCompensation + columnAdd);  //38.1 rn
+            while (robot.wheels.isBusy()) {
+                sleep(100);
+            }
             while (robot.wheels.isBusy()) {
                 sleep(100);
             }
             float xAngle = robot.gyro.imu.getAngularOrientation().firstAngle;
 
-            while (xAngle < -92 || xAngle > -88) {
+            while (Math.abs(xAngle) > 91 || Math.abs(xAngle) < 89) {
                 xAngle = robot.gyro.imu.getAngularOrientation().firstAngle;
                 if (xAngle > -90) {
                     robot.wheels.turn(.5);
@@ -91,19 +141,67 @@ public class AutonomousRedNear extends LinearOpMode {
 
             robot.wheels.turn(0);
 
-            robot.wheels.driveDistance(3);
+            robot.wheels.driveDistance(5);
             while (robot.wheels.isBusy()) {
                 sleep(100);
             }
             robot.grabber.open();
             sleep(500);
 
-            robot.wheels.driveDistance(-3);
+            robot.wheels.driveDistance(-8);
             while(robot.wheels.isBusy()); { sleep(100); }
+
+            robot.grabber.close();
+
+            robot.wheels.driveDistance(10);
+            while(robot.wheels.isBusy()); { sleep(100); }
+
+            robot.wheels.driveDistance(-8);
+            while(robot.wheels.isBusy()); { sleep(100); }
+
+
+
+
 
             stop();
 
         }
+    }
+
+    private double scanColumn() {
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
+        parameters.vuforiaLicenseKey = "AaiquuH/////AAAAGa0Yq9q1+0YrjKIQl75JKMtbkCfbX1s4QuajYfob6seMwTDejdEf8WOHpi4ynOSLXdKC2tPaPTZqNCXDPbFNik7OS3eUUJGNWoCXlvax5In3QvY7HtWsnGG2KIa/AkJYeu69kYsmIEd7y9fEr1BSX5MXkkghfKAfV644TDRxntIB/YCyWaAcsmOvPuK14RxTh8PTjcX9vYPCpVh8Sq/OlERLvXkDasPo+0jFxMkPYrEauQ3bawhYt6xFuCa861gAiDgIEo3kAvcvrwYOGwJqueueKTthyG6Ydvfk5qvAs/hRbVOuAOwhCKs87TdHrx08xiUaGKxm251/WlVkPPrDUdesFJVcfXE0JXXrEJBCeOL5";
+
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
+        VuforiaLocalizer vuforia = ClassFactory.createVuforiaLocalizer(parameters);
+
+        VuforiaTrackables relicTrackables = vuforia.loadTrackablesFromAsset("RelicVuMark");
+        VuforiaTrackable relicTemplate = relicTrackables.get(0);
+
+        relicTrackables.activate();
+
+        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+
+        for(int i = 0; i < 20 || vuMark == RelicRecoveryVuMark.UNKNOWN; i++) {
+            sleep(100);
+            vuMark = RelicRecoveryVuMark.from(relicTemplate);
+            if(isStopRequested()) {
+                stop();
+            }
+        }
+
+        double distanceAdd = 0;
+        if(vuMark == RelicRecoveryVuMark.LEFT) {
+            distanceAdd -= 7.875;
+        }
+        else if(vuMark == RelicRecoveryVuMark.RIGHT) {
+            distanceAdd += 7.875;
+        }
+
+        return distanceAdd;
+
+
+
     }
 }
 

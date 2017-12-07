@@ -118,7 +118,7 @@ public class Teleop extends LinearOpMode {
             }
 
 
-/*
+
             if(gamepad1.left_bumper && Math.round(robot.jewelL.getPosition()) == 1) {
                 robot.jewelL.setPosition(0);
                 sleep(100);
@@ -134,13 +134,38 @@ public class Teleop extends LinearOpMode {
                 robot.jewelR.setPosition(1);
                 sleep(100);
             }
-*/
+
+            if(gamepad2.right_trigger > .5) {
+                robot.intake.open();
+            }
+            else if(gamepad2.left_trigger > .5) {
+                robot.intake.close();
+            }
+            else if(gamepad2.a) {
+                robot.intake.movePerp();
+            }
+            else if(gamepad2.y) {
+                robot.intake.reset();
+            }
+
+            if(gamepad2.left_bumper) {
+                robot.intake.rotateOut();
+            }
+            else if(gamepad2.right_bumper) {
+                robot.intake.rotateIn();
+            }
+            else if(gamepad2.b) {
+                robot.intake.stopRot();
+            }
+
 
             //telemetry.addData("heading: ", robot.gyro.getHeading());
             //telemetry.addData("blue value:", robot.colorSensor.read8(AMSColorSensor.Register.RED));
             //telemetry.addData("PID coeffs - Using", robot.pulley.getPIDCoefficients(DcMotor.RunMode.RUN_USING_ENCODER));
             //telemetry.addData("PID coeffs - Position", robot.pulley.getPIDCoefficients(DcMotor.RunMode.RUN_TO_POSITION));
             telemetry.addData("Grabber pos: ", robot.grabber.toString());
+            telemetry.addData("blue value: ", robot.colorSensor.blue());
+            telemetry.addData("grabberR pos: ", robot.jewelR.getPosition());
 
             telemetry.update();
             sleep(50);

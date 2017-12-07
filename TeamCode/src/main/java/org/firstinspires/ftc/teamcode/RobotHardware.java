@@ -53,6 +53,8 @@ public class RobotHardware
     public Servo jewelL;
     public Servo jewelR;
 
+    public Intake intake;
+
     public TuxGyro gyro;
 
     public LynxI2cColorRangeSensor colorSensor;
@@ -82,13 +84,13 @@ public class RobotHardware
 
         gyro = new TuxGyro(hwMap);
 
-        //colorSensor = (LynxI2cColorRangeSensor) hwMap.get("colorSensor");
+        intake = new Intake(hwMap);
+
+        colorSensor = hwMap.get(LynxI2cColorRangeSensor.class, "colorSensor");
+        colorSensor.enableLed(false);
 
         jewelL.setDirection(Servo.Direction.FORWARD);
         jewelR.setDirection(Servo.Direction.REVERSE);
-
-//        jewelL.setPosition(0);
-      //  jewelL.setPosition(0);
     }
 
 }

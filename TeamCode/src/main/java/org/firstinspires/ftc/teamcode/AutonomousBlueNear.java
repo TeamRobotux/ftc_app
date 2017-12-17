@@ -109,37 +109,11 @@ public class AutonomousBlueNear extends LinearOpMode {
                 sleep(100);
             }
 */
-            robot.wheels.driveDistance(55.6 + /*distCompensation*/ + columnAdd);  //38.1 rn
-            for(int i = 0; i < 50 || robot.wheels.isBusy(); i++) { sleep(100); }
+//            robot.wheels.driveDistance(55.6 + /*distCompensation*/ + columnAdd);  //38.1 rn
+//            for(int i = 0; i < 50 || robot.wheels.isBusy(); i++) { sleep(100); }
 
 
-            float xAngle = robot.gyro.imu.getAngularOrientation().firstAngle;
 
-            while (xAngle > 91 || xAngle < 89) {
-                xAngle = robot.gyro.imu.getAngularOrientation().firstAngle;
-
-                if (xAngle < 89) {
-                    robot.wheels.turn(-.3);
-                } else {
-                    robot.wheels.turn(.2);
-                }
-
-                if(isStopRequested()) {
-                    break;
-                }
-
-                telemetry.addData("heading: ", xAngle);
-                telemetry.update();
-            }
-
-            robot.wheels.turn(0);
-
-            xAngle = robot.gyro.imu.getAngularOrientation().firstAngle;
-            while(xAngle > 91) {
-                robot.wheels.turn(.2);
-            }
-
-            robot.wheels.turn(0);
 
             robot.wheels.driveDistance(13);
             for(int i = 0; i < 20 || robot.wheels.isBusy(); i++) { sleep(100); }
@@ -199,6 +173,41 @@ public class AutonomousBlueNear extends LinearOpMode {
 
 
 
+    }
+
+    public void turnDegrees(int degrees) {
+        float xAngle = robot.gyro.imu.getAngularOrientation().firstAngle;
+
+        while (xAngle > degrees+1 || xAngle < degrees-1) {
+            xAngle = robot.gyro.imu.getAngularOrientation().firstAngle;
+
+            if (xAngle < degrees-1) {
+                robot.wheels.turn(-.3);
+            } else {
+                robot.wheels.turn(.2);
+            }
+
+            if(isStopRequested()) {
+                break;
+            }
+
+            telemetry.addData("heading: ", xAngle);
+            telemetry.update();
+        }
+
+        robot.wheels.turn(0);
+
+        xAngle = robot.gyro.imu.getAngularOrientation().firstAngle;
+        while(xAngle > degrees+1) {
+            xAngle = robot.gyro.imu.getAngularOrientation().firstAngle;
+            robot.wheels.turn(.2);
+
+            if(isStopRequested()) {
+                break;
+            }
+        }
+
+        robot.wheels.turn(0);
     }
 }
 

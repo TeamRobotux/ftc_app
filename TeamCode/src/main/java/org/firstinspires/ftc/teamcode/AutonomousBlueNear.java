@@ -76,6 +76,8 @@ public class AutonomousBlueNear extends LinearOpMode {
 
             double columnAdd = scanColumn(telemetry);
 
+            //turnDegrees(45);
+            waitForMovement(5);
 
             /*robot.wheels.strafeDistance(-1);
             while(robot.wheels.isBusy()) {
@@ -109,32 +111,36 @@ public class AutonomousBlueNear extends LinearOpMode {
                 sleep(100);
             }
 */
-//            robot.wheels.driveDistance(55.6 + /*distCompensation*/ + columnAdd);  //38.1 rn
-//            for(int i = 0; i < 50 || robot.wheels.isBusy(); i++) { sleep(100); }
+            robot.wheels.driveDistance(55.6 + /*distCompensation*/ + columnAdd);  //38.1 rn
+            waitForMovement(5);
 
-
-
+            turnDegrees(-90);
 
             robot.wheels.driveDistance(13);
-            for(int i = 0; i < 20 || robot.wheels.isBusy(); i++) { sleep(100); }
+            waitForMovement(2);
 
 
             robot.grabber.open();
-            sleep(500);
+            sleep(400);
 
             robot.wheels.driveDistance(-12);
-            for(int i = 0; i < 20 || robot.wheels.isBusy(); i++) { sleep(100); }
+            waitForMovement(2);
 
             robot.grabber.close();
 
             robot.wheels.driveDistance(14);
-            for(int i = 0; i < 20 || robot.wheels.isBusy(); i++) { sleep(100); }
+            waitForMovement(2);
 
             robot.wheels.driveDistance(-12);
-            for(int i = 0; i < 20 || robot.wheels.isBusy(); i++) { sleep(100); }
+            waitForMovement(5);
 
             stop();
         }
+    }
+
+    private void waitForMovement(int seconds) {
+        for(int i = 0; i < seconds*100 && robot.wheels.isBusy(); i++) { sleep(10); }
+        sleep(50);
     }
 
     private double scanColumn(Telemetry t) {
@@ -161,10 +167,10 @@ public class AutonomousBlueNear extends LinearOpMode {
 
         double distanceAdd = 0;
         if(vuMark == RelicRecoveryVuMark.LEFT) {
-            distanceAdd -= 7.875;
+            distanceAdd -= 10.5;
         }
         else if(vuMark == RelicRecoveryVuMark.RIGHT) {
-            distanceAdd += 7.875;
+            distanceAdd += 10.5;
         }
 
         t.addData("VuMark", vuMark.toString());
@@ -176,31 +182,39 @@ public class AutonomousBlueNear extends LinearOpMode {
     }
 
     public void turnDegrees(int degrees) {
-        float xAngle = robot.gyro.imu.getAngularOrientation().firstAngle;
+        float originalAngle = robot.gyro.imu.getAngularOrientation().firstAngle;
+        float deltaAngle = 0;
 
-        while (xAngle > degrees+1 || xAngle < degrees-1) {
-            xAngle = robot.gyro.imu.getAngularOrientation().firstAngle;
+        while (deltaAngle > degrees+1 || deltaAngle < degrees-1) {
+            deltaAngle = originalAngle - robot.gyro.imu.getAngularOrientation().firstAngle;
 
-            if (xAngle < degrees-1) {
-                robot.wheels.turn(-.3);
-            } else {
+            if (deltaAngle < degrees-1) {
                 robot.wheels.turn(.2);
+            } else {
+                robot.wheels.turn(-.2);
             }
 
             if(isStopRequested()) {
                 break;
             }
 
-            telemetry.addData("heading: ", xAngle);
+            telemetry.addData("heading: ", deltaAngle);
             telemetry.update();
         }
 
         robot.wheels.turn(0);
+        sleep(100);
 
-        xAngle = robot.gyro.imu.getAngularOrientation().firstAngle;
-        while(xAngle > degrees+1) {
-            xAngle = robot.gyro.imu.getAngularOrientation().firstAngle;
-            robot.wheels.turn(.2);
+        deltaAngle = originalAngle - robot.gyro.imu.getAngularOrientation().firstAngle;
+
+        while(deltaAngle > degrees+1 || deltaAngle < degrees-1) {
+            deltaAngle = originalAngle - robot.gyro.imu.getAngularOrientation().firstAngle;
+
+            if (deltaAngle < degrees-1) {
+                robot.wheels.turn(.2);
+            } else {
+                robot.wheels.turn(-.2);
+            }
 
             if(isStopRequested()) {
                 break;
@@ -209,6 +223,8 @@ public class AutonomousBlueNear extends LinearOpMode {
 
         robot.wheels.turn(0);
     }
+
+
 }
 
 

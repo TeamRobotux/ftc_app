@@ -1,10 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
+
+import com.qualcomm.robotcore.hardware.HardwareMap;
+
 /**
  * Created by JackT on 11/4/2017.
  */
 
-import com.qualcomm.robotcore.hardware.HardwareMap;
+
 
 
 
@@ -18,12 +21,14 @@ public class Drivetrain {
 
     public Drivetrain(HardwareMap hwMap) {
 
-        int tpi = 121;
+        int tpi = 48;
         //Wheel motors; Gear Ratio of sprockets = 3:4, motor gearratio 40:1, 2 inch radii
         driveFrontR = new TuxMotor("driveFrontR", hwMap, tpi, -1);
         driveRearR = new TuxMotor("driveRearR", hwMap, tpi, -1);
         driveFrontL = new TuxMotor("driveFrontL", hwMap, tpi, 1);
         driveRearL = new TuxMotor("driveRearL", hwMap, tpi, 1);
+
+
 
         wheels = new TuxMotor[4];
 
@@ -31,6 +36,10 @@ public class Drivetrain {
         wheels[1] = driveRearR;
         wheels[2] = driveFrontR;
         wheels[3] = driveFrontL;
+
+        for(TuxMotor m: wheels) {
+            m.setTolerance(20);
+        }
 
     }
 

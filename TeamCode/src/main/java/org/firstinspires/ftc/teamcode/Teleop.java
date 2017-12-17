@@ -166,6 +166,7 @@ public class Teleop extends LinearOpMode {
             telemetry.addData("Grabber pos: ", robot.grabber.toString());
             telemetry.addData("blue value: ", robot.colorSensor.blue());
             telemetry.addData("grabberR pos: ", robot.jewelR.getPosition());
+            telemetry.addData("tolerance:", robot.pulley.getTolerance());
 
             telemetry.update();
             sleep(50);

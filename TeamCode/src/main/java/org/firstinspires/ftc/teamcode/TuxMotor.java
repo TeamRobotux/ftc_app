@@ -25,6 +25,7 @@ public class TuxMotor {
         ticksPerInch = tpi;
         setPower(0);
         reverse = reversed;
+
     }
 
     public void moveDistance(double inches) {
@@ -46,6 +47,10 @@ public class TuxMotor {
     public int getEncoderVal() {
         return motor.getCurrentPosition();
     }
+
+    public int getTolerance() { return motor.getTargetPositionTolerance(); };
+
+    public void setTolerance(int tolerance) { motor.setTargetPositionTolerance(tolerance);}
 
     public void setPower(double power) {
         if(motor.getMode() != DcMotor.RunMode.RUN_WITHOUT_ENCODER) {

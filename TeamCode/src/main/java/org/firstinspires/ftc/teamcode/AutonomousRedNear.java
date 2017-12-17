@@ -35,6 +35,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
@@ -73,29 +74,27 @@ public class AutonomousRedNear extends LinearOpMode {
             // Wait for the game to start (driver presses PLAY;
 
 
-            double columnAdd = scanColumn();
-
-
-
-            robot.wheels.strafeDistance(2.5);
-            while(robot.wheels.isBusy()) {
-                sleep(100);
-            }
-
+            double columnAdd = scanColumn(telemetry);
+/*
             robot.jewelR.setPosition(0);
             for(int i = 0; i < 12; i++) {
                 sleep(100);
             }
 
+            robot.wheels.strafeDistance(1);
+            while(robot.wheels.isBusy()) {
+                sleep(100);
+            }
+
             robot.colorSensor.enableLed(true);
 
-            int distCompensation = 5;
+            double distCompensation = -2;
             if(robot.colorSensor.blue() > 12) {
-                robot.wheels.driveDistance(5);
+                robot.wheels.driveDistance(-2);
                 distCompensation *= -1;
             }
             else {
-                robot.wheels.driveDistance(-5);
+                robot.wheels.driveDistance(2);
 
             }
 
@@ -111,23 +110,19 @@ public class AutonomousRedNear extends LinearOpMode {
                 sleep(100);
             }
 
+            */
 
+            robot.wheels.driveDistance(55.6  + /*distCompensation*/ + columnAdd);  //38.1 rn
+            for(int i = 0; i < 50 || robot.wheels.isBusy(); i++) { sleep(100); }
 
-            robot.wheels.driveDistance(36.95  + distCompensation + columnAdd);  //38.1 rn
-            while (robot.wheels.isBusy()) {
-                sleep(100);
-            }
-            while (robot.wheels.isBusy()) {
-                sleep(100);
-            }
             float xAngle = robot.gyro.imu.getAngularOrientation().firstAngle;
 
             while (Math.abs(xAngle) > 91 || Math.abs(xAngle) < 89) {
                 xAngle = robot.gyro.imu.getAngularOrientation().firstAngle;
-                if (xAngle > -90) {
-                    robot.wheels.turn(.5);
+                if (Math.abs(xAngle)> 91) {
+                    robot.wheels.turn(-.2);
                 } else {
-                    robot.wheels.turn(-.25);
+                    robot.wheels.turn(.3);
                 }
 
 
@@ -137,27 +132,33 @@ public class AutonomousRedNear extends LinearOpMode {
 
                 telemetry.addData("heading: ", xAngle);
                 telemetry.update();
+                sleep(100);
+            }
+
+            xAngle = robot.gyro.imu.getAngularOrientation().firstAngle;
+            while(Math.abs(xAngle) > 91) {
+                robot.wheels.turn(-.2);
+                sleep(50);
             }
 
             robot.wheels.turn(0);
 
-            robot.wheels.driveDistance(5);
-            while (robot.wheels.isBusy()) {
-                sleep(100);
-            }
+            robot.wheels.driveDistance(15);
+            for(int i = 0; i < 20 || robot.wheels.isBusy(); i++) { sleep(100); }
+
             robot.grabber.open();
             sleep(500);
 
-            robot.wheels.driveDistance(-8);
-            while(robot.wheels.isBusy()); { sleep(100); }
+            robot.wheels.driveDistance(-12);
+            for(int i = 0; i < 20 || robot.wheels.isBusy(); i++) { sleep(100); }
 
             robot.grabber.close();
 
-            robot.wheels.driveDistance(10);
-            while(robot.wheels.isBusy()); { sleep(100); }
+            robot.wheels.driveDistance(14);
+            for(int i = 0; i < 20 || robot.wheels.isBusy(); i++) { sleep(100); }
 
-            robot.wheels.driveDistance(-8);
-            while(robot.wheels.isBusy()); { sleep(100); }
+            robot.wheels.driveDistance(-12);
+            for(int i = 0; i < 20 || robot.wheels.isBusy(); i++) { sleep(100); }
 
 
 
@@ -168,7 +169,7 @@ public class AutonomousRedNear extends LinearOpMode {
         }
     }
 
-    private double scanColumn() {
+    private double scanColumn(Telemetry t) {
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
         parameters.vuforiaLicenseKey = "AaiquuH/////AAAAGa0Yq9q1+0YrjKIQl75JKMtbkCfbX1s4QuajYfob6seMwTDejdEf8WOHpi4ynOSLXdKC2tPaPTZqNCXDPbFNik7OS3eUUJGNWoCXlvax5In3QvY7HtWsnGG2KIa/AkJYeu69kYsmIEd7y9fEr1BSX5MXkkghfKAfV644TDRxntIB/YCyWaAcsmOvPuK14RxTh8PTjcX9vYPCpVh8Sq/OlERLvXkDasPo+0jFxMkPYrEauQ3bawhYt6xFuCa861gAiDgIEo3kAvcvrwYOGwJqueueKTthyG6Ydvfk5qvAs/hRbVOuAOwhCKs87TdHrx08xiUaGKxm251/WlVkPPrDUdesFJVcfXE0JXXrEJBCeOL5";
 
@@ -182,7 +183,7 @@ public class AutonomousRedNear extends LinearOpMode {
 
         RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
 
-        for(int i = 0; i < 20 || vuMark == RelicRecoveryVuMark.UNKNOWN; i++) {
+        for(int i = 0; i < 20 &&(vuMark == RelicRecoveryVuMark.UNKNOWN || vuMark == null); i++) {
             sleep(100);
             vuMark = RelicRecoveryVuMark.from(relicTemplate);
             if(isStopRequested()) {
@@ -197,6 +198,8 @@ public class AutonomousRedNear extends LinearOpMode {
         else if(vuMark == RelicRecoveryVuMark.RIGHT) {
             distanceAdd += 7.875;
         }
+
+        t.addData("VuMark", vuMark.toString());
 
         return distanceAdd;
 

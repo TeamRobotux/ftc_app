@@ -139,7 +139,7 @@ public class AutonomousRedNear extends LinearOpMode {
             robot.wheels.driveDistance(14);
             waitForMovement(2);
 
-            robot.wheels.driveDistance(-12);
+            robot.wheels.driveDistance(-8);
             waitForMovement(2);
 
 

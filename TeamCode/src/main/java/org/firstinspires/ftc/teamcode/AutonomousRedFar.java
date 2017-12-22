@@ -79,7 +79,7 @@ public class AutonomousRedFar extends LinearOpMode {
             waitForMovement(7);
 
 
-            robot.wheels.strafeDistance(-25.375 + distanceAdd);
+            robot.wheels.strafeDistance(-25 + distanceAdd);
             waitForMovement(5);
 
             robot.wheels.driveDistance(16);

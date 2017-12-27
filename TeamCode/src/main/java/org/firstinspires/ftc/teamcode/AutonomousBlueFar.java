@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.disnodeteam.dogecv.detectors.JewelDetector;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -54,7 +55,9 @@ public class AutonomousBlueFar extends LinearOpMode {
     @Override
     public void runOpMode() {
 
+        JewelDetector Jdetect = new JewelDetector();
 
+        Jdetect.areaWeight = 1;
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
          */
@@ -76,7 +79,7 @@ public class AutonomousBlueFar extends LinearOpMode {
             //turnDegrees(45);
             sleep(200);
 
-            robot.wheels.driveDistance(-24);
+            robot.wheels.driveDistance(-30);
             waitForMovement(7);
 
 

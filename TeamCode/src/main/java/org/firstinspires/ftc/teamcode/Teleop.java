@@ -158,6 +158,14 @@ public class Teleop extends LinearOpMode {
                 robot.intake.stopRot();
             }
 
+            if(gamepad1.x && Math.round(robot.jewelR.getPosition()) == 1) {
+                robot.jewelR.setPosition(0);
+                sleep(100);
+            } else if(gamepad1.x) {
+                robot.jewelR.setPosition(1);
+                sleep(100);
+            }
+
 
             //telemetry.addData("heading: ", robot.gyro.getHeading());
             //telemetry.addData("blue value:", robot.colorSensor.read8(AMSColorSensor.Register.RED));

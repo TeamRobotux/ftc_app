@@ -133,14 +133,14 @@ public final class AutoUtil {
                 robot.wheels.driveDistance(6);
                 waitForMovement(robot, opMode, 1);
                 robot.jewelR.setPosition(1);
-                robot.wheels.driveDistance(-14);
+                robot.wheels.driveDistance(-16);
                 jewelCompensation = -6;
             }
             else {
                 robot.wheels.driveDistance(-6);
                 waitForMovement(robot, opMode, 1);
                 robot.jewelR.setPosition(1);
-                robot.wheels.driveDistance(14);
+                robot.wheels.driveDistance(16);
                 jewelCompensation = 6;
             }
         }

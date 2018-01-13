@@ -120,26 +120,28 @@ public final class AutoUtil {
         int jewelCompensation = 0;
         if(detector.getCurrentOrder() == JewelDetector.JewelOrder.BLUE_RED) {
             if(blue) {
-                turnDegrees(robot, opMode, 15);
-                waitForMovement(robot,opMode, 2);
-                turnDegrees(robot, opMode, -15);
+                robot.wheels.driveDistance(-6);
+                jewelCompensation = -6;
             }
             else {
-                turnDegrees(robot, opMode, -15);
-                waitForMovement(robot,opMode, 2);
-                turnDegrees(robot, opMode, 15);
+                robot.wheels.driveDistance(6);
+                jewelCompensation = 6;
             }
         }
         else if(detector.getCurrentOrder() == JewelDetector.JewelOrder.RED_BLUE) {
             if(blue) {
-                turnDegrees(robot, opMode, 15);
-                waitForMovement(robot,opMode, 2);
-                turnDegrees(robot, opMode, -15);
+                robot.wheels.driveDistance(6);
+                waitForMovement(robot, opMode, 1);
+                robot.jewelR.setPosition(1);
+                robot.wheels.driveDistance(-14);
+                jewelCompensation = -6;
             }
             else {
-                turnDegrees(robot, opMode, -15);
-                waitForMovement(robot,opMode, 2);
-                turnDegrees(robot, opMode, 15);
+                robot.wheels.driveDistance(-6);
+                waitForMovement(robot, opMode, 1);
+                robot.jewelR.setPosition(1);
+                robot.wheels.driveDistance(14);
+                jewelCompensation = 6;
             }
         }
         waitForMovement(robot, opMode, 2);

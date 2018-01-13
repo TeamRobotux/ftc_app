@@ -76,7 +76,7 @@ public class AutonomousRedNear extends LinearOpMode {
             double columnAdd = AutoUtil.scanColumn(robot, this);
 
 
-            robot.wheels.driveDistance(49  - jewelCompensation + columnAdd);  //38.1 rn
+            robot.wheels.driveDistance(48.5  - jewelCompensation + columnAdd);  //38.1 rn
             AutoUtil.waitForMovement(robot, this, 5);
 
             AutoUtil.turnDegrees(robot, this, 90);

@@ -97,10 +97,10 @@ public final class AutoUtil {
 
         double distanceAdd = 0;
         if(vuMark == RelicRecoveryVuMark.LEFT) {
-            distanceAdd += 10.25;
+            distanceAdd += 9;
         }
         else if(vuMark == RelicRecoveryVuMark.RIGHT) {
-            distanceAdd -= 10.25;
+            distanceAdd -= 9;
         }
 
         opMode.telemetry.addData("VuMark", vuMark.toString());

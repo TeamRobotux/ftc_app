@@ -97,10 +97,10 @@ public final class AutoUtil {
 
         double distanceAdd = 0;
         if(vuMark == RelicRecoveryVuMark.LEFT) {
-            distanceAdd += 6;
+            distanceAdd += 10.25;
         }
         else if(vuMark == RelicRecoveryVuMark.RIGHT) {
-            distanceAdd -= 6;
+            distanceAdd -= 10.25;
         }
 
         opMode.telemetry.addData("VuMark", vuMark.toString());
@@ -116,7 +116,7 @@ public final class AutoUtil {
         detector.init(opMode.hardwareMap.appContext, CameraViewDisplay.getInstance(), 1);
         detector.enable();
         robot.jewelR.setPosition(0);
-        opMode.sleep(1000);
+        opMode.sleep(5000);
         int jewelCompensation = 0;
         if(detector.getCurrentOrder() == JewelDetector.JewelOrder.BLUE_RED) {
             if(blue) {
@@ -132,14 +132,16 @@ public final class AutoUtil {
             if(blue) {
                 robot.wheels.driveDistance(6);
                 waitForMovement(robot, opMode, 1);
-                robot.wheels.driveDistance(-12);
-                jewelCompensation = -12;
+                robot.jewelR.setPosition(1);
+                robot.wheels.driveDistance(-14);
+                jewelCompensation = -6;
             }
             else {
                 robot.wheels.driveDistance(-6);
                 waitForMovement(robot, opMode, 1);
-                robot.wheels.driveDistance(12);
-                jewelCompensation = 12;
+                robot.jewelR.setPosition(1);
+                robot.wheels.driveDistance(14);
+                jewelCompensation = 6;
             }
         }
         waitForMovement(robot, opMode, 2);

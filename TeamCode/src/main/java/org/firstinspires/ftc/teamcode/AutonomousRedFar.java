@@ -71,81 +71,39 @@ public class AutonomousRedFar extends LinearOpMode {
 
             // Wait for the game to start (driver presses PLAY)
 
-            double distanceAdd = scanColumn(telemetry);
+            double jewelCompensation = AutoUtil.knockJewels(robot, this, false);
+            sleep(2000);
+
+            double distanceAdd = AutoUtil.scanColumn(robot, this);
 
 
-
-            robot.wheels.driveDistance(30);
-            waitForMovement(7);
+            robot.wheels.driveDistance(30 - jewelCompensation);
+            AutoUtil.waitForMovement(robot, this, 7);
 
 
             robot.wheels.strafeDistance(-25 + distanceAdd);
-            waitForMovement(5);
+            AutoUtil.waitForMovement(robot, this, 5);
 
             robot.wheels.driveDistance(16);
-            waitForMovement(2);
+            AutoUtil. waitForMovement(robot, this, 2);
 
             robot.grabber.open();
             sleep(500);
 
             robot.wheels.driveDistance(-10);
-            waitForMovement(2);
+            AutoUtil.waitForMovement(robot, this, 2);
 
             robot.grabber.close();
             sleep(400);
 
             robot.wheels.driveDistance(14);
-            waitForMovement(2);
+            AutoUtil.waitForMovement(robot, this, 2);
 
             robot.wheels.driveDistance(-10);
-            waitForMovement(2);
+            AutoUtil.waitForMovement(robot, this, 2);
             stop();
 
         }
-    }
-
-    private void waitForMovement(int seconds) {
-        for(int i = 0; i < seconds*100 && robot.wheels.isBusy(); i++) { sleep(10); }
-
-        sleep(50);
-    }
-
-    private double scanColumn(Telemetry t) {
-        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
-        parameters.vuforiaLicenseKey = "AaiquuH/////AAAAGa0Yq9q1+0YrjKIQl75JKMtbkCfbX1s4QuajYfob6seMwTDejdEf8WOHpi4ynOSLXdKC2tPaPTZqNCXDPbFNik7OS3eUUJGNWoCXlvax5In3QvY7HtWsnGG2KIa/AkJYeu69kYsmIEd7y9fEr1BSX5MXkkghfKAfV644TDRxntIB/YCyWaAcsmOvPuK14RxTh8PTjcX9vYPCpVh8Sq/OlERLvXkDasPo+0jFxMkPYrEauQ3bawhYt6xFuCa861gAiDgIEo3kAvcvrwYOGwJqueueKTthyG6Ydvfk5qvAs/hRbVOuAOwhCKs87TdHrx08xiUaGKxm251/WlVkPPrDUdesFJVcfXE0JXXrEJBCeOL5";
-
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
-        VuforiaLocalizer vuforia = ClassFactory.createVuforiaLocalizer(parameters);
-
-        VuforiaTrackables relicTrackables = vuforia.loadTrackablesFromAsset("RelicVuMark");
-        VuforiaTrackable relicTemplate = relicTrackables.get(0);
-
-        relicTrackables.activate();
-
-        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-
-        for(int i = 0; i < 20 && (vuMark == RelicRecoveryVuMark.UNKNOWN ||  vuMark == null); i++) {
-            sleep(100);
-            vuMark = RelicRecoveryVuMark.from(relicTemplate);
-            if(isStopRequested()) {
-                stop();
-            }
-        }
-
-        double distanceAdd = 0;
-        if(vuMark == RelicRecoveryVuMark.LEFT) {
-            distanceAdd -= 13.125;
-        }
-        else if(vuMark == RelicRecoveryVuMark.RIGHT) {
-            distanceAdd += 13.125;
-        }
-
-        t.addData("VuMark", vuMark.toString());
-
-        return distanceAdd;
-
-
-
     }
 }
 

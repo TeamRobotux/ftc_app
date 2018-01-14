@@ -64,167 +64,46 @@ public class AutonomousBlueNear extends LinearOpMode {
         waitForStart();
 
 
-
         // Send telemetry message to signify robot waiting;
         telemetry.addData("heading:", robot.gyro.imu.getAngularOrientation().firstAngle);
         telemetry.update();
 
-        while(opModeIsActive()) {
+        while (opModeIsActive()) {
 
             // Wait for the game to start (driver presses PLAY)
             //Inches == 37.25
+            
+            double columnAdd = AutoUtil.scanColumn(robot, this);
+            sleep(2000);
 
-            double columnAdd = scanColumn(telemetry);
+            double jewelCompensation = AutoUtil.knockJewels(robot, this, true);
 
-            //turnDegrees(45);
-            waitForMovement(5);
-
-            /*robot.wheels.strafeDistance(-1);
-            while(robot.wheels.isBusy()) {
-                sleep(100);
-            }
-
-            robot.jewelL.setPosition(0);
-            for(int i = 0; i < 12; i++) {
-                sleep(100);
-            }
-
-            robot.colorSensor.enableLed(true);
-
-            double distCompensation = 2;
-            if(robot.colorSensor.blue() > 10) {
-                robot.wheels.driveDistance(-2);
-            }
-            else {
-                robot.wheels.driveDistance(2);
-                distCompensation *= -1;
-            }
-
-            robot.colorSensor.enableLed(false);
-
-            while(robot.wheels.isBusy()) {
-                sleep(100);
-            }
-
-            robot.jewelL.setPosition(1);
-            for(int i = 0; i < 12; i++) {
-                sleep(100);
-            }
-*/
-            robot.wheels.driveDistance(-53 + /*distCompensation*/ - columnAdd);  //38.1 rn
-            waitForMovement(5);
-
-            turnDegrees(90);
+            robot.wheels.driveDistance(-48 - jewelCompensation + columnAdd);  //38.1 rn
+            AutoUtil.waitForMovement(robot, this, 5);
+            
+            AutoUtil.turnDegrees(robot, this, 90);
 
             robot.wheels.driveDistance(13);
-            waitForMovement(2);
+            AutoUtil.waitForMovement(robot, this, 2);
 
 
             robot.grabber.open();
             sleep(400);
 
             robot.wheels.driveDistance(-12);
-            waitForMovement(2);
+            AutoUtil.waitForMovement(robot, this, 2);
 
             robot.grabber.close();
 
             robot.wheels.driveDistance(14);
-            waitForMovement(2);
+            AutoUtil.waitForMovement(robot, this, 2);
 
             robot.wheels.driveDistance(-12);
-            waitForMovement(5);
+            AutoUtil.waitForMovement(robot, this, 5);
 
             stop();
         }
     }
 
-    private void waitForMovement(int seconds) {
-        for(int i = 0; i < seconds*100 && robot.wheels.isBusy(); i++) { sleep(10); }
-        sleep(50);
-    }
-
-    private double scanColumn(Telemetry t) {
-        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
-        parameters.vuforiaLicenseKey = "AaiquuH/////AAAAGa0Yq9q1+0YrjKIQl75JKMtbkCfbX1s4QuajYfob6seMwTDejdEf8WOHpi4ynOSLXdKC2tPaPTZqNCXDPbFNik7OS3eUUJGNWoCXlvax5In3QvY7HtWsnGG2KIa/AkJYeu69kYsmIEd7y9fEr1BSX5MXkkghfKAfV644TDRxntIB/YCyWaAcsmOvPuK14RxTh8PTjcX9vYPCpVh8Sq/OlERLvXkDasPo+0jFxMkPYrEauQ3bawhYt6xFuCa861gAiDgIEo3kAvcvrwYOGwJqueueKTthyG6Ydvfk5qvAs/hRbVOuAOwhCKs87TdHrx08xiUaGKxm251/WlVkPPrDUdesFJVcfXE0JXXrEJBCeOL5";
-
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
-        VuforiaLocalizer vuforia = ClassFactory.createVuforiaLocalizer(parameters);
-
-        VuforiaTrackables relicTrackables = vuforia.loadTrackablesFromAsset("RelicVuMark");
-        VuforiaTrackable relicTemplate = relicTrackables.get(0);
-
-        relicTrackables.activate();
-
-        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-
-        for(int i = 0; i < 20 && (vuMark == RelicRecoveryVuMark.UNKNOWN ||  vuMark == null); i++) {
-            sleep(100);
-            vuMark = RelicRecoveryVuMark.from(relicTemplate);
-            if(isStopRequested()) {
-                stop();
-            }
-        }
-
-        double distanceAdd = 0;
-        if(vuMark == RelicRecoveryVuMark.LEFT) {
-            distanceAdd -= 10.5;
-        }
-        else if(vuMark == RelicRecoveryVuMark.RIGHT) {
-            distanceAdd += 10.5;
-        }
-
-        t.addData("VuMark", vuMark.toString());
-
-        return distanceAdd;
-
-
-
-    }
-
-    public void turnDegrees(int degrees) {
-        float originalAngle = robot.gyro.imu.getAngularOrientation().firstAngle;
-        float deltaAngle = 0;
-
-        while (deltaAngle > degrees+1 || deltaAngle < degrees-1) {
-            deltaAngle = originalAngle - robot.gyro.imu.getAngularOrientation().firstAngle;
-
-            if (deltaAngle < degrees-1) {
-                robot.wheels.turn(.2);
-            } else {
-                robot.wheels.turn(-.2);
-            }
-
-            if(isStopRequested()) {
-                break;
-            }
-
-            telemetry.addData("heading: ", deltaAngle);
-            telemetry.update();
-        }
-
-        robot.wheels.turn(0);
-        sleep(100);
-
-        deltaAngle = originalAngle - robot.gyro.imu.getAngularOrientation().firstAngle;
-
-        while(deltaAngle > degrees+1 || deltaAngle < degrees-1) {
-            deltaAngle = originalAngle - robot.gyro.imu.getAngularOrientation().firstAngle;
-
-            if (deltaAngle < degrees-1) {
-                robot.wheels.turn(.2);
-            } else {
-                robot.wheels.turn(-.2);
-            }
-
-            if(isStopRequested()) {
-                break;
-            }
-        }
-
-        robot.wheels.turn(0);
-    }
-
-
 }
-
 

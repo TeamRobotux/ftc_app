@@ -21,7 +21,7 @@ public class Drivetrain {
 
     public Drivetrain(HardwareMap hwMap) {
 
-        int tpi = 48;
+        int tpi = 50;
         //Wheel motors; Gear Ratio of sprockets = 3:4, motor gearratio 40:1, 2 inch radii
         driveFrontR = new TuxMotor("driveFrontR", hwMap, tpi, -1);
         driveRearR = new TuxMotor("driveRearR", hwMap, tpi, -1);

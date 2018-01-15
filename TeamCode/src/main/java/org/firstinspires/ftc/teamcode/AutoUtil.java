@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.disnodeteam.dogecv.CameraViewDisplay;
+import com.disnodeteam.dogecv.detectors.CryptoboxDetector;
 import com.disnodeteam.dogecv.detectors.JewelDetector;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -117,6 +118,14 @@ public final class AutoUtil {
         detector.enable();
         robot.jewelR.setPosition(0);
         opMode.sleep(5000);
+
+        for(int i = 0; i < 20 && (detector.getCurrentOrder() == JewelDetector.JewelOrder.UNKNOWN || detector.getCurrentOrder() == null); i++) {
+            opMode.sleep(100);
+            if(opMode.isStopRequested()) {
+                opMode.stop();
+            }
+        }
+
         int jewelCompensation = 0;
         if(detector.getCurrentOrder() == JewelDetector.JewelOrder.BLUE_RED) {
             if(blue) {
@@ -149,6 +158,12 @@ public final class AutoUtil {
         opMode.sleep(500);
         detector.disable();
         return jewelCompensation;
+    }
+
+    public static void findColumn(RobotHardware robot, LinearOpMode opMode, int column) {
+        CryptoboxDetector detector = new CryptoboxDetector();
+        detector.init(opMode.hardwareMap.appContext, CameraViewDisplay.getInstance(), 1);
+
     }
 
 }

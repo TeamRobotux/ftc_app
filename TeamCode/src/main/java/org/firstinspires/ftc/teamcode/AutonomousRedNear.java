@@ -34,6 +34,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import com.disnodeteam.dogecv.CameraViewDisplay;
+import com.disnodeteam.dogecv.detectors.CryptoboxDetector;
+
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
@@ -78,6 +81,8 @@ public class AutonomousRedNear extends LinearOpMode {
 
             robot.wheels.driveDistance(48  - jewelCompensation + columnAdd);  //38.1 rn
             AutoUtil.waitForMovement(robot, this, 5);
+
+
 
             AutoUtil.turnDegrees(robot, this, 90);
 

@@ -26,8 +26,12 @@ public final class AutoUtil {
     }
 
     public static void waitForMovement(RobotHardware robot, LinearOpMode opMode, int seconds) {
-        for(int i = 0; i < seconds*100 && robot.wheels.isBusy(); i++) { opMode.sleep(10); }
-
+        boolean flag = false;
+        while(!flag) {
+            opMode.sleep(10);
+            if(!robot.wheels.isBusy())
+                flag = true;
+        }
         opMode.sleep(50);
     }
 

@@ -168,11 +168,6 @@ public final class AutoUtil {
     public static void findColumn(RobotHardware robot, LinearOpMode opMode, double target, int color) {
         double error = .005;
         CryptoboxDetector detector = new CryptoboxDetector();
-        if(color == 0)
-            detector.detectionMode = CryptoboxDetector.CryptoboxDetectionMode.HSV_RED; //I tried to set the detection modes, but I'm not sure
-        else
-            detector.detectionMode = CryptoboxDetector.CryptoboxDetectionMode.HSV_BLUE;
-
 
         detector.init(opMode.hardwareMap.appContext, CameraViewDisplay.getInstance(), 1);
         detector.enable();

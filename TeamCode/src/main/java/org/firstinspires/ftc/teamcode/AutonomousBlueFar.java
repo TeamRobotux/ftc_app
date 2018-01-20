@@ -54,8 +54,7 @@ public class AutonomousBlueFar extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-
-                /* Initialize the hardware variables.
+        /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
          */
         robot.init(hardwareMap);
@@ -83,6 +82,8 @@ public class AutonomousBlueFar extends LinearOpMode {
 
             robot.wheels.strafeDistance(-36 - distanceAdd);
             AutoUtil.waitForMovement(robot, this,5);
+
+
 
             AutoUtil.turnDegrees(robot, this,180);
             AutoUtil.waitForMovement(robot, this,5);

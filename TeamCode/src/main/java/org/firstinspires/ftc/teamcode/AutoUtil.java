@@ -27,12 +27,31 @@ public final class AutoUtil {
 
     public static void waitForMovement(RobotHardware robot, LinearOpMode opMode, int seconds) {
         boolean flag = false;
-        while(!flag) {
+        for(int i = 0; i < seconds*1000 || !flag; i+=10) {
             opMode.sleep(10);
             if(!robot.wheels.isBusy())
                 flag = true;
+            else if(opMode.isStopRequested()) {
+                break;
+            }
         }
         opMode.sleep(50);
+    }
+
+    public static int timedWaitForMovement(RobotHardware robot, LinearOpMode opMode, int seconds) {
+
+        int time = 0;
+        boolean flag = false;
+        for(int i = 0; i < seconds*1000 || !flag; i+=10) {
+            if(!robot.wheels.isBusy())
+                flag = true;
+            else if(opMode.isStopRequested()) {
+                break;
+            }
+            opMode.sleep(10);
+            time += 10;
+        }
+        return time;
     }
 
     public static void turnDegrees(RobotHardware robot, LinearOpMode opMode, int degrees) {
@@ -116,6 +135,7 @@ public final class AutoUtil {
 
     }
 
+    //Moves the robot and knocks the correct jewels off using a computer vision library (DOGECV)
     public static double knockJewels(RobotHardware robot, LinearOpMode opMode, boolean blue) {
         JewelDetector detector = new JewelDetector();
         detector.init(opMode.hardwareMap.appContext, CameraViewDisplay.getInstance(), 1);
@@ -165,13 +185,17 @@ public final class AutoUtil {
     /*
     color- red = 0, blue = 1
      */
-    public static void findColumn(RobotHardware robot, LinearOpMode opMode, double target, int color) {
-        double error = .005;
+
+    enum Column {LEFT,RIGHT,CENTER}
+
+    //moves the robot to the column it needs to be using a PID algorithm
+    public static void findColumn(RobotHardware robot, LinearOpMode opMode, double target, Column targetColumn, double[] PID) {
+        double tolerance = .005;
         CryptoboxDetector detector = new CryptoboxDetector();
 
         detector.init(opMode.hardwareMap.appContext, CameraViewDisplay.getInstance(), 1);
         detector.enable();
-        opMode.sleep(5000);
+        opMode.sleep(2000);
 
         for(int i = 0; i < 20 && (!detector.isCryptoBoxDetected() && !detector.isColumnDetected()); i++) {
             opMode.sleep(100);
@@ -180,18 +204,34 @@ public final class AutoUtil {
             }
         }
 
-        for(int i = 0; i < 20 && (detector.getCryptoBoxCenterPosition() - target > error); i++) {
-            if(detector.getCryptoBoxCenterPosition() - target < -1)
-                robot.wheels.drivePower(-1);
-            else if(detector.getCryptoBoxCenterPosition() - target > 1)
-                robot.wheels.drivePower(-1);
-            else
-                robot.wheels.drivePower((float)(detector.getCryptoBoxCenterPosition() - target));
+
+
+        double offset = getOffset(target, targetColumn, detector);
+        double deltaTime = 0;
+        double integral = 0;
+
+        for(int i = 0; i < 20 && (Math.abs(offset) > tolerance); i++) {
+            robot.wheels.driveDistance(PID[0]*offset + PID[1]*integral);
+            deltaTime = timedWaitForMovement(robot, opMode, 3);
+            integral += deltaTime*offset;
+            if(offset == 0) {
+                integral = 0;
+            }
+            offset = getOffset(target, targetColumn, detector);
         }
 
         detector.disable();
-
-
     }
+
+    private static double getOffset(double target, Column c, CryptoboxDetector detector) {
+        double offset = 0;
+        switch(c) {
+            case LEFT: offset = detector.getCryptoBoxLeftPosition() - target;
+            case RIGHT: offset = detector.getCryptoBoxRightPosition() - target;
+            case CENTER: offset = detector.getCryptoBoxCenterPosition() - target;
+        }
+        return offset;
+    }
+
 
 }

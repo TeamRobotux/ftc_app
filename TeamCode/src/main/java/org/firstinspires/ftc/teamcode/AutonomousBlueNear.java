@@ -92,7 +92,7 @@ public class AutonomousBlueNear extends LinearOpMode {
             }
 
             double[] PID = {.2, .2};
-            AutoUtil.findColumn(robot, this, 20, column, PID);
+            AutoUtil.findColumn(robot, this, -1, column, PID);
             
             AutoUtil.turnDegrees(robot, this, 90);
 

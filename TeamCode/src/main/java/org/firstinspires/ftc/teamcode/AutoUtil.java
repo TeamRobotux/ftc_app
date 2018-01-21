@@ -193,6 +193,8 @@ public final class AutoUtil {
         double tolerance = .005;
         CryptoboxDetector detector = new CryptoboxDetector();
 
+
+
         detector.init(opMode.hardwareMap.appContext, CameraViewDisplay.getInstance(), 1);
         detector.enable();
         opMode.sleep(2000);
@@ -205,8 +207,13 @@ public final class AutoUtil {
         }
 
 
-
         double offset = getOffset(target, targetColumn, detector);
+
+        if(target == -1) {
+            offset = getCenterOffset(targetColumn, detector);
+        }
+
+
         double deltaTime = 0;
         double integral = 0;
 
@@ -217,8 +224,15 @@ public final class AutoUtil {
             if(offset == 0) {
                 integral = 0;
             }
-            offset = getOffset(target, targetColumn, detector);
+            if(target == -1) {
+                offset = getCenterOffset(targetColumn, detector);
+            }
+            else {
+                offset = getOffset(target, targetColumn, detector);
+            }
         }
+
+
 
         detector.disable();
     }
@@ -232,6 +246,17 @@ public final class AutoUtil {
         }
         return offset;
     }
+
+    private static double getCenterOffset(Column c, CryptoboxDetector detector) {
+        double offset = 0;
+        switch(c) {
+            case LEFT: offset = detector.getCryptoBoxLeftOffset();
+            case RIGHT: offset = detector.getCryptoBoxRightOffset();
+            case CENTER: offset = detector.getCryptoBoxCenterOffset();
+        }
+        return offset;
+    }
+
 
 
 }

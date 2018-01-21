@@ -80,16 +80,6 @@ public class AutonomousRedNear extends LinearOpMode {
             robot.wheels.driveDistance(48  - jewelCompensation + columnAdd);  //38.1 rn
             AutoUtil.waitForMovement(robot, this, 5);
 
-            AutoUtil.Column column = null;
-            switch("" + columnAdd) {
-                case "6": column = AutoUtil.Column.RIGHT;
-                case "-6": column = AutoUtil.Column.LEFT;
-                default: column = AutoUtil.Column.CENTER;
-            }
-
-            double[] PID = {-.2, -.2};
-            AutoUtil.findColumn(robot, this, -1, column, PID);
-
             AutoUtil.turnDegrees(robot, this, 90);
 
             telemetry.addLine("Finished Turn");

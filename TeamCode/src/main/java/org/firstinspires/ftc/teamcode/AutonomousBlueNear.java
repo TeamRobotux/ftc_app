@@ -82,17 +82,6 @@ public class AutonomousBlueNear extends LinearOpMode {
 
             robot.wheels.driveDistance(-48 - jewelCompensation + columnAdd);  //38.1 rn
             AutoUtil.waitForMovement(robot, this, 5);
-
-            //NEED TO FIND THE CORRECT TARGET VALUE
-            AutoUtil.Column column = null;
-            switch("" + jewelCompensation) {
-                case "6": column = AutoUtil.Column.RIGHT;
-                case "-6": column = AutoUtil.Column.LEFT;
-                default: column = AutoUtil.Column.CENTER;
-            }
-
-            double[] PID = {.2, .2};
-            AutoUtil.findColumn(robot, this, -1, column, PID);
             
             AutoUtil.turnDegrees(robot, this, 90);
 

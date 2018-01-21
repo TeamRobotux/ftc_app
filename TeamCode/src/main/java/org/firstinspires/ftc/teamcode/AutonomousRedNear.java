@@ -81,7 +81,7 @@ public class AutonomousRedNear extends LinearOpMode {
             AutoUtil.waitForMovement(robot, this, 5);
 
             AutoUtil.Column column = null;
-            switch("" + jewelCompensation) {
+            switch("" + columnAdd) {
                 case "6": column = AutoUtil.Column.RIGHT;
                 case "-6": column = AutoUtil.Column.LEFT;
                 default: column = AutoUtil.Column.CENTER;

@@ -27,7 +27,7 @@ public final class AutoUtil {
 
     public static void waitForMovement(RobotHardware robot, LinearOpMode opMode, int seconds) {
         boolean flag = false;
-        for(int i = 0; i < seconds*1000 || !flag; i+=10) {
+        for(int i = 0; i < seconds*1000 && !flag; i+=10) {
             opMode.sleep(10);
             if(!robot.wheels.isBusy())
                 flag = true;
@@ -142,11 +142,16 @@ public final class AutoUtil {
         detector.enable();
         robot.jewelR.setPosition(0);
 
-        for(int i = 0; i < 20 && (detector.getCurrentOrder() == JewelDetector.JewelOrder.UNKNOWN || detector.getCurrentOrder() == null); i++) {
+        for(int i = 0; i < 40 && (detector.getCurrentOrder() == JewelDetector.JewelOrder.UNKNOWN || detector.getCurrentOrder() == null); i++) {
             opMode.sleep(100);
             if(opMode.isStopRequested()) {
                 opMode.stop();
             }
+        }
+
+        if(detector.getCurrentOrder() != JewelDetector.JewelOrder.UNKNOWN)
+        {
+            opMode.sleep(500);
         }
 
         int jewelCompensation = 0;
@@ -197,7 +202,7 @@ public final class AutoUtil {
 
         detector.init(opMode.hardwareMap.appContext, CameraViewDisplay.getInstance(), 1);
         detector.enable();
-        opMode.sleep(2000);
+        opMode.sleep(1000);
 
         for(int i = 0; i < 20 && (!detector.isCryptoBoxDetected() && !detector.isColumnDetected()); i++) {
             opMode.sleep(100);

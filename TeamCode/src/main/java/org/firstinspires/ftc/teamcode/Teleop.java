@@ -65,6 +65,7 @@ public class Teleop extends LinearOpMode {
         double drive;
         double turn;
         double straf;
+        boolean relicControl = false;
 
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
@@ -117,40 +118,6 @@ public class Teleop extends LinearOpMode {
                 robot.grabber.close();
             }
 
-
-
-
-            if((gamepad1.right_bumper || gamepad2.x) && Math.round(robot.jewelR.getPosition()) == 1) {
-                robot.jewelR.setPosition(0);
-                sleep(100);
-            } else if(gamepad1.right_bumper || gamepad2.x) {
-                robot.jewelR.setPosition(1);
-                sleep(100);
-            }
-
-            if(gamepad2.right_trigger > .5) {
-                robot.intake.open();
-            }
-            else if(gamepad2.left_trigger > .5) {
-                robot.intake.close();
-            }
-            else if(gamepad2.a) {
-                robot.intake.movePerp();
-            }
-            else if(gamepad2.y) {
-                robot.intake.reset();
-            }
-
-            if(gamepad2.left_bumper) {
-                robot.intake.rotateOut();
-            }
-            else if(gamepad2.right_bumper) {
-                robot.intake.rotateIn();
-            }
-            else if(gamepad2.b) {
-                robot.intake.stopRot();
-            }
-
             if(gamepad1.x && Math.round(robot.jewelR.getPosition()) == 1) {
                 robot.jewelR.setPosition(0);
                 sleep(100);
@@ -159,13 +126,90 @@ public class Teleop extends LinearOpMode {
                 sleep(100);
             }
 
+            if(gamepad2.start) {
+                relicControl = !relicControl;
+                sleep(10);
+            }
+
+            if(!relicControl) {
+                if((gamepad1.right_bumper || gamepad2.x) && Math.round(robot.jewelR.getPosition()) == 1) {
+                    robot.jewelR.setPosition(0);
+                    sleep(10);
+                } else if(gamepad1.right_bumper || gamepad2.x) {
+                    robot.jewelR.setPosition(1);
+                    sleep(10);
+                }
+
+                if(gamepad2.right_trigger > .5) {
+                    robot.intake.open();
+                }
+                else if(gamepad2.left_trigger > .5) {
+                    robot.intake.close();
+                }
+                else if(gamepad2.a) {
+                    robot.intake.movePerp();
+                }
+                else if(gamepad2.y) {
+                    robot.intake.reset();
+                }
+
+                if(gamepad2.left_bumper) {
+                    robot.intake.rotateOut();
+                }
+                else if(gamepad2.right_bumper) {
+                    robot.intake.rotateIn();
+                }
+                else if(gamepad2.b) {
+                    robot.intake.stopRot();
+                }
+            }
+            else {
+                if(gamepad2.dpad_down) {
+                    robot.relicArm.retract();
+                }
+                else if(gamepad2.dpad_up) {
+                    robot.relicArm.extend();
+                }
+                else if(gamepad2.dpad_left) {
+                    robot.relicArm.rotateCounterClockwise();
+                }
+                else if(gamepad2.dpad_right) {
+                    robot.relicArm.rotateClockwise();
+                }
+
+                if(gamepad2.y) {
+                    robot.relicArm.raiseWrist();
+                }
+                else if(gamepad2.a) {
+                    robot.relicArm.lowerWrist();
+                }
+                else if(gamepad2.b) {
+                    robot.relicArm.moveWristParallel();
+                }
+
+                if(gamepad2.right_trigger > .5) {
+                    robot.relicArm.openHand();
+                }
+                else if(gamepad2.left_trigger > .5) {
+                    robot.relicArm.closeHand();
+                }
+
+                if(gamepad1.right_bumper && Math.round(robot.jewelR.getPosition()) == 1) {
+                    robot.jewelR.setPosition(0);
+                }
+                else if(gamepad1.right_bumper) {
+                    robot.jewelR.setPosition(1);
+                }
+
+                
+            }
+
 
             //telemetry.addData("heading: ", robot.gyro.getHeading());
             //telemetry.addData("blue value:", robot.colorSensor.read8(AMSColorSensor.Register.RED));
             //telemetry.addData("PID coeffs - Using", robot.pulley.getPIDCoefficients(DcMotor.RunMode.RUN_USING_ENCODER));
             //telemetry.addData("PID coeffs - Position", robot.pulley.getPIDCoefficients(DcMotor.RunMode.RUN_TO_POSITION));
             telemetry.addData("Grabber pos: ", robot.grabber.toString());
-            telemetry.addData("blue value: ", robot.colorSensor.blue());
             telemetry.addData("grabberR pos: ", robot.jewelR.getPosition());
             telemetry.addData("tolerance:", robot.pulley.getTolerance());
 

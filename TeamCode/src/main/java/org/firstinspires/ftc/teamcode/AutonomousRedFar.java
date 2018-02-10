@@ -71,13 +71,12 @@ public class AutonomousRedFar extends LinearOpMode {
 
             // Wait for the game to start (driver presses PLAY)
 
+            double distanceAdd = AutoUtil.scanColumn(robot, this);
+
             double jewelCompensation = AutoUtil.knockJewels(robot, this, false);
             sleep(2000);
 
-            double distanceAdd = AutoUtil.scanColumn(robot, this);
-
-
-            robot.wheels.driveDistance(30 - jewelCompensation);
+            robot.wheels.driveDistance(30 + jewelCompensation);
             AutoUtil.waitForMovement(robot, this, 7);
 
 

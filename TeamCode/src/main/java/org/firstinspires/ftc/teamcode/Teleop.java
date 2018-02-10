@@ -71,6 +71,8 @@ public class Teleop extends LinearOpMode {
          * The init() method of the hardware class does all the work here
          */
         robot.init(hardwareMap);
+        robot.initIntake(hardwareMap);
+
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -103,7 +105,7 @@ public class Teleop extends LinearOpMode {
                 robot.wheels.turn((float) turn);
             }
             else {
-                if(Math.abs(straf) > .5) {
+                if(Math.abs(straf) > .25) {
                     robot.wheels.strafe((float) straf);
                 }
                 else {
@@ -131,7 +133,7 @@ public class Teleop extends LinearOpMode {
                 sleep(10);
             }
 
-            if(!relicControl) {
+            //if(!relicControl) {
                 if((gamepad1.right_bumper || gamepad2.x) && Math.round(robot.jewelR.getPosition()) == 1) {
                     robot.jewelR.setPosition(0);
                     sleep(10);
@@ -162,8 +164,9 @@ public class Teleop extends LinearOpMode {
                 else if(gamepad2.b) {
                     robot.intake.stopRot();
                 }
-            }
+            /*}
             else {
+
                 if(gamepad2.dpad_down) {
                     robot.relicArm.retract();
                 }
@@ -194,6 +197,7 @@ public class Teleop extends LinearOpMode {
                     robot.relicArm.closeHand();
                 }
 
+
                 if(gamepad1.right_bumper && Math.round(robot.jewelR.getPosition()) == 1) {
                     robot.jewelR.setPosition(0);
                 }
@@ -202,13 +206,8 @@ public class Teleop extends LinearOpMode {
                 }
 
                 
-            }
+            } */
 
-
-            //telemetry.addData("heading: ", robot.gyro.getHeading());
-            //telemetry.addData("blue value:", robot.colorSensor.read8(AMSColorSensor.Register.RED));
-            //telemetry.addData("PID coeffs - Using", robot.pulley.getPIDCoefficients(DcMotor.RunMode.RUN_USING_ENCODER));
-            //telemetry.addData("PID coeffs - Position", robot.pulley.getPIDCoefficients(DcMotor.RunMode.RUN_TO_POSITION));
             telemetry.addData("Grabber pos: ", robot.grabber.toString());
             telemetry.addData("grabberR pos: ", robot.jewelR.getPosition());
             telemetry.addData("tolerance:", robot.pulley.getTolerance());

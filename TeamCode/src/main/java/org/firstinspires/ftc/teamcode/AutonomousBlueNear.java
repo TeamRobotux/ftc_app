@@ -80,7 +80,7 @@ public class AutonomousBlueNear extends LinearOpMode {
 
             double jewelCompensation = AutoUtil.knockJewels(robot, this, true);
 
-            robot.wheels.driveDistance(-48 - jewelCompensation + columnAdd);  //38.1 rn
+            robot.wheels.driveDistance(-47  - jewelCompensation + columnAdd);  //38.1 rn
             AutoUtil.waitForMovement(robot, this, 5);
             
             AutoUtil.turnDegrees(robot, this, 90);

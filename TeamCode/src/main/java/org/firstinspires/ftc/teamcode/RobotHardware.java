@@ -57,7 +57,7 @@ public class RobotHardware
 
     public TuxGyro gyro;
 
-    public RelicArm relicArm;
+    //public RelicArm relicArm;
 
     /* local OpMode members. */
 
@@ -76,7 +76,7 @@ public class RobotHardware
 
         grabber = new GlyphGrabber(hwMap);
 
-        relicArm = new RelicArm(hwMap);
+        //relicArm = new RelicArm(hwMap);
 
         //gyro = hwMap.get(GyroSensor.class, "imu 1");
        // gyro.calibrate();
@@ -86,11 +86,13 @@ public class RobotHardware
 
         gyro = new TuxGyro(hwMap);
 
-        intake = new Intake(hwMap);
-
         jewelL.setDirection(Servo.Direction.FORWARD);
         jewelR.setDirection(Servo.Direction.REVERSE);
 
+    }
+
+    public void initIntake(HardwareMap hwMap) {
+        intake = new Intake(hwMap);
     }
 
 }

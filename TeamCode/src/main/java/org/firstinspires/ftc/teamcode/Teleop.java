@@ -65,20 +65,16 @@ public class Teleop extends LinearOpMode {
         double drive;
         double turn;
         double straf;
-        boolean relicControl = false;
 
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
          */
         robot.init(hardwareMap);
-        robot.initIntake(hardwareMap);
-
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
         robot.gyro.composeTelemetry(telemetry);
-
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
@@ -114,10 +110,13 @@ public class Teleop extends LinearOpMode {
             }
 
             if(gamepad1.a) {
-                robot.grabber.open();
+                robot.grabber.push();
             }
             else if(gamepad1.b) {
-                robot.grabber.close();
+                robot.grabber.suck();
+            }
+            else if(gamepad1.y) {
+                robot.grabber.stop();
             }
 
             if(gamepad1.x && Math.round(robot.jewelR.getPosition()) == 1) {
@@ -128,11 +127,6 @@ public class Teleop extends LinearOpMode {
                 sleep(100);
             }
 
-            if(gamepad2.start) {
-                relicControl = !relicControl;
-                sleep(10);
-            }
-
             //if(!relicControl) {
                 if((gamepad1.right_bumper || gamepad2.x) && Math.round(robot.jewelR.getPosition()) == 1) {
                     robot.jewelR.setPosition(0);
@@ -140,29 +134,6 @@ public class Teleop extends LinearOpMode {
                 } else if(gamepad1.right_bumper || gamepad2.x) {
                     robot.jewelR.setPosition(1);
                     sleep(10);
-                }
-
-                if(gamepad2.right_trigger > .5) {
-                    robot.intake.open();
-                }
-                else if(gamepad2.left_trigger > .5) {
-                    robot.intake.close();
-                }
-                else if(gamepad2.a) {
-                    robot.intake.movePerp();
-                }
-                else if(gamepad2.y) {
-                    robot.intake.reset();
-                }
-
-                if(gamepad2.left_bumper) {
-                    robot.intake.rotateOut();
-                }
-                else if(gamepad2.right_bumper) {
-                    robot.intake.rotateIn();
-                }
-                else if(gamepad2.b) {
-                    robot.intake.stopRot();
                 }
             /*}
             else {

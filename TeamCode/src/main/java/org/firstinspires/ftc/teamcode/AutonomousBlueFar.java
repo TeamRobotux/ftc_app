@@ -59,7 +59,7 @@ public class AutonomousBlueFar extends LinearOpMode {
          */
         robot.init(hardwareMap);
 
-        robot.grabber.close();
+        robot.grabber.suck();
         waitForStart();
 
         // Send telemetry message to signify robot waiting;
@@ -79,11 +79,8 @@ public class AutonomousBlueFar extends LinearOpMode {
             robot.wheels.driveDistance(-30 - jewelCompensation);
             AutoUtil.waitForMovement(robot, this, 7);
 
-
             robot.wheels.strafeDistance(-25 - distanceAdd);
             AutoUtil.waitForMovement(robot, this,5);
-
-
 
             AutoUtil.turnDegrees(robot, this,180);
             AutoUtil.waitForMovement(robot, this,5);
@@ -91,20 +88,18 @@ public class AutonomousBlueFar extends LinearOpMode {
             robot.wheels.driveDistance(12);
             AutoUtil.waitForMovement(robot, this,2);
 
-            robot.grabber.open();
-            sleep(500);
+            robot.grabber.push();
 
             robot.wheels.driveDistance(-10);
             AutoUtil.waitForMovement(robot, this,2);
-
-            robot.grabber.close();
-            sleep(400);
 
             robot.wheels.driveDistance(12);
             AutoUtil.waitForMovement(robot, this,2);
 
             robot.wheels.driveDistance(-14);
             AutoUtil.waitForMovement(robot, this,2);
+
+            robot.grabber.stop();
             stop();
 
         }

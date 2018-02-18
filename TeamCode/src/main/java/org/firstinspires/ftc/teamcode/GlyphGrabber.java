@@ -1,4 +1,6 @@
 package org.firstinspires.ftc.teamcode;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -8,50 +10,26 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
  */
 
 public class GlyphGrabber {
-    private TuxServo right;
-    private TuxServo left;
-    private final double rOpen = .45;
-    private final double rClosed = .1;
-    private final double lOpen =.52d;
-    private final double lClosed = .1;
-
+    private TuxCRServo rightD;
+    private TuxCRServo leftD;
 
     public GlyphGrabber(HardwareMap hwMap) {
-        right = new TuxServo("glyphR", hwMap);
-        left = new TuxServo("glyphL", hwMap);
-
-        //Right open == .35, closed == .25
-        //Left open = .55, closed ==.4, .35
-
-        left.setDirection(Servo.Direction.REVERSE);
-
-        left.moveTo(lOpen);
-        right.moveTo(rOpen);
+        rightD = new TuxCRServo("glyphRD", hwMap, CRServo.Direction.REVERSE);
+        leftD = new TuxCRServo("glyphLD", hwMap, CRServo.Direction.FORWARD);
     }
 
-    public void open() {
-        right.moveTo(rOpen);
-        left.moveTo(lOpen);
+    public void suck() {
+        rightD.move(1);
+        leftD.move(1);
     }
 
-    public void close() {
-        right.moveTo(rClosed);
-        left.moveTo(lClosed);
+    public void push() {
+        rightD.move(-1);
+        leftD.move(-1);
     }
 
     public void stop() {
-        right.stop();
-        left.stop();
-    }
-
-    @Override
-    public String toString() {
-        double rightPos = right.getPosition();
-        double leftPos = left.getPosition();
-
-        if (rightPos != leftPos) {
-            return "WARNING: UNEQUAL VALUES! LEFT == " + leftPos + " RIGHT == " + rightPos;
-        }
-        return "" + rightPos;
+        rightD.stop();
+        leftD.stop();
     }
 }

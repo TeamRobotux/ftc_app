@@ -63,7 +63,7 @@ public class AutonomousRedNear extends LinearOpMode {
          */
         robot.init(hardwareMap);
 
-        robot.grabber.close();
+        robot.grabber.suck();
         waitForStart();
 
         // Send telemetry message to signify robot waiting;
@@ -87,19 +87,19 @@ public class AutonomousRedNear extends LinearOpMode {
             robot.wheels.driveDistance(15);
             AutoUtil.waitForMovement(robot, this, 2);
 
-            robot.grabber.open();
+            robot.grabber.push();
             sleep(400);
 
             robot.wheels.driveDistance(-12);
             AutoUtil.waitForMovement(robot, this, 2);
-
-            robot.grabber.close();
 
             robot.wheels.driveDistance(14);
             AutoUtil.waitForMovement(robot, this, 2);
 
             robot.wheels.driveDistance(-8);
             AutoUtil.waitForMovement(robot, this, 2);
+
+            robot.grabber.stop();
 
             stop();
 

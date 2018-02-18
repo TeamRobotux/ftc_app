@@ -50,10 +50,7 @@ public class RobotHardware
 
     public GlyphGrabber grabber;
 
-    public Servo jewelL;
     public Servo jewelR;
-
-    public Intake intake;
 
     public TuxGyro gyro;
 
@@ -78,22 +75,12 @@ public class RobotHardware
 
         //relicArm = new RelicArm(hwMap);
 
-        //gyro = hwMap.get(GyroSensor.class, "imu 1");
-       // gyro.calibrate();
-
-        jewelL  = hwMap.get(Servo.class, "jewelL");
         jewelR  = hwMap.get(Servo.class, "jewelR");
 
         gyro = new TuxGyro(hwMap);
 
-        jewelL.setDirection(Servo.Direction.FORWARD);
         jewelR.setDirection(Servo.Direction.REVERSE);
 
     }
-
-    public void initIntake(HardwareMap hwMap) {
-        intake = new Intake(hwMap);
-    }
-
 }
 

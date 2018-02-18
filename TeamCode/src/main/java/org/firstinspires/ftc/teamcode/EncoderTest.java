@@ -52,7 +52,7 @@ public class EncoderTest extends LinearOpMode {
          * The init() method of the hardware class does all the work here
          */
         robot.init(hardwareMap);
-        robot.grabber.close();
+        robot.grabber.suck();
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Say", "ITS GO TIME");    //

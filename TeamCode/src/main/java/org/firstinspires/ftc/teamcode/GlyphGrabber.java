@@ -23,7 +23,7 @@ public class GlyphGrabber {
         rightD = new TuxCRServo("glyphRD", hwMap, CRServo.Direction.REVERSE);
         leftD = new TuxCRServo("glyphLD", hwMap, CRServo.Direction.FORWARD);
         rightT = new TuxCRServo("glyphRT", hwMap, CRServo.Direction.FORWARD);
-        leftT = new TuxCRServo("glyphLT", hwMap, CRServo.Direction.FORWARD);
+        leftT = new TuxCRServo("glyphLT", hwMap, CRServo.Direction.REVERSE);
 
         flipper = new TuxCRServo("flipper", hwMap, CRServo.Direction.FORWARD);
 

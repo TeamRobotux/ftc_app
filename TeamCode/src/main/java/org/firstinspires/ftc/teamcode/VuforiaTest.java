@@ -34,12 +34,17 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+
 /**
  * A test to check the capabilites of encoders
  */
 
-@Autonomous(name="AutoTest", group="Pushbot")
-public class EncoderTest extends LinearOpMode {
+@TeleOp(name="Vuforia Test", group="Pushbot")
+public class VuforiaTest extends LinearOpMode {
 
     /* Declare OpMode members. */
     RobotHardware robot           = new RobotHardware();   // Use a Pushbot's hardware
@@ -52,28 +57,24 @@ public class EncoderTest extends LinearOpMode {
          * The init() method of the hardware class does all the work here
          */
         robot.init(hardwareMap);
-        robot.grabber.suck();
+
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+        parameters.vuforiaLicenseKey = "AaiquuH/////AAAAGa0Yq9q1+0YrjKIQl75JKMtbkCfbX1s4QuajYfob6seMwTDejdEf8WOHpi4ynOSLXdKC2tPaPTZqNCXDPbFNik7OS3eUUJGNWoCXlvax5In3QvY7HtWsnGG2KIa/AkJYeu69kYsmIEd7y9fEr1BSX5MXkkghfKAfV644TDRxntIB/YCyWaAcsmOvPuK14RxTh8PTjcX9vYPCpVh8Sq/OlERLvXkDasPo+0jFxMkPYrEauQ3bawhYt6xFuCa861gAiDgIEo3kAvcvrwYOGwJqueueKTthyG6Ydvfk5qvAs/hRbVOuAOwhCKs87TdHrx08xiUaGKxm251/WlVkPPrDUdesFJVcfXE0JXXrEJBCeOL5";
+
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
+        ClosableVuforiaLocalizer vuforia = new ClosableVuforiaLocalizer(parameters);
+
+        VuforiaTrackables relicTrackables = vuforia.loadTrackablesFromAsset("RelicVuMark");
+        VuforiaTrackable relicTemplate = relicTrackables.get(0);
+
+        relicTrackables.activate();
+
+        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
 
         // Send telemetry message to signify robot waiting;
-        telemetry.addData("Say", "ITS GO TIME");    //
-        telemetry.update();
-
-        // Wait for the game to start (driver presses PLAY)
-//        robot.pulley.setPower((float) .5);
-//        while(robot.pulley.getEncoderVal() < 784 ) {
-////            telemetry.addData("ticks", robot.pulley.getEncoderVal());
-////            telemetry.update();
-//            sleep(50);
-//        }
-
-        robot.pulley.moveDistance(6);
-        while(robot.pulley.isBusy()) {
-            telemetry.addData("ticks", robot.pulley.getEncoderVal());
-            telemetry.update();
+        while(opModeIsActive()) {
+            vuMark = RelicRecoveryVuMark.from(relicTemplate);
         }
-
-        robot.pulley.setPower(0);
-        stop();
     }
 
 

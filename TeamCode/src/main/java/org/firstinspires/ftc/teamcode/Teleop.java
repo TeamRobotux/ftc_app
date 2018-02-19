@@ -97,6 +97,16 @@ public class Teleop extends LinearOpMode {
                 robot.pulley.setPower(0);
             }
 
+            if(gamepad1.dpad_right) {
+                robot.grabber.rotClockwise();
+            }
+            else if(gamepad1.dpad_left) {
+                robot.grabber.rotCounterClockwise();
+            }
+            else {
+                robot.grabber.stopRot();
+            }
+
             if(Math.abs(turn) > .25) {
                 robot.wheels.turn((float) turn);
             }
@@ -117,6 +127,9 @@ public class Teleop extends LinearOpMode {
             }
             else if(gamepad1.y) {
                 robot.grabber.stop();
+            }
+            else if(gamepad1.x) {
+                robot.grabber.pushAll();
             }
 
             if(gamepad1.x && Math.round(robot.jewelR.getPosition()) == 1) {

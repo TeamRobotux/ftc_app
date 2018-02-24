@@ -45,6 +45,7 @@ public class RobotHardware
 
     //Pulley ticks from top to bottom 3880, length = 29.75, ticks per block = 784
     public TuxMotor pulley;
+
     public Drivetrain wheels;
 
 
@@ -54,7 +55,7 @@ public class RobotHardware
 
     public TuxGyro gyro;
 
-    //public RelicArm relicArm;
+    public RelicArm relicArm;
 
     /* local OpMode members. */
 
@@ -67,13 +68,13 @@ public class RobotHardware
     public void init(HardwareMap hwMap) {
         // Define and Initialize Motors
         //Pulley motor lift length = 35.2
-        pulley = new TuxMotor("pulley", hwMap, 130, 1);
+        pulley = new TuxMotor("pulley", hwMap, 130, 1, DcMotor.ZeroPowerBehavior.BRAKE);
 
         wheels = new Drivetrain(hwMap);
 
         grabber = new GlyphGrabber(hwMap);
 
-        //relicArm = new RelicArm(hwMap);
+        relicArm = new RelicArm(hwMap);
 
         jewelR  = hwMap.get(Servo.class, "jewelR");
 

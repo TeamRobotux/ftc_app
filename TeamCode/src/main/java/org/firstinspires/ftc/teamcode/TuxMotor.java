@@ -28,6 +28,15 @@ public class TuxMotor {
 
     }
 
+    public TuxMotor(String name, HardwareMap map, long tpi, int reversed, DcMotor.ZeroPowerBehavior behavior) {
+        motor = (DcMotorEx) map.get(DcMotor.class, name);
+        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        ticksPerInch = tpi;
+        setPower(0);
+        reverse = reversed;
+        motor.setZeroPowerBehavior(behavior);
+    }
+
     public void moveDistance(double inches) {
 
         int ticks = (int) Math.round(inches*ticksPerInch);

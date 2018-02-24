@@ -60,7 +60,7 @@ public class AutonomousRedFar extends LinearOpMode {
          */
         robot.init(hardwareMap);
 
-        robot.grabber.suck();
+
         waitForStart();
 
         // Send telemetry message to signify robot waiting;
@@ -87,18 +87,12 @@ public class AutonomousRedFar extends LinearOpMode {
             AutoUtil. waitForMovement(robot, this, 2);
 
             robot.grabber.push();
-            sleep(500);
+            sleep(400);
 
             robot.wheels.driveDistance(-10);
             AutoUtil.waitForMovement(robot, this, 2);
-
-            robot.wheels.driveDistance(14);
-            AutoUtil.waitForMovement(robot, this, 2);
-
-            robot.wheels.driveDistance(-10);
-            AutoUtil.waitForMovement(robot, this, 2);
-
             robot.grabber.stop();
+
             stop();
 
         }

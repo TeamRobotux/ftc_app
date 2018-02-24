@@ -62,7 +62,6 @@ public class AutonomousBlueNear extends LinearOpMode {
          */
         robot.init(hardwareMap);
 
-        robot.grabber.suck();
         waitForStart();
 
 
@@ -87,18 +86,14 @@ public class AutonomousBlueNear extends LinearOpMode {
 
             robot.wheels.driveDistance(13);
             AutoUtil.waitForMovement(robot, this, 2);
+
             robot.grabber.push();
+            sleep(400);
 
             robot.wheels.driveDistance(-12);
             AutoUtil.waitForMovement(robot, this, 2);
-
-            robot.wheels.driveDistance(14);
-            AutoUtil.waitForMovement(robot, this, 2);
-
-            robot.wheels.driveDistance(-12);
-            AutoUtil.waitForMovement(robot, this, 5);
-
             robot.grabber.stop();
+
             stop();
         }
     }

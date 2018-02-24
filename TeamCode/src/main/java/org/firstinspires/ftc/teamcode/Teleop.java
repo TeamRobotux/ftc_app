@@ -88,7 +88,7 @@ public class Teleop extends LinearOpMode {
 
             //Pulley Movement
             if(gamepad1.dpad_down) {
-                robot.pulley.setPower(-.5);
+                robot.pulley.setPower(-.3);
             }
             else if(gamepad1.dpad_up) {
                 robot.pulley.setPower(1);
@@ -119,10 +119,10 @@ public class Teleop extends LinearOpMode {
                 }
             }
 
-            if(gamepad1.a) {
+            if(gamepad1.b) {
                 robot.grabber.push();
             }
-            else if(gamepad1.b) {
+            else if(gamepad1.a) {
                 robot.grabber.suck();
             }
             else if(gamepad1.y) {
@@ -132,65 +132,50 @@ public class Teleop extends LinearOpMode {
                 robot.grabber.pushAll();
             }
 
-            if(gamepad1.x && Math.round(robot.jewelR.getPosition()) == 1) {
+            if((gamepad1.right_bumper || gamepad2.x) && Math.round(robot.jewelR.getPosition()) == 1) {
                 robot.jewelR.setPosition(0);
-                sleep(100);
-            } else if(gamepad1.x) {
+                sleep(10);
+            } else if(gamepad1.right_bumper || gamepad2.x) {
                 robot.jewelR.setPosition(1);
-                sleep(100);
+                sleep(10);
+            }
+            if(gamepad2.dpad_down) {
+                robot.relicArm.retract();
+            }
+            else if(gamepad2.dpad_up) {
+                robot.relicArm.extend();
+            }
+            else {
+                robot.relicArm.stopPulley();
             }
 
-            //if(!relicControl) {
-                if((gamepad1.right_bumper || gamepad2.x) && Math.round(robot.jewelR.getPosition()) == 1) {
-                    robot.jewelR.setPosition(0);
-                    sleep(10);
-                } else if(gamepad1.right_bumper || gamepad2.x) {
-                    robot.jewelR.setPosition(1);
-                    sleep(10);
-                }
-            /*}
+            if(gamepad2.dpad_left) {
+                robot.relicArm.rotateCounterClockwise();
+            }
+            else if(gamepad2.dpad_right) {
+                robot.relicArm.rotateClockwise();
+            }
             else {
+                robot.relicArm.stopSusan();
+            }
 
-                if(gamepad2.dpad_down) {
-                    robot.relicArm.retract();
-                }
-                else if(gamepad2.dpad_up) {
-                    robot.relicArm.extend();
-                }
-                else if(gamepad2.dpad_left) {
-                    robot.relicArm.rotateCounterClockwise();
-                }
-                else if(gamepad2.dpad_right) {
-                    robot.relicArm.rotateClockwise();
-                }
+            if(gamepad2.y) {
+                robot.relicArm.raiseWrist();
+            }
+            else if(gamepad2.a) {
+                robot.relicArm.lowerWrist();
+            }
+            else if(gamepad2.b) {
+                robot.relicArm.moveWristParallel();
+            }
 
-                if(gamepad2.y) {
-                    robot.relicArm.raiseWrist();
-                }
-                else if(gamepad2.a) {
-                    robot.relicArm.lowerWrist();
-                }
-                else if(gamepad2.b) {
-                    robot.relicArm.moveWristParallel();
-                }
+            if(gamepad2.right_trigger > .5) {
+                robot.relicArm.openHand();
+            }
+            else if(gamepad2.left_trigger > .5) {
+                robot.relicArm.closeHand();
+            }
 
-                if(gamepad2.right_trigger > .5) {
-                    robot.relicArm.openHand();
-                }
-                else if(gamepad2.left_trigger > .5) {
-                    robot.relicArm.closeHand();
-                }
-
-
-                if(gamepad1.right_bumper && Math.round(robot.jewelR.getPosition()) == 1) {
-                    robot.jewelR.setPosition(0);
-                }
-                else if(gamepad1.right_bumper) {
-                    robot.jewelR.setPosition(1);
-                }
-
-                
-            } */
 
             telemetry.addData("Grabber pos: ", robot.grabber.toString());
             telemetry.addData("grabberR pos: ", robot.jewelR.getPosition());

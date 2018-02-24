@@ -28,17 +28,16 @@ public class GlyphGrabber {
         flipper = new TuxCRServo("flipper", hwMap, CRServo.Direction.FORWARD);
 
         flipped = false;
-
     }
 
     public void rotClockwise() {
-        flipper.move(1);
-        flipped = true;
+        flipper.move(-1);
+        flipped = false;
     }
 
     public void rotCounterClockwise() {
-        flipper.move(-1);
-        flipped = false;
+        flipper.move(1);
+        flipped = true;
     }
 
     public void stopRot() {

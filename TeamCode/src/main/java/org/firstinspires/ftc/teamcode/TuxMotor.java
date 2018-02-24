@@ -12,14 +12,14 @@ import com.qualcomm.robotcore.hardware.PIDCoefficients;
 
 public class TuxMotor {
     private DcMotorEx motor;
+
     //Number of encoder pulses per revolution
-    private long ticksPerInch;
-    //length of radius in inches
+    private double ticksPerInch;
 
     int reverse;
 
     //Radius is in inches.
-    public TuxMotor(String name, HardwareMap map, long tpi, int reversed) {
+    public TuxMotor(String name, HardwareMap map, double tpi, int reversed) {
         motor = (DcMotorEx) map.get(DcMotor.class, name);
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         ticksPerInch = tpi;
@@ -38,9 +38,7 @@ public class TuxMotor {
     }
 
     public void moveDistance(double inches) {
-
-        int ticks = (int) Math.round(inches*ticksPerInch);
-
+        int ticks = (int) (inches*ticksPerInch + .5);
         moveTicks(ticks);
     }
 

@@ -87,11 +87,11 @@ public class Teleop extends LinearOpMode {
             straf = gamepad1.left_stick_x;
 
             //Pulley Movement
-            if(gamepad1.dpad_down) {
-                robot.pulley.setPower(-.3);
+            if(gamepad1.dpad_up) {
+                robot.pulley.setPower(-1);
             }
-            else if(gamepad1.dpad_up) {
-                robot.pulley.setPower(1);
+            else if(gamepad1.dpad_down) {
+                robot.pulley.setPower(.3);
             }
             else {
                 robot.pulley.setPower(0);
@@ -139,15 +139,20 @@ public class Teleop extends LinearOpMode {
                 robot.jewelR.setPosition(1);
                 sleep(10);
             }
+
+
             if(gamepad2.dpad_down) {
                 robot.relicArm.retract();
+                robot.relicArm.setPulleyLength(20);
             }
-            else if(gamepad2.dpad_up) {
+            if(gamepad2.dpad_up) {
                 robot.relicArm.extend();
+                robot.relicArm.setPulleyLength(20);
             }
             else {
                 robot.relicArm.stopPulley();
             }
+
 
             if(gamepad2.dpad_left) {
                 robot.relicArm.rotateCounterClockwise();

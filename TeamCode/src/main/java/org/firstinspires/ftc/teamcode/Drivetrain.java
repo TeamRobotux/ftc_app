@@ -81,10 +81,10 @@ public class Drivetrain {
     }
 
     public void strafeDistance(double inches) {
-        driveFrontR.moveDistance(-inches);
-        driveRearR.moveDistance(inches);
-        driveFrontL.moveDistance(inches);
-        driveRearL.moveDistance(-inches);
+        driveFrontR.moveDistance(-inches * Math.tan(Math.PI / 180 * 50));
+        driveRearR.moveDistance(inches * Math.tan(Math.PI / 180 * 50));
+        driveFrontL.moveDistance(inches * Math.tan(Math.PI / 180 * 50));
+        driveRearL.moveDistance(-inches * Math.tan(Math.PI / 180 * 50));
     }
 
     //move a distance (in inches)

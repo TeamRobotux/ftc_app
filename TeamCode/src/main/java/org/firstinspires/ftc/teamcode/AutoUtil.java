@@ -121,10 +121,10 @@ public final class AutoUtil {
 
         double distanceAdd = 0;
         if(vuMark == RelicRecoveryVuMark.LEFT) {
-            distanceAdd += 9;
+            distanceAdd += 7;
         }
         else if(vuMark == RelicRecoveryVuMark.RIGHT) {
-            distanceAdd -= 9;
+            distanceAdd -= 7;
         }
 
         opMode.telemetry.addData("VuMark", vuMark.toString());
@@ -140,8 +140,6 @@ public final class AutoUtil {
         JewelDetector detector = new JewelDetector();
         detector.init(opMode.hardwareMap.appContext, CameraViewDisplay.getInstance(), 1);
         detector.enable();
-        robot.jewelR.setPosition(0);
-
         for(int i = 0; i < 40 && (detector.getCurrentOrder() == JewelDetector.JewelOrder.UNKNOWN || detector.getCurrentOrder() == null); i++) {
             opMode.sleep(100);
             if(opMode.isStopRequested()) {
@@ -153,32 +151,37 @@ public final class AutoUtil {
         {
             opMode.sleep(500);
         }
+        robot.jewelR.setPosition(0);
+        opMode.sleep(500);
+
 
         int jewelCompensation = 0;
         if(detector.getCurrentOrder() == JewelDetector.JewelOrder.BLUE_RED) {
             if(blue) {
-                robot.wheels.driveDistance(-6);
-                jewelCompensation = -6;
+                robot.wheels.driveDistance(8);
+                waitForMovement(robot, opMode, 1);
+                jewelCompensation = -8;
             }
             else {
-                robot.wheels.driveDistance(6);
-                jewelCompensation = 6;
+                robot.wheels.driveDistance(8);
+                waitForMovement(robot, opMode, 1);
+                jewelCompensation = -8;
             }
         }
         else if(detector.getCurrentOrder() == JewelDetector.JewelOrder.RED_BLUE) {
             if(blue) {
-                robot.wheels.driveDistance(6);
-                waitForMovement(robot, opMode, 1);
-                robot.jewelR.setPosition(1);
-                robot.wheels.driveDistance(-16);
-                jewelCompensation = -6;
-            }
-            else {
-                robot.wheels.driveDistance(-6);
+                robot.wheels.driveDistance(-8);
                 waitForMovement(robot, opMode, 1);
                 robot.jewelR.setPosition(1);
                 robot.wheels.driveDistance(16);
-                jewelCompensation = 6;
+                jewelCompensation = -8;
+            }
+            else {
+                robot.wheels.driveDistance(-8);
+                waitForMovement(robot, opMode, 1);
+                robot.jewelR.setPosition(1);
+                robot.wheels.driveDistance(16);
+                jewelCompensation = -8;
             }
         }
         waitForMovement(robot, opMode, 2);

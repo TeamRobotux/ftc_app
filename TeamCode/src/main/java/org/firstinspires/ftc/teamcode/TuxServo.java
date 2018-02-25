@@ -19,6 +19,14 @@ public class TuxServo {
         //reverse = reversed;
     }
 
+    public TuxServo(String name, HardwareMap hwmap, boolean second) {
+        servo = hwmap.get(Servo.class, name);
+
+        //reverse = reversed;
+    }
+
+
+
     enum Dir {FORWARD,BACK}
 
     public void setDirection(Servo.Direction d) {servo.setDirection(d);}

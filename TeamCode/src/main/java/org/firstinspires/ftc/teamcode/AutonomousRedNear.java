@@ -76,18 +76,18 @@ public class AutonomousRedNear extends LinearOpMode {
             sleep(1000);
             double jewelCompensation = AutoUtil.knockJewels(robot, this, false);
 
-            robot.wheels.driveDistance(48  - jewelCompensation + columnAdd);  //38.1 rn
+            robot.wheels.driveDistance(40  + jewelCompensation + columnAdd);
             AutoUtil.waitForMovement(robot, this, 5);
 
             AutoUtil.turnDegrees(robot, this, 90);
 
-            robot.wheels.driveDistance(15);
+            robot.wheels.driveDistance(5);
             AutoUtil.waitForMovement(robot, this, 2);
 
             robot.grabber.push();
             sleep(400);
 
-            robot.wheels.driveDistance(-12);
+            robot.wheels.driveDistance(-8);
             AutoUtil.waitForMovement(robot, this, 2);
             robot.grabber.stop();
 

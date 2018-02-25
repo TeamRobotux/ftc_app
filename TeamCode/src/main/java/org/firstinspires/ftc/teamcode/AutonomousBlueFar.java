@@ -75,7 +75,7 @@ public class AutonomousBlueFar extends LinearOpMode {
             //turnDegrees(45);
             sleep(2000);
 
-            robot.wheels.driveDistance(-30 - jewelCompensation);
+            robot.wheels.driveDistance(-30 + jewelCompensation);
             AutoUtil.waitForMovement(robot, this, 7);
 
             robot.wheels.strafeDistance(-25 - distanceAdd);

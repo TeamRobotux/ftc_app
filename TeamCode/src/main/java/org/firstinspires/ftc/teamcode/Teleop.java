@@ -143,11 +143,9 @@ public class Teleop extends LinearOpMode {
 
             if(gamepad2.dpad_down) {
                 robot.relicArm.retract();
-                robot.relicArm.setPulleyLength(20);
             }
             if(gamepad2.dpad_up) {
                 robot.relicArm.extend();
-                robot.relicArm.setPulleyLength(20);
             }
             else {
                 robot.relicArm.stopPulley();

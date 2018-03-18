@@ -12,22 +12,33 @@ public class RelicArm {
     private TuxServo wrist;
     private TuxMotor pulley;
     private TuxMotor lazySusan;
+    private int extension;
 
 
     public RelicArm(HardwareMap hwMap) {
         hand = new TuxServo("hand", hwMap);
-        wrist = new TuxServo("wrist", hwMap);
+        wrist = new TuxServo("wrist", hwMap, false);
         pulley = new TuxMotor("relicPulley", hwMap, 50, 1);
         lazySusan = new TuxMotor("lazySusan", hwMap, 50, 1);
+        extension = 0;
 
     }
 
     public void rotateCounterClockwise() {
-        lazySusan.setPower(-.55);
+        if (extension < 36) {
+            lazySusan.setPower(-.55);
+        } else {
+            lazySusan.setPower(-.3);
+        }
     }
 
     public void rotateClockwise() {
-        lazySusan.setPower(.55);
+        if (extension < 36) {
+            lazySusan.setPower(.55);
+        }
+        else {
+            lazySusan.setPower(.3);
+        }
     }
 
     public void stopSusan() {
@@ -40,10 +51,12 @@ public class RelicArm {
 
     public void extend() {
         pulley.setPower(-1);
+        extension += 1;
     }
 
     public void retract() {
         pulley.setPower(1);
+        extension -= 1;
     }
 
     public void closeHand() {

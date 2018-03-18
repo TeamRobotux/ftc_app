@@ -151,6 +151,10 @@ public final class AutoUtil {
         {
             opMode.sleep(500);
         }
+        else {
+            detector.disable();
+            return 0;
+        }
         robot.jewelR.setPosition(0);
         opMode.sleep(500);
 
@@ -160,11 +164,15 @@ public final class AutoUtil {
             if(blue) {
                 robot.wheels.driveDistance(8);
                 waitForMovement(robot, opMode, 1);
-                jewelCompensation = -8;
+                robot.jewelR.setPosition(1);
+                robot.wheels.driveDistance(-16);
+                jewelCompensation = 8;
             }
             else {
-                robot.wheels.driveDistance(8);
+                robot.wheels.driveDistance(-8);
                 waitForMovement(robot, opMode, 1);
+                robot.jewelR.setPosition(1);
+                robot.wheels.driveDistance(16);
                 jewelCompensation = -8;
             }
         }
@@ -172,15 +180,11 @@ public final class AutoUtil {
             if(blue) {
                 robot.wheels.driveDistance(-8);
                 waitForMovement(robot, opMode, 1);
-                robot.jewelR.setPosition(1);
-                robot.wheels.driveDistance(16);
-                jewelCompensation = -8;
+                jewelCompensation = 8;
             }
             else {
-                robot.wheels.driveDistance(-8);
+                robot.wheels.driveDistance(8);
                 waitForMovement(robot, opMode, 1);
-                robot.jewelR.setPosition(1);
-                robot.wheels.driveDistance(16);
                 jewelCompensation = -8;
             }
         }

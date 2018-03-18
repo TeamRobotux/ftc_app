@@ -65,6 +65,7 @@ public class Teleop extends LinearOpMode {
         double drive;
         double turn;
         double straf;
+        double POWERSCALE;
 
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
@@ -85,6 +86,7 @@ public class Teleop extends LinearOpMode {
             drive = -gamepad1.left_stick_y;
             turn  =  gamepad1.right_stick_x;
             straf = gamepad1.left_stick_x;
+            POWERSCALE = 0.5;
 
             //Pulley Movement
             if(gamepad1.dpad_up) {
@@ -115,7 +117,7 @@ public class Teleop extends LinearOpMode {
                     robot.wheels.strafe((float) straf);
                 }
                 else {
-                    robot.wheels.drivePower((float) drive);
+                    robot.wheels.drivePower((float)((1 - drive) * POWERSCALE + drive));
                 }
             }
 
@@ -143,11 +145,9 @@ public class Teleop extends LinearOpMode {
 
             if(gamepad2.dpad_down) {
                 robot.relicArm.retract();
-                robot.relicArm.setPulleyLength(20);
             }
             if(gamepad2.dpad_up) {
                 robot.relicArm.extend();
-                robot.relicArm.setPulleyLength(20);
             }
             else {
                 robot.relicArm.stopPulley();

@@ -62,10 +62,17 @@ public class Teleop extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        double drive;
-        double turn;
-        double straf;
-        double POWERSCALE;
+        double driveIn;
+        double turnIn;
+        double strafeIn;
+        double driveOut = 0;
+        double turnOut = 0;
+        double strafeOut = 0;
+
+        final double DRIVE_SCALE_FACTOR = .5;
+        final double TURN_SCALE_FACTOR = .7;
+        final double STRAFE_SCALE_FACTOR = .5;
+        final double MINIMUM_DIFFERENCE = .2;
 
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
@@ -83,10 +90,40 @@ public class Teleop extends LinearOpMode {
             // Run wheels in POV mode (note: The joystick goes negative when pushed forwards, so negate it)
             // In this mode the Left stick moves the robot fwd and back, the Right stick turns left and right.
             // This way it's also easy to just drive straight, or just turn.
-            drive = -gamepad1.left_stick_y;
-            turn  =  gamepad1.right_stick_x;
-            straf = gamepad1.left_stick_x;
-            POWERSCALE = 0.5;
+            driveIn = -gamepad1.left_stick_y;
+            turnIn  =  gamepad1.right_stick_x;
+            strafeIn = gamepad1.left_stick_x;
+
+            //Drivetrain controls
+            if(Math.abs(turnIn) > .25) {
+                double difference = turnIn - turnOut;
+                turnOut += difference*TURN_SCALE_FACTOR;
+                if(difference < MINIMUM_DIFFERENCE) { turnOut = turnIn; }
+
+                robot.wheels.turn((float) turnOut);
+                strafeOut = 0;
+                driveOut = 0;
+            }
+            else {
+                if(Math.abs(strafeIn) > .25) {
+                    double difference = strafeIn - strafeOut;
+                    strafeOut += difference*STRAFE_SCALE_FACTOR;
+                    if(difference < MINIMUM_DIFFERENCE) { strafeOut = strafeIn; }
+
+                    robot.wheels.strafe((float) strafeOut);
+                    turnOut = 0;
+                    driveOut = 0;
+                }
+                else {
+                    double difference = driveIn-driveOut;
+                    driveOut += difference*DRIVE_SCALE_FACTOR;
+                    if(difference < MINIMUM_DIFFERENCE) { driveOut = driveIn; }
+
+                    robot.wheels.drivePower((float) driveOut);
+                    turnOut = 0;
+                    strafeOut = 0;
+                }
+            }
 
             //Pulley Movement
             if(gamepad1.dpad_up) {
@@ -99,6 +136,8 @@ public class Teleop extends LinearOpMode {
                 robot.pulley.setPower(0);
             }
 
+            //Glyph Grabber movement
+            //Rotation
             if(gamepad1.dpad_right) {
                 robot.grabber.rotClockwise();
             }
@@ -109,18 +148,7 @@ public class Teleop extends LinearOpMode {
                 robot.grabber.stopRot();
             }
 
-            if(Math.abs(turn) > .25) {
-                robot.wheels.turn((float) turn);
-            }
-            else {
-                if(Math.abs(straf) > .25) {
-                    robot.wheels.strafe((float) straf);
-                }
-                else {
-                    robot.wheels.drivePower((float)((1 - drive) * POWERSCALE + drive));
-                }
-            }
-
+            //Glyph Grabber intake control
             if(gamepad1.b) {
                 robot.grabber.push();
             }
@@ -134,6 +162,7 @@ public class Teleop extends LinearOpMode {
                 robot.grabber.pushAll();
             }
 
+            //Jewel arm control
             if((gamepad1.right_bumper || gamepad2.x) && Math.round(robot.jewelR.getPosition()) == 1) {
                 robot.jewelR.setPosition(0);
                 sleep(10);
@@ -142,7 +171,11 @@ public class Teleop extends LinearOpMode {
                 sleep(10);
             }
 
+            /*BEGINNING OF SECOND DRIVER CONTROLS
 
+            Relic arm controls
+
+            Relic arm pulley control */
             if(gamepad2.dpad_down) {
                 robot.relicArm.retract();
             }
@@ -153,7 +186,7 @@ public class Teleop extends LinearOpMode {
                 robot.relicArm.stopPulley();
             }
 
-
+            //relic arm Rotational controls
             if(gamepad2.dpad_left) {
                 robot.relicArm.rotateCounterClockwise();
             }
@@ -164,6 +197,7 @@ public class Teleop extends LinearOpMode {
                 robot.relicArm.stopSusan();
             }
 
+            //Relic arm wrist controls
             if(gamepad2.y) {
                 robot.relicArm.raiseWrist();
             }
@@ -174,6 +208,7 @@ public class Teleop extends LinearOpMode {
                 robot.relicArm.moveWristParallel();
             }
 
+            //Relic arm hand controls
             if(gamepad2.right_trigger > .5) {
                 robot.relicArm.openHand();
             }

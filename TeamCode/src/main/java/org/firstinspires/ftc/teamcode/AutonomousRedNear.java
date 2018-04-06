@@ -82,7 +82,7 @@ public class AutonomousRedNear extends LinearOpMode {
             robot.wheels.driveDistance(40  + jewelCompensation + columnAdd);
             AutoUtil.waitForMovement(robot, this, 5);
 
-            AutoUtil.turnDegrees(robot, this, 90);
+            AutoUtil.turnDegrees(robot, this, 90, .5);
 
             robot.wheels.driveDistance(5);
             AutoUtil.waitForMovement(robot, this, 2);

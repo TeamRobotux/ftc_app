@@ -81,7 +81,7 @@ public class AutonomousBlueFar extends LinearOpMode {
             robot.wheels.strafeDistance(-25 - distanceAdd);
             AutoUtil.waitForMovement(robot, this,5);
 
-            AutoUtil.turnDegrees(robot, this,180);
+            AutoUtil.turnDegrees(robot, this,180, .5);
 
             robot.wheels.driveDistance(12);
             AutoUtil.waitForMovement(robot, this,2);

@@ -50,12 +50,12 @@ public class RelicArm {
     }
 
     public void extend() {
-        pulley.setPower(-1);
+        pulley.setPower(1);
         extension += 1;
     }
 
     public void retract() {
-        pulley.setPower(1);
+        pulley.setPower(-1);
         extension -= 1;
     }
 

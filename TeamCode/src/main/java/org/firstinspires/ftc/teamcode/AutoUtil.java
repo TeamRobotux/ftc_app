@@ -54,6 +54,10 @@ public final class AutoUtil {
         return time;
     }
 
+    public static void moveToColumn(RobotHardware robot, LinearOpMode opMode, AutoUtil.Column column, boolean blue) {
+
+    }
+
     public static void turnDegrees(RobotHardware robot, LinearOpMode opMode, int degrees) {
         float originalAngle = robot.gyro.imu.getAngularOrientation().firstAngle;
         float deltaAngle = 0;
@@ -130,13 +134,44 @@ public final class AutoUtil {
         opMode.telemetry.addData("VuMark", vuMark.toString());
         vuforia.close();
         return distanceAdd;
+    }
 
-
-
+    public static double knockJewelsColor(RobotHardware robot, LinearOpMode opMode, boolean blue) {
+        final int MINIMUM_RED = 30;
+        int red = robot.jewelColorDistanceSensor.getRed();
+        int jewelCompensation = 0;
+        if(blue) {
+            if (red > MINIMUM_RED) {
+                robot.wheels.driveDistance(8);
+                waitForMovement(robot, opMode, 1);
+                robot.jewelR.setPosition(1);
+                robot.wheels.driveDistance(-16);
+                jewelCompensation = 8;
+            } else {
+                robot.wheels.driveDistance(-8);
+                waitForMovement(robot, opMode, 1);
+                jewelCompensation = 8;
+            }
+        }
+        else {
+            if(red > MINIMUM_RED) {
+                robot.wheels.driveDistance(-8);
+                waitForMovement(robot, opMode, 1);
+                robot.jewelR.setPosition(1);
+                robot.wheels.driveDistance(16);
+                jewelCompensation = -8;
+            }
+            else {
+                robot.wheels.driveDistance(8);
+                waitForMovement(robot, opMode, 1);
+                jewelCompensation = -8;
+            }
+        }
+        return jewelCompensation;
     }
 
     //Moves the robot and knocks the correct jewels off using a computer vision library (DOGECV)
-    public static double knockJewels(RobotHardware robot, LinearOpMode opMode, boolean blue) {
+    public static double knockJewelsVision(RobotHardware robot, LinearOpMode opMode, boolean blue) {
         JewelDetector detector = new JewelDetector();
         detector.init(opMode.hardwareMap.appContext, CameraViewDisplay.getInstance(), 1);
         detector.enable();

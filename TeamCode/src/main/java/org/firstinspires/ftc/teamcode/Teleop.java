@@ -127,10 +127,10 @@ public class Teleop extends LinearOpMode {
 
             //Pulley Movement
             if(gamepad1.dpad_up) {
-                robot.pulley.setPower(-1);
+                robot.pulley.setPower(1);
             }
             else if(gamepad1.dpad_down) {
-                robot.pulley.setPower(.3);
+                robot.pulley.setPower(-1);
             }
             else {
                 robot.pulley.setPower(0);
@@ -138,10 +138,10 @@ public class Teleop extends LinearOpMode {
 
             //Glyph Grabber movement
             //Rotation
-            if(gamepad1.dpad_right) {
+            if(gamepad1.dpad_right || gamepad1.right_bumper) {
                 robot.grabber.rotClockwise();
             }
-            else if(gamepad1.dpad_left) {
+            else if(gamepad1.dpad_left || gamepad1.left_bumper) {
                 robot.grabber.rotCounterClockwise();
             }
             else {

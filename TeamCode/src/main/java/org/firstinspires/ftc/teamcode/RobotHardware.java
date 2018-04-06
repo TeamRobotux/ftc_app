@@ -30,13 +30,15 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.lynx.LynxI2cColorRangeSensor;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.HardwareDevice;
 
-
+import org.firstinspires.ftc.robotcontroller.external.samples.SensorREVColorDistance;
 
 
 public class RobotHardware
@@ -56,6 +58,8 @@ public class RobotHardware
     public TuxGyro gyro;
 
     public RelicArm relicArm;
+
+    public TuxColorProximitySensor jewelColorDistanceSensor;
 
     /* local OpMode members. */
 
@@ -82,6 +86,7 @@ public class RobotHardware
 
         jewelR.setDirection(Servo.Direction.REVERSE);
 
+        jewelColorDistanceSensor = new TuxColorProximitySensor(hwMap);
     }
 }
 

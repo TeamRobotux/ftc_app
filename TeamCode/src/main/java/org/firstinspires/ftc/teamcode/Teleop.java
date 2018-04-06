@@ -127,10 +127,10 @@ public class Teleop extends LinearOpMode {
 
             //Pulley Movement
             if(gamepad1.dpad_up) {
-                robot.pulley.setPower(1);
+                robot.pulley.setPower(-1);
             }
             else if(gamepad1.dpad_down) {
-                robot.pulley.setPower(-1);
+                robot.pulley.setPower(.5\);
             }
             else {
                 robot.pulley.setPower(0);

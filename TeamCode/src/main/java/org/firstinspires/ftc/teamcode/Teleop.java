@@ -127,10 +127,10 @@ public class Teleop extends LinearOpMode {
 
             //Pulley Movement
             if(gamepad1.dpad_up) {
-                robot.pulley.setPower(-1);
+                robot.pulley.setPower(1);
             }
             else if(gamepad1.dpad_down) {
-                robot.pulley.setPower(.25);
+                robot.pulley.setPower(-.25);
             }
             else {
                 robot.pulley.setPower(0);
@@ -163,10 +163,10 @@ public class Teleop extends LinearOpMode {
             }
 
             //Jewel arm control
-            if((gamepad1.right_bumper || gamepad2.x) && Math.round(robot.jewelR.getPosition()) == 1) {
+            if((gamepad1.right_trigger > .7 || gamepad2.x) && Math.round(robot.jewelR.getPosition()) == 1) {
                 robot.jewelR.setPosition(0);
                 sleep(10);
-            } else if(gamepad1.right_bumper || gamepad2.x) {
+            } else if(gamepad1.right_trigger > .7g || gamepad2.x) {
                 robot.jewelR.setPosition(1);
                 sleep(10);
             }

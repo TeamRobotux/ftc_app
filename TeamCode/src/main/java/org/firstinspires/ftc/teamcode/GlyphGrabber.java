@@ -73,6 +73,13 @@ public class GlyphGrabber {
         leftT.move(-1);
     }
 
+    public void suckAll() {
+        rightD.move(1);
+        leftD.move(1);
+        rightT.move(1);
+        leftT.move(1);
+    }
+
     public void stop() {
         rightD.stop();
         leftD.stop();

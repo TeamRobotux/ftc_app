@@ -54,7 +54,7 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="TELEOP Test 1", group="Pushbot")
+@TeleOp(name="Main Teleop", group="Pushbot")
 public class Teleop extends LinearOpMode {
 
     /* Declare OpMode members. */
@@ -105,7 +105,16 @@ public class Teleop extends LinearOpMode {
                 driveOut = 0;
             }
             else {
-                if(Math.abs(strafeIn) > .25) {
+                if(Math.abs(strafeIn) > .25 && Math.abs(driveIn) > .25) {
+                    double difference = strafeIn - strafeOut;
+                    strafeOut += difference*STRAFE_SCALE_FACTOR;
+
+                    difference = driveIn - driveOut;
+                    driveOut += difference*DRIVE_SCALE_FACTOR;
+
+                    robot.wheels.strafeDiagonal(driveOut, strafeOut);
+                }
+                else if(Math.abs(strafeIn) > .25) {
                     double difference = strafeIn - strafeOut;
                     strafeOut += difference*STRAFE_SCALE_FACTOR;
                     if(difference < MINIMUM_DIFFERENCE) { strafeOut = strafeIn; }
@@ -149,7 +158,10 @@ public class Teleop extends LinearOpMode {
             }
 
             //Glyph Grabber intake control
-            if(gamepad1.b) {
+            if(gamepad1.left_trigger > .5 && gamepad1.a) {
+                robot.grabber.suckAll();
+            }
+            else if(gamepad1.b) {
                 robot.grabber.push();
             }
             else if(gamepad1.a) {
@@ -162,11 +174,12 @@ public class Teleop extends LinearOpMode {
                 robot.grabber.pushAll();
             }
 
+
             //Jewel arm control
             if((gamepad1.right_trigger > .7 || gamepad2.x) && Math.round(robot.jewelR.getPosition()) == 1) {
                 robot.jewelR.setPosition(0);
                 sleep(10);
-            } else if(gamepad1.right_trigger > .7g || gamepad2.x) {
+            } else if(gamepad1.right_trigger > .7 || gamepad2.x) {
                 robot.jewelR.setPosition(1);
                 sleep(10);
             }

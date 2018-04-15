@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 /**
@@ -48,13 +49,31 @@ public class Drivetrain {
 
     }
 
-    public void drivePower(float power) {
+    public void setRunMode(DcMotor.RunMode runMode) {
+        for(TuxMotor m : wheels) {
+            m.setRunMode(runMode);
+        }
+    }
+
+    public void drivePower(double power) {
         for(TuxMotor m : wheels) {
             m.setPower(power*0.8);
         }
     }
 
-    public void driveSinglePower(float power, int motor) {
+    public void strafeDiagonal(double x, double y) {
+        if((x > 0 && y > 0) || (x < 0 && y > 0)) {
+            driveFrontL.setPower(x);
+            driveRearR.setPower(x);
+        }
+        else {
+            driveFrontR.setPower(x);
+            driveRearL.setPower(x);
+        }
+
+    }
+
+    public void driveSinglePower(double power, int motor) {
         wheels[motor].setPower(power);
     }
 

@@ -78,4 +78,8 @@ public class TuxMotor {
         return returnString;
     }
 
+    public void setRunMode(DcMotor.RunMode runMode) {
+        motor.setMode(runMode);
+    }
+
 }

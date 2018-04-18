@@ -61,6 +61,13 @@ public class Drivetrain {
         }
     }
 
+    public void drive360(double x, double y, double turn) {
+        driveRearR.setPower(y + x - 2*turn);
+        driveFrontR.setPower(y - x - 2*turn);
+        driveRearL.setPower(y - x + 2*turn);
+        driveFrontL.setPower(y + x + 2*turn);
+    }
+
     public void strafeDiagonal(double x, double y) {
         if((x > 0 && y > 0) || (x < 0 && y > 0)) {
             driveFrontL.setPower(x);

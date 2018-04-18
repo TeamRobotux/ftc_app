@@ -32,14 +32,19 @@ public class TestTeleop extends LinearOpMode {
             turnIn  =  gamepad1.right_stick_x;
             strafeIn = gamepad1.left_stick_x;
 
-            double magnitude = Math.sqrt(Math.pow(driveIn, 2) + Math.pow(driveIn, 2));
+            double magnitude = Math.sqrt(Math.pow(driveIn, 2) + Math.pow(strafeIn, 2));
 
-            double angle = Math.atan2(driveIn, strafeIn);
+            double angle = Math.atan2(driveIn, strafeIn); //strafing right = 0, forward = pi/2
 
-            robot.wheels.driveSinglePower(magnitude*Math.sin(angle + Math.PI/4) + turnIn,0);
-            robot.wheels.driveSinglePower(magnitude*Math.cos(angle + Math.PI/4) - turnIn,1);
-            robot.wheels.driveSinglePower(magnitude*Math.sin(angle + Math.PI/4) - turnIn,2);
-            robot.wheels.driveSinglePower(magnitude*Math.cos(angle + Math.PI/4) + turnIn,3);
+            //robot.wheels.driveSinglePower(magnitude*Math.sin(angle + Math.PI) + turnIn,0); //back //forward
+            //robot.wheels.driveSinglePower(magnitude*Math.sin(angle) - turnIn,1); //forward, forward
+            //robot.wheels.driveSinglePower(magnitude*Math.sin(angle + Math.PI) - turnIn,2); //back, forward
+            //robot.wheels.driveSinglePower(magnitude*Math.sin(angle) + turnIn,3); //forw, forward
+
+            robot.wheels.driveSinglePower(driveIn + strafeIn + 2*turnIn, 0);
+            robot.wheels.driveSinglePower(driveIn - strafeIn - 2*turnIn, 1);
+            robot.wheels.driveSinglePower(driveIn + strafeIn - 2*turnIn, 2);
+            robot.wheels.driveSinglePower(driveIn - strafeIn + 2*turnIn, 3);
         }
     }
 }

@@ -82,6 +82,8 @@ public class Teleop extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
+        robot.jewelR.setPosition(0);  
+
         robot.gyro.composeTelemetry(telemetry);
 
         // run until the end of the match (driver presses STOP)
@@ -95,43 +97,44 @@ public class Teleop extends LinearOpMode {
             strafeIn = gamepad1.left_stick_x;
 
             //Drivetrain controls
-            if(Math.abs(turnIn) > .25) {
-                double difference = turnIn - turnOut;
-                turnOut += difference*TURN_SCALE_FACTOR;
-                if(difference < MINIMUM_DIFFERENCE) { turnOut = turnIn; }
-
-                robot.wheels.turn((float) turnOut);
-                strafeOut = 0;
+            double difference = driveIn - driveOut;
+            if(driveIn == 0) {
                 driveOut = 0;
             }
+            else if(difference < MINIMUM_DIFFERENCE) {
+                driveOut = driveIn;
+            }
             else {
-                if(Math.abs(strafeIn) > .25 && Math.abs(driveIn) > .25) {
-                    double difference = strafeIn - strafeOut;
-                    strafeOut += difference*STRAFE_SCALE_FACTOR;
+                driveOut += difference*DRIVE_SCALE_FACTOR;
+            }
 
-                    difference = driveIn - driveOut;
-                    driveOut += difference*DRIVE_SCALE_FACTOR;
+            difference = strafeIn - strafeOut;
+            if(strafeIn == 0) {
+                strafeOut = 0;
+            }
+            else if(difference < MINIMUM_DIFFERENCE) {
+                strafeOut = strafeIn;
+            }
+            else {
+                strafeOut += difference*STRAFE_SCALE_FACTOR;
+            }
 
-                    robot.wheels.strafeDiagonal(driveOut, strafeOut);
-                }
-                else if(Math.abs(strafeIn) > .25) {
-                    double difference = strafeIn - strafeOut;
-                    strafeOut += difference*STRAFE_SCALE_FACTOR;
-                    if(difference < MINIMUM_DIFFERENCE) { strafeOut = strafeIn; }
+            difference = turnIn - turnOut;
+            if(turnIn == 0) {
+                turnOut = 0;
+            }
+            else if(difference < MINIMUM_DIFFERENCE) {
+                turnOut = turnIn;
+            }
+            else {
+                turnOut += difference*TURN_SCALE_FACTOR;
+            }
 
-                    robot.wheels.strafe((float) strafeOut);
-                    turnOut = 0;
-                    driveOut = 0;
-                }
-                else {
-                    double difference = driveIn-driveOut;
-                    driveOut += difference*DRIVE_SCALE_FACTOR;
-                    if(difference < MINIMUM_DIFFERENCE) { driveOut = driveIn; }
-
-                    robot.wheels.drivePower((float) driveOut);
-                    turnOut = 0;
-                    strafeOut = 0;
-                }
+            if(gamepad1.right_trigger > .5) {
+                robot.wheels.drive360(strafeOut/2, driveOut/2, turnOut/2);
+            }
+            else {
+                robot.wheels.drive360(strafeOut, driveOut, turnOut);
             }
 
             //Pulley Movement
@@ -176,10 +179,10 @@ public class Teleop extends LinearOpMode {
 
 
             //Jewel arm control
-            if((gamepad1.right_trigger > .7 || gamepad2.x) && Math.round(robot.jewelR.getPosition()) == 1) {
+            if((gamepad1.start|| gamepad2.x) && Math.round(robot.jewelR.getPosition()) == 1) {
                 robot.jewelR.setPosition(0);
                 sleep(10);
-            } else if(gamepad1.right_trigger > .7 || gamepad2.x) {
+            } else if(gamepad1.start || gamepad2.x) {
                 robot.jewelR.setPosition(1);
                 sleep(10);
             }

@@ -49,7 +49,7 @@ public class TuxMotor {
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor.setTargetPosition(ticks*reverse);
 
-        motor.setPower(.5);
+        motor.setPower(.3);
     }
 
     public int getEncoderVal() {

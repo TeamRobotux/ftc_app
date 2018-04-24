@@ -73,26 +73,31 @@ public class AutonomousRedNear extends LinearOpMode {
 
             // Wait for the game to start (driver presses PLAY;
 
-            robot.jewelR.setPosition(0);
+            AutoUtil.knockJewelsColor(robot, this, false);
 
             double columnAdd = AutoUtil.scanColumn(robot, this);
 
-            double jewelCompensation = AutoUtil.knockJewelsVision(robot, this, false);
-
-            robot.wheels.driveDistance(40  + jewelCompensation + columnAdd);
+            robot.wheels.driveDistance(36 + columnAdd);
             AutoUtil.waitForMovement(robot, this, 5);
 
             AutoUtil.turnDegrees(robot, this, 90, .5);
 
-            robot.wheels.driveDistance(5);
+            robot.wheels.driveDistance(9);
+
+
+
             AutoUtil.waitForMovement(robot, this, 2);
 
-            robot.grabber.push();
+            robot.grabber.pushAll();
             sleep(400);
 
-            robot.wheels.driveDistance(-8);
+            robot.wheels.driveDistance(-9);
             AutoUtil.waitForMovement(robot, this, 2);
             robot.grabber.stop();
+
+            robot.relicArm.rotateCounterClockwise();
+            robot.jewelServo.moveTo(.5);
+            sleep(250);
 
             stop();
 

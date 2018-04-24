@@ -74,26 +74,28 @@ public class AutonomousBlueNear extends LinearOpMode {
             // Wait for the game to start (driver presses PLAY)
             //Inches == 37.25
 
-            robot.jewelR.setPosition(0);
+            AutoUtil.knockJewelsColor(robot, this, true);
 
             double columnAdd = AutoUtil.scanColumn(robot, this);
 
-            double jewelCompensation = AutoUtil.knockJewelsVision(robot, this, true);
-
-            robot.wheels.driveDistance(-33  + jewelCompensation + columnAdd);  //38.1 rn
+            robot.wheels.driveDistance(-35.35 + columnAdd);  //38.1 rn
             AutoUtil.waitForMovement(robot, this, 5);
             
             AutoUtil.turnDegrees(robot, this, 90, .5);
 
-            robot.wheels.driveDistance(13);
+            robot.wheels.driveDistance(9);
             AutoUtil.waitForMovement(robot, this, 2);
 
-            robot.grabber.push();
-            sleep(400);
+            robot.grabber.pushAll();
+            sleep(700);
 
-            robot.wheels.driveDistance(-12);
+            robot.wheels.driveDistance(-9);
             AutoUtil.waitForMovement(robot, this, 2);
             robot.grabber.stop();
+
+            robot.relicArm.rotateCounterClockwise();
+            robot.jewelServo.moveTo(.5);
+            sleep(250);
 
             stop();
         }

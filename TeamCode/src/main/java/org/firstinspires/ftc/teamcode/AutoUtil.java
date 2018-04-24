@@ -125,10 +125,10 @@ public final class AutoUtil {
 
         double distanceAdd = 0;
         if(vuMark == RelicRecoveryVuMark.LEFT) {
-            distanceAdd += 7;
+            distanceAdd += 7.5;
         }
         else if(vuMark == RelicRecoveryVuMark.RIGHT) {
-            distanceAdd -= 7;
+            distanceAdd -= 7.5;
         }
 
         opMode.telemetry.addData("VuMark", vuMark.toString());
@@ -136,38 +136,32 @@ public final class AutoUtil {
         return distanceAdd;
     }
 
-    public static double knockJewelsColor(RobotHardware robot, LinearOpMode opMode, boolean blue) {
-        final int MINIMUM_RED = 30;
+    public static void knockJewelsColor(RobotHardware robot, LinearOpMode opMode, boolean blue) {
+        robot.jewelServo.moveTo(.5);
+        robot.jewelR.setPosition(0);
+        final int MINIMUM_RED = 15;
+
+        opMode.sleep(1250);
+
         int red = robot.jewelColorDistanceSensor.getRed();
-        int jewelCompensation = 0;
         if(blue) {
             if (red > MINIMUM_RED) {
-                robot.wheels.driveDistance(8);
-                waitForMovement(robot, opMode, 1);
-                robot.jewelR.setPosition(1);
-                robot.wheels.driveDistance(-16);
-                jewelCompensation = 8;
+                robot.jewelServo.moveTo(1);
             } else {
-                robot.wheels.driveDistance(-8);
-                waitForMovement(robot, opMode, 1);
-                jewelCompensation = 8;
+                robot.jewelServo.moveTo(0);
             }
         }
         else {
             if(red > MINIMUM_RED) {
-                robot.wheels.driveDistance(-8);
-                waitForMovement(robot, opMode, 1);
-                robot.jewelR.setPosition(1);
-                robot.wheels.driveDistance(16);
-                jewelCompensation = -8;
+                robot.jewelServo.moveTo(0);
             }
             else {
-                robot.wheels.driveDistance(8);
-                waitForMovement(robot, opMode, 1);
-                jewelCompensation = -8;
+                robot.jewelServo.moveTo(1);
             }
         }
-        return jewelCompensation;
+        opMode.sleep(400);
+        robot.jewelR.setPosition(1);
+        robot.jewelServo.moveTo(.5);
     }
 
     //Moves the robot and knocks the correct jewels off using a computer vision library (DOGECV)

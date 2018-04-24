@@ -69,13 +69,11 @@ public class AutonomousBlueFar extends LinearOpMode {
 
             // Wait for the game to start (driver presses PLAY)
 
-            robot.jewelR.setPosition(0);
+            AutoUtil.knockJewelsColor(robot, this, true);
 
             double distanceAdd = AutoUtil.scanColumn(robot, this);
 
-            double jewelCompensation = AutoUtil.knockJewelsVision(robot, this, true);
-
-            robot.wheels.driveDistance(-30 + jewelCompensation);
+            robot.wheels.driveDistance(-30);
             AutoUtil.waitForMovement(robot, this, 7);
 
             robot.wheels.strafeDistance(-25 - distanceAdd);
@@ -86,12 +84,16 @@ public class AutonomousBlueFar extends LinearOpMode {
             robot.wheels.driveDistance(12);
             AutoUtil.waitForMovement(robot, this,2);
 
-            robot.grabber.push();
+            robot.grabber.pushAll();
             sleep(400);
 
             robot.wheels.driveDistance(-10);
             AutoUtil.waitForMovement(robot, this,2);
             robot.grabber.stop();
+
+            robot.relicArm.rotateCounterClockwise();
+            robot.jewelServo.moveTo(.5);
+            sleep(250);
 
             stop();
 

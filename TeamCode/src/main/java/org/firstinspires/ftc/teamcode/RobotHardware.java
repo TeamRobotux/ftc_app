@@ -50,6 +50,7 @@ public class RobotHardware
 
     public Drivetrain wheels;
 
+    public TuxServo jewelServo;
 
     public GlyphGrabber grabber;
 
@@ -87,6 +88,8 @@ public class RobotHardware
         jewelR.setDirection(Servo.Direction.REVERSE);
 
         jewelColorDistanceSensor = new TuxColorProximitySensor(hwMap);
+
+        jewelServo = new TuxServo("jewelServo", hwMap);
     }
 }
 

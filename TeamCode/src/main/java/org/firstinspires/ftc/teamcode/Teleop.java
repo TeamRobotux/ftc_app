@@ -69,6 +69,8 @@ public class Teleop extends LinearOpMode {
         double turnOut = 0;
         double strafeOut = 0;
 
+        int armDelay = 0;
+
         final double DRIVE_SCALE_FACTOR = .5;
         final double TURN_SCALE_FACTOR = .7;
         final double STRAFE_SCALE_FACTOR = .5;
@@ -82,12 +84,14 @@ public class Teleop extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        robot.jewelR.setPosition(0);  
+        robot.jewelServo.moveTo(.5);
+        robot.jewelR.setPosition(1);
 
         robot.gyro.composeTelemetry(telemetry);
 
         // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) {
+        while(opModeIsActive()) {
+            armDelay--;
 
             // Run wheels in POV mode (note: The joystick goes negative when pushed forwards, so negate it)
             // In this mode the Left stick moves the robot fwd and back, the Right stick turns left and right.
@@ -139,10 +143,16 @@ public class Teleop extends LinearOpMode {
 
             //Pulley Movement
             if(gamepad1.dpad_up) {
-                robot.pulley.setPower(1);
+                robot.pulley.setPower(-1);
+                if(gamepad1.right_trigger > .5) {
+                    robot.pulley.setPower(1);
+                }
             }
             else if(gamepad1.dpad_down) {
-                robot.pulley.setPower(-.25);
+                robot.pulley.setPower(.25  );
+                if(gamepad1.right_trigger > .5) {
+                    robot.pulley.setPower(-1);
+                }
             }
             else {
                 robot.pulley.setPower(0);
@@ -179,12 +189,12 @@ public class Teleop extends LinearOpMode {
 
 
             //Jewel arm control
-            if((gamepad1.start|| gamepad2.x) && Math.round(robot.jewelR.getPosition()) == 1) {
+            if(((gamepad1.left_trigger > .5 && gamepad1.right_trigger > .5) || gamepad2.x) && Math.round(robot.jewelR.getPosition()) == 1 && armDelay < 5) {
                 robot.jewelR.setPosition(0);
-                sleep(10);
-            } else if(gamepad1.start || gamepad2.x) {
+                armDelay = 5;
+            } else if(((gamepad1.left_trigger > .5 && gamepad1.right_trigger > .5) || gamepad2.x) && armDelay < 5) {
                 robot.jewelR.setPosition(1);
-                sleep(10);
+                armDelay = 5;
             }
 
             /*BEGINNING OF SECOND DRIVER CONTROLS
@@ -236,7 +246,7 @@ public class Teleop extends LinearOpMode {
             telemetry.addData("Grabber pos: ", robot.grabber.toString());
             telemetry.addData("grabberR pos: ", robot.jewelR.getPosition());
             telemetry.addData("tolerance:", robot.pulley.getTolerance());
-
+            telemetry.addData("red data:", robot.jewelColorDistanceSensor.getRed());
             telemetry.update();
             sleep(50);
         }

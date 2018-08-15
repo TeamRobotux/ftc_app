@@ -78,7 +78,7 @@ public class AutonomousBlueNear extends LinearOpMode {
 
             double columnAdd = AutoUtil.scanColumn(robot, this);
 
-            robot.wheels.driveDistance(-35.35 + columnAdd);  //38.1 rn
+            robot.wheels.driveDistance(-34.2 + columnAdd);  //38.1 rn
             AutoUtil.waitForMovement(robot, this, 5);
             
             AutoUtil.turnDegrees(robot, this, 90, .5);
@@ -93,9 +93,11 @@ public class AutonomousBlueNear extends LinearOpMode {
             AutoUtil.waitForMovement(robot, this, 2);
             robot.grabber.stop();
 
-            robot.relicArm.rotateCounterClockwise();
+            robot.relicArm.rotateCounterClockwise(false);
             robot.jewelServo.moveTo(.5);
             sleep(250);
+            robot.relicArm.stopSusan();
+
 
             stop();
         }

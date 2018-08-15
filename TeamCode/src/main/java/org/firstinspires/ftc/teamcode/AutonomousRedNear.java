@@ -84,8 +84,6 @@ public class AutonomousRedNear extends LinearOpMode {
 
             robot.wheels.driveDistance(9);
 
-
-
             AutoUtil.waitForMovement(robot, this, 2);
 
             robot.grabber.pushAll();
@@ -95,9 +93,10 @@ public class AutonomousRedNear extends LinearOpMode {
             AutoUtil.waitForMovement(robot, this, 2);
             robot.grabber.stop();
 
-            robot.relicArm.rotateCounterClockwise();
+            robot.relicArm.rotateCounterClockwise(false);
             robot.jewelServo.moveTo(.5);
             sleep(250);
+            robot.relicArm.stopSusan();
 
             stop();
 

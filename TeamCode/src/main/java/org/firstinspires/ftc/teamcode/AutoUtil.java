@@ -61,11 +61,16 @@ public final class AutoUtil {
     public static void turnDegrees(RobotHardware robot, LinearOpMode opMode, int degrees, double power) {
         float originalAngle = robot.gyro.imu.getAngularOrientation().firstAngle;
         float deltaAngle = 0;
+        int adjustedDegrees = degrees;
 
-        while (deltaAngle > degrees+1 || deltaAngle < degrees-1) {
+        if(degrees == 180) {
+            adjustedDegrees = 160;
+        }
+
+        while (deltaAngle > adjustedDegrees+1 || deltaAngle < adjustedDegrees-1) {
             deltaAngle = originalAngle - robot.gyro.imu.getAngularOrientation().firstAngle;
 
-            if (deltaAngle < degrees-1) {
+            if (deltaAngle < adjustedDegrees-1) {
                 robot.wheels.turn(power);
             } else {
                 robot.wheels.turn(power);
@@ -83,14 +88,17 @@ public final class AutoUtil {
         opMode.sleep(100);
 
         deltaAngle = originalAngle - robot.gyro.imu.getAngularOrientation().firstAngle;
+        if(degrees == 180) {
+            adjustedDegrees = 173;
+        }
 
-        while(deltaAngle > degrees+1 || deltaAngle < degrees-1) {
+        while(deltaAngle > adjustedDegrees+1 || deltaAngle < adjustedDegrees-1) {
             deltaAngle = originalAngle - robot.gyro.imu.getAngularOrientation().firstAngle;
 
-            if (deltaAngle < degrees-1) {
-                robot.wheels.turn(.2);
+            if (deltaAngle < adjustedDegrees-1) {
+                robot.wheels.turn(.25);
             } else {
-                robot.wheels.turn(-.2);
+                robot.wheels.turn(-.25);
             }
 
             if(opMode.isStopRequested()) {

@@ -106,6 +106,13 @@ public class Drivetrain {
 
     }
 
+    public void resetEncoders() {
+        for(TuxMotor m : wheels) {
+            m.setRunMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            m.setRunMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
+    }
+
     public void strafeDistance(double inches) {
         driveFrontR.moveDistance(-inches * Math.tan(Math.PI / 180 * 50));
         driveRearR.moveDistance(inches * Math.tan(Math.PI / 180 * 50));

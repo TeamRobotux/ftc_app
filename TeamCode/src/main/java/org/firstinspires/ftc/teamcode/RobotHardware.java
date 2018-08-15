@@ -90,6 +90,7 @@ public class RobotHardware
         jewelColorDistanceSensor = new TuxColorProximitySensor(hwMap);
 
         jewelServo = new TuxServo("jewelServo", hwMap);
+        jewelServo.moveTo(.5);
     }
 }
 

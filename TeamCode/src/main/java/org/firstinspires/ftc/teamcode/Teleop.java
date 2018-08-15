@@ -69,6 +69,8 @@ public class Teleop extends LinearOpMode {
         double turnOut = 0;
         double strafeOut = 0;
 
+        boolean slow;
+
         int armDelay = 0;
 
         final double DRIVE_SCALE_FACTOR = .5;
@@ -149,7 +151,7 @@ public class Teleop extends LinearOpMode {
                 }
             }
             else if(gamepad1.dpad_down) {
-                robot.pulley.setPower(.25  );
+                robot.pulley.setPower(.25);
                 if(gamepad1.right_trigger > .5) {
                     robot.pulley.setPower(-1);
                 }
@@ -199,14 +201,21 @@ public class Teleop extends LinearOpMode {
 
             /*BEGINNING OF SECOND DRIVER CONTROLS
 
+
             Relic arm controls
 
             Relic arm pulley control */
+            if(gamepad2.left_bumper) {
+                slow = true;
+            }
+            else {
+                slow = false;
+            }
             if(gamepad2.dpad_down) {
-                robot.relicArm.retract();
+                robot.relicArm.retract(slow);
             }
             if(gamepad2.dpad_up) {
-                robot.relicArm.extend();
+                robot.relicArm.extend(slow);
             }
             else {
                 robot.relicArm.stopPulley();
@@ -214,10 +223,10 @@ public class Teleop extends LinearOpMode {
 
             //relic arm Rotational controls
             if(gamepad2.dpad_left) {
-                robot.relicArm.rotateCounterClockwise();
+                robot.relicArm.rotateCounterClockwise(false);
             }
             else if(gamepad2.dpad_right) {
-                robot.relicArm.rotateClockwise();
+                robot.relicArm.rotateClockwise(slow);
             }
             else {
                 robot.relicArm.stopSusan();

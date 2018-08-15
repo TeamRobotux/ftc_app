@@ -73,13 +73,15 @@ public class AutonomousBlueFar extends LinearOpMode {
 
             double distanceAdd = AutoUtil.scanColumn(robot, this);
 
-            robot.wheels.driveDistance(-30);
+            robot.wheels.driveDistance(-27);
             AutoUtil.waitForMovement(robot, this, 7);
+            robot.wheels.resetEncoders();
+            sleep(250);
 
-            robot.wheels.strafeDistance(-25 - distanceAdd);
+            robot.wheels.strafeDistance(-18 - distanceAdd);
             AutoUtil.waitForMovement(robot, this,5);
 
-            AutoUtil.turnDegrees(robot, this,180, .5);
+            AutoUtil.turnDegrees(robot, this,180, .3);
 
             robot.wheels.driveDistance(12);
             AutoUtil.waitForMovement(robot, this,2);
@@ -91,9 +93,10 @@ public class AutonomousBlueFar extends LinearOpMode {
             AutoUtil.waitForMovement(robot, this,2);
             robot.grabber.stop();
 
-            robot.relicArm.rotateCounterClockwise();
+            robot.relicArm.rotateCounterClockwise(false);
             robot.jewelServo.moveTo(.5);
             sleep(250);
+            robot.relicArm.stopSusan();
 
             stop();
 

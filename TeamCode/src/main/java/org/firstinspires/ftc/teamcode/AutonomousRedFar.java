@@ -75,14 +75,14 @@ public class AutonomousRedFar extends LinearOpMode {
 
             double distanceAdd = AutoUtil.scanColumn(robot, this);
 
-            robot.wheels.driveDistance(31);
+            robot.wheels.driveDistance(20);
             AutoUtil.waitForMovement(robot, this, 7);
 
 
-            robot.wheels.strafeDistance(-10.5 + distanceAdd);
+            robot.wheels.strafeDistance(-14 + distanceAdd);
             AutoUtil.waitForMovement(robot, this, 5);
 
-            robot.wheels.driveDistance(16);
+            robot.wheels.driveDistance(23);
             AutoUtil. waitForMovement(robot, this, 2);
 
             robot.grabber.pushAll();
@@ -92,9 +92,10 @@ public class AutonomousRedFar extends LinearOpMode {
             AutoUtil.waitForMovement(robot, this, 2);
             robot.grabber.stop();
 
-            robot.relicArm.rotateCounterClockwise();
+            robot.relicArm.rotateCounterClockwise(false);
             robot.jewelServo.moveTo(.5);
             sleep(250);
+            robot.relicArm.stopSusan();
 
             stop();
 

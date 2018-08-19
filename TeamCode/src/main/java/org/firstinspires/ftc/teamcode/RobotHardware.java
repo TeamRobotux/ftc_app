@@ -77,12 +77,12 @@ public class RobotHardware
         hwMap = ahwMap;
 
         // Define and Initialize Motors
-        frLeftDrive  = hwMap.get(DcMotor.class, "left_drive");
-        frRightDrive = hwMap.get(DcMotor.class, "right_drive");
+        frLeftDrive  = hwMap.get(DcMotor.class, "driveFrontL");
+        frRightDrive = hwMap.get(DcMotor.class, "driveFrontR");
 
 
-        baLeftDrive  = hwMap.get(DcMotor.class, "left_drive");
-        baRightDrive = hwMap.get(DcMotor.class, "right_drive");
+        baLeftDrive  = hwMap.get(DcMotor.class, "driveRearL");
+        baRightDrive = hwMap.get(DcMotor.class, "driveRearR");
         frLeftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         frRightDrive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
         baLeftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors

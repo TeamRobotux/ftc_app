@@ -99,10 +99,8 @@ public class TeleOP extends LinearOpMode {
             }
 
             // Output the safe vales to the motor drives.
-            robot.frLeftDrive.setPower(left);
-            robot.frRightDrive.setPower(right);
-            robot.baLeftDrive.setPower(left);
-            robot.baRightDrive.setPower(right);
+            robot.leftDrive.setPower(left);
+            robot.rightDrive.setPower(right);
 
 
 

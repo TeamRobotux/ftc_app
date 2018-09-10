@@ -53,10 +53,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class RobotHardware
 {
     /* Public OpMode members. */
-    public DcMotor  frLeftDrive   = null;
-    public DcMotor  frRightDrive  = null;
-    public DcMotor  baLeftDrive = null;
-    public DcMotor  baRightDrive = null;
+    public DcMotor  leftDrive   = null;
+    public DcMotor  rightDrive  = null;
 
     public static final double MID_SERVO       =  0.5 ;
     public static final double ARM_UP_POWER    =  0.45 ;
@@ -77,27 +75,19 @@ public class RobotHardware
         hwMap = ahwMap;
 
         // Define and Initialize Motors
-        frLeftDrive  = hwMap.get(DcMotor.class, "driveFrontL");
-        frRightDrive = hwMap.get(DcMotor.class, "driveFrontR");
+        leftDrive  = hwMap.get(DcMotor.class, "Left");
+        rightDrive = hwMap.get(DcMotor.class, "Right");
 
 
-        baLeftDrive  = hwMap.get(DcMotor.class, "driveRearL");
-        baRightDrive = hwMap.get(DcMotor.class, "driveRearR");
-        frLeftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-        frRightDrive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
-        baLeftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-        baRightDrive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
+        leftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
+        rightDrive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
 
-        frLeftDrive.setPower(0);
-        frRightDrive.setPower(0);
-        baLeftDrive.setPower(0);
-        baRightDrive.setPower(0);
+        leftDrive.setPower(0);
+        rightDrive.setPower(0);
         // Set all motors to zero power
 
-        frLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        frRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        baLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        baRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 }
 

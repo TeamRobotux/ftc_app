@@ -4,6 +4,7 @@ import org.corningrobotics.enderbots.endercv.OpenCVPipeline;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
+import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
@@ -63,20 +64,33 @@ public class MineralDetector extends OpenCVPipeline {
 
         //Seperate into H, S, V channels
         ArrayList<Mat> whiteChannels = new ArrayList<Mat>();
+        ArrayList<Mat> goldChannels = new ArrayList<Mat>();
         Core.split(hsv, whiteChannels);
+        Core.split(hsv, goldChannels);
 
         //create binary maps of each channel that meets the certain ranges
-        Core.inRange(whiteChannels.get(0), new Scalar(0), new Scalar(0), whiteChannels.get(0));
-        Core.inRange(whiteChannels.get(1), new Scalar(0), new Scalar(0), whiteChannels.get(1));
+        Core.inRange(whiteChannels.get(0), new Scalar(0), new Scalar(180), whiteChannels.get(0));
+        Core.inRange(whiteChannels.get(1), new Scalar(0), new Scalar(20), whiteChannels.get(1));
         Core.inRange(whiteChannels.get(2), new Scalar(0), new Scalar(255), whiteChannels.get(2));
+
+        Core.inRange(goldChannels.get(0), new Scalar(10), new Scalar(30), whiteChannels.get(0));
+        Core.inRange(goldChannels.get(1), new Scalar(90), new Scalar(255), whiteChannels.get(1));
+        Core.inRange(goldChannels.get(2), new Scalar(90), new Scalar(255), whiteChannels.get(2));
 
         //Recombine all the layers, finding all the pixels which fall into each range
         Mat whiteBinaryMap = new Mat();
         Core.bitwise_and(whiteChannels.get(0), whiteChannels.get(1), whiteBinaryMap);
         Core.bitwise_and(whiteChannels.get(2), whiteBinaryMap, whiteBinaryMap);
 
+        Mat goldBinaryMap = new Mat();
+        Core.bitwise_and(goldChannels.get(0), goldChannels.get(1), goldBinaryMap);
+        Core.bitwise_and(goldChannels.get(2), goldBinaryMap, goldBinaryMap);
+
         // we blur the binaryImage image to remove noise (using Gaussian Blur)
         Imgproc.GaussianBlur(whiteBinaryMap, whiteBinaryMap, new Size(9,9), 2, 2);
+        Imgproc.GaussianBlur(goldBinaryMap, goldBinaryMap, new Size(9,9), 2, 2);
+
+        //Circle Detection
 
         //Use the Hough Transform to detect circles. The circles mat is fillled with the locationsn and radius of each circle.
         Mat whiteCircles = new Mat();
@@ -86,14 +100,44 @@ public class MineralDetector extends OpenCVPipeline {
         Mat retImg = new Mat();
         rgba.copyTo(retImg);
 
+
         if(!whiteCircles.empty()) {
             for(int i = 0; i < whiteCircles.rows(); i++) {
                 int x = (int) Math.round(whiteCircles.get(i, 0)[0]);
-                int y = (int) Math.round(whiteCircles.get(i, 1)[0]);
-                int r = (int) Math.round(whiteCircles.get(i, 2)[0]);
+                int y = (int) Math.round(whiteCircles.get(i, 0)[1]);
+                int r = (int) Math.round(whiteCircles.get(i, 0)[2]);
                 Imgproc.circle(retImg, new Point(x, y), r, new Scalar(0, 255, 255), 4);
                 Imgproc.rectangle(retImg, new Point(x - 5, y - 5), new Point(x + 5, y + 5), new Scalar(0, 128, 255), -1);
             }
+        }
+
+        //Cube Detection
+        //Find contours in the source image
+        ArrayList<MatOfPoint> goldMapContours = new ArrayList<MatOfPoint>();
+        Mat hierarchy = new Mat();
+        Imgproc.findContours(goldBinaryMap, goldMapContours, hierarchy, Imgproc.RETR_TREE,Imgproc.CHAIN_APPROX_SIMPLE);
+
+        ArrayList<MatOfPoint2f> goldMapContours2f = new ArrayList<MatOfPoint2f>();
+        //convert goldMap Contours to matofpoint2f
+        for(MatOfPoint mat:goldMapContours) {
+            goldMapContours2f.add(new MatOfPoint2f(mat.toArray()));
+        }
+
+        if(!goldMapContours.isEmpty()) {
+            ArrayList<MatOfPoint2f> curveContours = new ArrayList<MatOfPoint2f>();
+            for(MatOfPoint2f contour:goldMapContours2f) {
+                if(Imgproc.contourArea(contour) > 5000) {
+                    MatOfPoint2f approxPolyDP = new MatOfPoint2f();
+                    Imgproc.approxPolyDP(contour, approxPolyDP, .06 * Imgproc.arcLength(contour, true), true);
+                    curveContours.add(approxPolyDP);
+                }
+            }
+            ArrayList<MatOfPoint> temp = new ArrayList<MatOfPoint>();
+
+            for(MatOfPoint2f tempC:curveContours) {
+                temp.add(new MatOfPoint(tempC.toArray()));
+            }
+            Imgproc.drawContours(retImg, temp, -1, new Scalar(255, 0, 0), 4);
         }
 
         return retImg; // display the image seen by the camera

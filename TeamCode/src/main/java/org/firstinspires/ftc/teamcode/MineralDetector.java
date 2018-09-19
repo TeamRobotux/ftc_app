@@ -6,6 +6,7 @@ import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
+import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
@@ -74,9 +75,9 @@ public class MineralDetector extends OpenCVPipeline {
         Core.inRange(whiteChannels.get(1), new Scalar(0), new Scalar(90), whiteChannels.get(1));
         Core.inRange(whiteChannels.get(2), new Scalar(150), new Scalar(255), whiteChannels.get(2));
 
-        Core.inRange(goldChannels.get(0), new Scalar(0), new Scalar(30), whiteChannels.get(0));
-        Core.inRange(goldChannels.get(1), new Scalar(190), new Scalar(255), whiteChannels.get(1));
-        Core.inRange(goldChannels.get(2), new Scalar(10), new Scalar(255), whiteChannels.get(2));
+        Core.inRange(goldChannels.get(0), new Scalar(0), new Scalar(30), goldChannels.get(0));
+        Core.inRange(goldChannels.get(1), new Scalar(190), new Scalar(255), goldChannels.get(1));
+        Core.inRange(goldChannels.get(2), new Scalar(10), new Scalar(255), goldChannels.get(2));
 
 
 
@@ -89,14 +90,21 @@ public class MineralDetector extends OpenCVPipeline {
         Core.bitwise_and(goldChannels.get(0), goldChannels.get(1), goldBinaryMap);
         Core.bitwise_and(goldChannels.get(2), goldBinaryMap, goldBinaryMap);
 
+        /*
         //floodfill the map
         Mat whiteFloodFillMap = new Mat();
-        whiteBinaryMap.copyTo(whiteBinaryMap);
-        Imgproc.floodFill(whiteFloodFillMap, new Mat(), new Point(1,1), new Scalar(255, 255, 255));
+        Core.copyMakeBorder(whiteBinaryMap, whiteFloodFillMap, 1,1, 1, 1,Core.BORDER_REPLICATE);
+        Imgproc.floodFill(whiteBinaryMap, whiteFloodFillMap, new Point(1,1), new Scalar(255, 255, 255));
+        Core.bitwise_not(whiteFloodFillMap, whiteFloodFillMap);
+        Core.bitwise_or(whiteFloodFillMap, whiteBinaryMap, whiteBinaryMap);
 
         Mat goldFloodFillMap = new Mat();
         goldBinaryMap.copyTo(goldFloodFillMap);
-        Imgproc.floodFill(goldFloodFillMap, new Mat(), new Point(1,1), new Scalar(255, 255, 255));
+        Core.copyMakeBorder(goldBinaryMap, goldFloodFillMap, 1,1, 1, 1,Core.BORDER_REPLICATE);
+        Imgproc.floodFill(goldBinaryMap, goldFloodFillMap, new Point(1,1), new Scalar(255, 255, 255));
+        Core.bitwise_not(goldFloodFillMap, goldFloodFillMap);
+        Core.bitwise_or(goldFloodFillMap, goldBinaryMap, goldBinaryMap);
+        */
 
         // we blur the binaryImage image to remove noise (using Gaussian Blur)
         Imgproc.GaussianBlur(whiteBinaryMap, whiteBinaryMap, new Size(9,9), 2, 2);
@@ -106,7 +114,7 @@ public class MineralDetector extends OpenCVPipeline {
 
         //Use the Hough Transform to detect circles. The circles mat is filled with the locations and radius of each circle.
         Mat whiteCircles = new Mat();
-        Imgproc.HoughCircles(whiteBinaryMap, whiteCircles, Imgproc.HOUGH_GRADIENT, 1.2, 100, 350, 30);
+        Imgproc.HoughCircles(whiteBinaryMap, whiteCircles, Imgproc.HOUGH_GRADIENT, .5, 100, 350, 30);
 
         //Draw the centers and the circles found by HoughCircles onto the base image.
         Mat retImg = new Mat();
@@ -122,7 +130,6 @@ public class MineralDetector extends OpenCVPipeline {
                 Imgproc.rectangle(retImg, new Point(x - 5, y - 5), new Point(x + 5, y + 5), new Scalar(0, 128, 255), -1);
             }
         }
-
 
         //Cube Detection
         //Find contours in the source image

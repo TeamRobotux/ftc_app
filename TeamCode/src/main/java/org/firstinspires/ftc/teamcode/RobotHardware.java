@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -53,12 +54,26 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class RobotHardware
 {
     /* Public OpMode members. */
-    public DcMotor  leftDrive   = null;
-    public DcMotor  rightDrive  = null;
+    Servo hand = null;
+    Servo wrist = null;
+    Servo jewelR = null;
+    Servo jewelServo = null;
+    CRServo glyphRT = null;
+    CRServo glyphLT = null;
+    CRServo glyphRD = null;
+    CRServo glyphLD = null;
+    CRServo flipper = null;
+    DcMotor pulley = null;
+    DcMotor lazySusan = null;
+    DcMotor relicPulley = null;
+    DcMotor driveRearL = null;
+    DcMotor driveRearR = null;
+    DcMotor driveFrontR = null;
+    DcMotor driveFrontL = null;
 
-    public static final double MID_SERVO       =  0.5 ;
-    public static final double ARM_UP_POWER    =  0.45 ;
-    public static final double ARM_DOWN_POWER  = -0.45 ;
+
+
+
 
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
@@ -73,21 +88,25 @@ public class RobotHardware
     public void init(HardwareMap ahwMap) {
         // Save reference to Hardware map
         hwMap = ahwMap;
+        hand = hwMap.get(Servo.class, "hand");
+        wrist = hwMap.get(Servo.class, "wrist");
+        jewelR = hwMap.get(Servo.class, "jewelR");
+        jewelServo = hwMap.get(Servo.class, "jewelServo");
+        glyphRT = hwMap.get(CRServo.class, "glyphRT");
+        glyphLT = hwMap.get(CRServo.class, "glyphLT");
+        glyphRD = hwMap.get(CRServo.class, "glyphRD");
+        glyphLD = hwMap.get(CRServo.class, "glyphLD");
+        flipper = hwMap.get(CRServo.class, "flipper");
+        pulley = hwMap.get(DcMotor.class, "pulley");
+        lazySusan = hwMap.get(DcMotor.class, "lazySusan");
+        relicPulley = hwMap.get(DcMotor.class, "relicPulley");
+        driveRearR = hwMap.get(DcMotor.class, "driveRearR");
+        driveRearL = hwMap.get(DcMotor.class, "driveRearL");
+        driveFrontR = hwMap.get(DcMotor.class, "driveForntR");
+        driveFrontL = hwMap.get(DcMotor.class, "driveFrontL");
 
-        // Define and Initialize Motors
-        leftDrive  = hwMap.get(DcMotor.class, "Left");
-        rightDrive = hwMap.get(DcMotor.class, "Right");
 
 
-        leftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-        rightDrive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
-
-        leftDrive.setPower(0);
-        rightDrive.setPower(0);
-        // Set all motors to zero power
-
-        leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 }
 

@@ -54,16 +54,9 @@ public class TeleOP extends LinearOpMode {
     /* Declare OpMode members. */
     RobotHardware robot           = new RobotHardware();   // Use a Pushbot's hardware
     // could also use HardwarePushbotMatrix class.
-    double          clawOffset      = 0;                       // Servo mid position
-    final double    CLAW_SPEED      = 0.02 ;                   // sets rate to move servo
 
     @Override
     public void runOpMode() {
-        double left;
-        double right;
-        double drive;
-        double turn;
-        double max;
 
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
@@ -73,10 +66,15 @@ public class TeleOP extends LinearOpMode {
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Say", "Hello Driver");    //
         telemetry.update();
-
+        robot.hand.setPosition(0);
+        boolean claw = false;
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-
+        double left;
+        double right;
+        double drive;
+        double turn;
+        double max;
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
@@ -84,23 +82,63 @@ public class TeleOP extends LinearOpMode {
             // In this mode the Left stick moves the robot fwd and back, the Right stick turns left and right.
             // This way it's also easy to just drive straight, or just turn.
             drive = -gamepad1.left_stick_y;
-            turn  =  gamepad1.right_stick_x;
+            turn = gamepad1.right_stick_x;
 
-            // Combine drive and turn for blended motion.
-            left  = drive + turn;
+            left = drive + turn;
             right = drive - turn;
 
-            // Normalize the values so neither exceed +/- 1.0
             max = Math.max(Math.abs(left), Math.abs(right));
-            if (max > 1.0)
-            {
+            if (max > 1.0) {
                 left /= max;
                 right /= max;
             }
+            robot.driveFrontL.setPower(left);
+            robot.driveFrontR.setPower(right);
 
-            // Output the safe vales to the motor drives.
-            robot.leftDrive.setPower(left);
-            robot.rightDrive.setPower(right);
+            if (gamepad1.b)
+                claw = !claw;
+
+            if (claw)
+                robot.hand.setPosition(1);
+
+            if (gamepad1.y)
+                robot.relicPulley.setPower(1);
+            else
+                robot.relicPulley.setPower(0);
+            if (gamepad1.x)
+                robot.relicPulley.setPower(-1);
+            else
+                robot.relicPulley.setPower(0);
+            if (gamepad1.dpad_up)
+                robot.pulley.setPower(1);
+            else
+                robot.pulley.setPower(0);
+            if (gamepad1.dpad_down)
+                robot.pulley.setPower(-1);
+            else
+                robot.pulley.setPower(0);
+            if (gamepad1.dpad_left) {
+                robot.glyphRT.setPower(1);
+                robot.glyphRD.setPower(1);
+                robot.glyphLT.setPower(-1);
+                robot.glyphRT.setPower(1);
+                robot.glyphLD.setPower(-1); }
+            else {
+                robot.glyphRT.setPower(0);
+                robot.glyphRD.setPower(0);
+                robot.glyphLT.setPower(0);
+                robot.glyphLD.setPower(0);
+        }
+            if (gamepad1.dpad_right) {
+                robot.glyphRT.setPower(-1);
+                robot.glyphRD.setPower(-1);
+                robot.glyphLT.setPower(1);
+                robot.glyphLD.setPower(1); }
+            else {
+                robot.glyphRT.setPower(0);
+                robot.glyphRD.setPower(0);
+                robot.glyphLT.setPower(0);
+                robot.glyphLD.setPower(0); }
 
 
 

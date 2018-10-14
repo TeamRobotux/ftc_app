@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Created by jack on 9/26/18.
  */
 
-@TeleOp(name="Intake Testing", group="Linear Opmode")
+@TeleOp(name="Testing", group="Linear Opmode")
 public class IntakeTestingTeleop extends LinearOpMode {
 
         // Declare OpMode members.
@@ -29,16 +29,13 @@ public class IntakeTestingTeleop extends LinearOpMode {
             // run until the end of the match (driver presses STOP)
             while (opModeIsActive()) {
                 if(gamepad1.a) {
-                    robot.intakeR.setPower(-1);
-                    robot.intakeL.setPower(1);
+                    robot.liftPulley.setPower(-1);
                 }
                 else if(gamepad1.b) {
-                    robot.intakeR.setPower(1);
-                    robot.intakeL.setPower(-1);
+                    robot.liftPulley.setPower(1);
                 }
                 else {
-                    robot.intakeR.setPower(0);
-                    robot.intakeL.setPower(0);
+                    robot.liftPulley.setPower(0);
                 }
             }
         }

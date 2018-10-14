@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -15,6 +16,7 @@ public class RobotHardware {
     //Testing stuff
     public CRServo intakeL = null;
     public CRServo intakeR = null;
+    public DcMotorEx liftPulley = null;
 
     /* Constructor */
     public RobotHardware(){
@@ -27,6 +29,7 @@ public class RobotHardware {
         //Testing stuff
         intakeL = ahwMap.get(CRServo.class, "intakeL");
         intakeR = ahwMap.get(CRServo.class, "intakeR");
+        liftPulley = ahwMap.get(DcMotorEx.class, "liftPulley");
     }
 
 

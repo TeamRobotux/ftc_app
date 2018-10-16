@@ -1,6 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.graphics.Bitmap;
+
 import org.corningrobotics.enderbots.endercv.OpenCVPipeline;
+import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -48,7 +51,7 @@ import java.util.List;
  * robotics OpenCV applications.
  */
 
-public class MineralDetector extends OpenCVPipeline {
+public class MineralDetector  {
     private boolean showContours = true;
     // To keep it such that we don't have to instantiate a new Mat every call to processFrame,
     // we declare the Mats up here and reuse them. This is easier on the garbage collector.
@@ -56,10 +59,45 @@ public class MineralDetector extends OpenCVPipeline {
     private Mat whiteThresholded = new Mat();
     private Mat goldThresholded = new Mat();
 
-    // This is called every camera frame.
-    @Override
-    public Mat processFrame(Mat rgba, Mat gray) {
+    enum goldPosition {RIGHT, CENTER, LEFT};
 
+    public goldPosition getPositions(Bitmap input) {
+        ArrayList<Mineral> minerals = processFrame(input);
+
+        Mineral circle1 = new Mineral();
+        Mineral circle2 = new Mineral();
+        Mineral cube = new Mineral();
+
+        boolean cubeFound = false;
+
+        for(Mineral m : minerals) {
+            if(!cubeFound && m.type == Mineral.Type.SILVER) {
+                circle1 = m;
+                cubeFound = true;
+            }
+            else if(m.type == Mineral.Type.SILVER) {
+                circle2 = m;
+            }
+            else {
+                cube = m;
+            }
+        }
+
+        if(cube.center.x < circle1.center.x && cube.center.x < circle2.center.x) {
+            return goldPosition.LEFT;
+        }
+        else if(cube.center.x > circle1.center.x && cube.center.x > circle2.center.x) {
+            return goldPosition.RIGHT;
+        }
+        else {
+            return goldPosition.CENTER;
+        }
+    }
+
+    public ArrayList<Mineral> processFrame(Bitmap input) {
+
+        Mat rgba = new Mat();
+        Utils.bitmapToMat(input, rgba);
 
         // First, we change the colorspace from RGBA to HSV, which is usually better for color
         Imgproc.cvtColor(rgba, hsv, Imgproc.COLOR_RGB2HSV, 3);
@@ -120,14 +158,15 @@ public class MineralDetector extends OpenCVPipeline {
         Mat retImg = new Mat();
         rgba.copyTo(retImg);
 
+        ArrayList<Mineral> minerals = new ArrayList<Mineral>();
 
         if(!whiteCircles.empty()) {
             for(int i = 0; i < whiteCircles.rows(); i++) {
                 int x = (int) Math.round(whiteCircles.get(i, 0)[0]);
                 int y = (int) Math.round(whiteCircles.get(i, 0)[1]);
                 int r = (int) Math.round(whiteCircles.get(i, 0)[2]);
-                Imgproc.circle(retImg, new Point(x, y), r, new Scalar(0, 255, 255), 4);
-                Imgproc.rectangle(retImg, new Point(x - 5, y - 5), new Point(x + 5, y + 5), new Scalar(0, 128, 255), -1);
+
+                minerals.add(new Mineral(new Point(x, y), r, Mineral.Type.SILVER));
             }
         }
 
@@ -144,8 +183,6 @@ public class MineralDetector extends OpenCVPipeline {
             goldMapContours2f.add(new MatOfPoint2f(mat.toArray()));
         }
 
-
-
         if(!goldMapContours.isEmpty()) {
             ArrayList<MatOfPoint2f> curveContours = new ArrayList<MatOfPoint2f>();
             for(MatOfPoint2f contour:goldMapContours2f) {
@@ -158,7 +195,7 @@ public class MineralDetector extends OpenCVPipeline {
                     int cX = (int) (m.get_m10() / m.get_m00());
                     int cY = (int) (m.get_m01() / m.get_m00());
 
-                    Imgproc.circle(retImg, new Point(cX, cY), 7, new Scalar(255, 255, 255), -1);
+                    minerals.add(new Mineral(new Point(cX, cY), Math.sqrt(4*Imgproc.contourArea(contour)/Math.PI), Mineral.Type.GOLD));
                 }
             }
             ArrayList<MatOfPoint> temp = new ArrayList<MatOfPoint>();
@@ -166,9 +203,13 @@ public class MineralDetector extends OpenCVPipeline {
             for(MatOfPoint2f tempC:curveContours) {
                 temp.add(new MatOfPoint(tempC.toArray()));
             }
-            Imgproc.drawContours(retImg, temp, -1, new Scalar(255, 0, 0), 4);
         }
 
-        return retImg; // display the image seen by the camera
+        ArrayList<ArrayList<Point>> retArr = new ArrayList<ArrayList<Point>>();
+
+        return minerals;
     }
+
+
+
 }

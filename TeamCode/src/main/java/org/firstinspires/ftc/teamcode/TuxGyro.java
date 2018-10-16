@@ -29,6 +29,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import android.util.Log;
+
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -49,7 +51,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import java.util.Locale;
 
-public class TuxGyro
+public class TuxGyro extends Thread
 {
     //----------------------------------------------------------------------------------------------
     // State
@@ -61,6 +63,9 @@ public class TuxGyro
     // State used for updating telemetry
     Orientation angles;
     Acceleration gravity;
+
+    public double xPos = 0;
+    public double yPos = 0;
 
     //----------------------------------------------------------------------------------------------
     // Main logic
@@ -159,5 +164,18 @@ public class TuxGyro
 
     String formatDegrees(double degrees){
         return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
+    }
+
+    //TODO check this method
+    @Override
+    public void run() {
+        try {
+            xPos += gravity.xAccel*Math.pow(.03,2);
+            yPos += gravity.yAccel*Math.pow(.03,2);
+            sleep(25);
+        }
+        catch(Exception e) {
+            Log.e("GyroThread", e.toString());
+        }
     }
 }

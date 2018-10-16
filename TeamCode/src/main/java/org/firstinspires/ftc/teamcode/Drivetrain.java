@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 
 
-public class Drivetrain {
+public class Drivetrain implements IsBusy{
     private TuxMotor  driveFrontR  = null;
     private TuxMotor  driveRearR  = null;
     private TuxMotor  driveFrontL  = null;
@@ -22,12 +22,11 @@ public class Drivetrain {
 
     public Drivetrain(HardwareMap hwMap) {
 
-        double tpi = 67.11409395973154;
-        // 7 pulses per 1 revolution (7 tpr)
-        // 40 revolutions per 1 shaft turn (motor gearratio 40:1)
-        // 4 shaft turns per 3 wheel turns (Gear Ratio of sprockets = 3:4)
-        // 1 wheel turn per 12.8 inches
-        // 29.2 pulses per inch????????
+        double tpi = 118.835690842;
+        // 1120 pulses per 1 axle rotation (1120 tpr)
+        // 4 shaft turns per 3 wheel turns (Gear Ratio of sprockets = 4:3)
+        // 1 wheel turn per 4*pi inches
+        // 118.835690842 pulses per inch
 
         driveFrontR = new TuxMotor("driveFrontR", hwMap, tpi, -1);
         driveRearR = new TuxMotor("driveRearR", hwMap, tpi, -1);
@@ -69,6 +68,7 @@ public class Drivetrain {
         driveRearL.setPower(y + x + 2*turn);
         driveFrontL.setPower(y + 2*turn);
     }
+
 
     public void strafeDiagonal(double x, double y) {
         if((x > 0 && y > 0) || (x < 0 && y > 0)) {

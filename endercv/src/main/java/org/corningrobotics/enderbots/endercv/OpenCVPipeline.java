@@ -53,6 +53,7 @@ public abstract class OpenCVPipeline implements CameraBridgeViewBase.CvCameraVie
     protected JavaCameraView cameraView;
     private ViewDisplay viewDisplay;
     protected Context context;
+
     private boolean initStarted = false;
     private boolean inited = false;
 

@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.PIDCoefficients;
 
-public class TuxMotor {
+public class TuxMotor implements IsBusy{
     private DcMotorEx motor;
 
     //Number of encoder pulses per revolution
@@ -72,9 +72,9 @@ public class TuxMotor {
     }
 
     public String getPIDCoefficients(DcMotor.RunMode r) {
-        String returnString = ""+ motor.getPIDCoefficients(r).p;
-        returnString += " " + motor.getPIDCoefficients(r).i;
-        returnString += " " + motor.getPIDCoefficients(r).d;
+        String returnString = ""+ motor.getPIDFCoefficients(r).p;
+        returnString += " " + motor.getPIDFCoefficients(r).i;
+        returnString += " " + motor.getPIDFCoefficients(r).d;
         return returnString;
     }
 

@@ -113,7 +113,7 @@ public class VuforiaNavigator implements Consumer<Frame> {
      * Once you've obtained a license key, copy the string from the Vuforia web site
      * and paste it in to your code on the next line, between the double quotes.
      */
-    private static final String VUFORIA_KEY = " AW8MtBj/////AAABmYbUAoKFzkOUrcA7qBlJWyc9m8GVSa5Kyfw4HkC69/0qDWj+r88HLVMOsLSVJBwYqtn33mSurwsWy3gA1raczYvFBPRqNSeGV01ZE853hyAvLx1gAY15CxeTXRJvhNwRkIrayldlsEOlReX94qWk7IKp2xEh2bqpz1DbhACltsjbqB/Ut0CP/TQw1LGPySA5NiLb0J3fQCeUH6Z30CPCtNKis7Rej36baiG4SwW/yRrtpMkSioyA+tIhwnYKSoleOhJLR+ygnJEsQIP3CsqHdyfrYJK9UMxvo/WYy2b6bOChzZdZTZRSiaFL1SxJTXIOSjoFZG2EjyZFctjn++oTVy+CwJNHnFUPla3hMSVV19Rr";
+    private static final String VUFORIA_KEY = "AW8MtBj/////AAABmYbUAoKFzkOUrcA7qBlJWyc9m8GVSa5Kyfw4HkC69/0qDWj+r88HLVMOsLSVJBwYqtn33mSurwsWy3gA1raczYvFBPRqNSeGV01ZE853hyAvLx1gAY15CxeTXRJvhNwRkIrayldlsEOlReX94qWk7IKp2xEh2bqpz1DbhACltsjbqB/Ut0CP/TQw1LGPySA5NiLb0J3fQCeUH6Z30CPCtNKis7Rej36baiG4SwW/yRrtpMkSioyA+tIhwnYKSoleOhJLR+ygnJEsQIP3CsqHdyfrYJK9UMxvo/WYy2b6bOChzZdZTZRSiaFL1SxJTXIOSjoFZG2EjyZFctjn++oTVy+CwJNHnFUPla3hMSVV19Rr";
 
     // Since ImageTarget trackables use mm to specifiy their dimensions, we must use mm for all the physical dimension.
     // We will define some constants and conversions here
@@ -137,6 +137,7 @@ public class VuforiaNavigator implements Consumer<Frame> {
     int cameraMonitorViewId;
     private boolean targetVisible = false;
 
+
     /**
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
      * localization engine.
@@ -144,7 +145,6 @@ public class VuforiaNavigator implements Consumer<Frame> {
     VuforiaLocalizer vuforia;
 
     public VuforiaNavigator(RobotHardware robot, HardwareMap hardwareMap) {
-
         /*
          * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
          * We can pass Vuforia the handle to a camera preview resource (on the RC phone);
@@ -158,7 +158,8 @@ public class VuforiaNavigator implements Consumer<Frame> {
         parameters.vuforiaLicenseKey = VUFORIA_KEY ;
         parameters.cameraDirection   = CAMERA_CHOICE;
 
-        parameters.cameraName = robot.webcamName    ;
+        parameters.cameraName = robot.webcamName;
+
         this.vuforia = ClassFactory.getInstance().createVuforia(parameters);
 
         //  Instantiate the Vuforia engine

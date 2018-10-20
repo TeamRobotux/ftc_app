@@ -29,13 +29,13 @@ public class IntakeTestingTeleop extends LinearOpMode {
             // run until the end of the match (driver presses STOP)
             while (opModeIsActive()) {
                 if(gamepad1.a) {
-                    robot.liftPulley.setPower(-1);
+                    robot.lift.setPower(-1);
                 }
                 else if(gamepad1.b) {
-                    robot.liftPulley.setPower(1);
+                    robot.lift.setPower(1);
                 }
                 else {
-                    robot.liftPulley.setPower(0);
+                    robot.lift.setPower(0);
                 }
             }
         }

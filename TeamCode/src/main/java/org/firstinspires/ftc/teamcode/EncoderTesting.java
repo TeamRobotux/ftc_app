@@ -2,20 +2,19 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
- * Created by jack on 9/26/18.
+ * Created by jack on 10/20/18.
  */
 
-@TeleOp(name="Main Teleop", group="Linear Opmode")
-public class MainTeleop extends LinearOpMode {
+@TeleOp(name="Encoder testing", group="Linear Opmode")
+public class EncoderTesting extends LinearOpMode {
 
-    // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private RobotHardware robot = new RobotHardware();
 
+    @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -28,19 +27,18 @@ public class MainTeleop extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            robot.drivetrain.drive360(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
-            sleep(50);
-
-            if(gamepad1.a) {
-                robot.lift.setPower(1);
+            if(gamepad1.a && !robot.isBusy()) {
+                robot.drivetrain.driveDistance(12);
             }
-            else if(gamepad1.b) {
-                robot.lift.setPower(-1);
+            else if(gamepad1.b && !robot.isBusy()) {
+                robot.drivetrain.driveDistance(-12);
             }
-            else {
-                robot.lift.setPower(0);
+            else if(gamepad1.x && !robot.isBusy()) {
+                robot.drivetrain.strafeDistance(12);
+            }
+            else if(gamepad1.y && !robot.isBusy()) {
+                robot.drivetrain.strafeDistance(-12);
             }
         }
     }
-
 }

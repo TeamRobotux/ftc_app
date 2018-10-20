@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import android.graphics.Bitmap;
 
+import org.corningrobotics.enderbots.endercv.OpenCVLoader;
 import org.corningrobotics.enderbots.endercv.OpenCVPipeline;
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
@@ -60,6 +61,10 @@ public class MineralDetector  {
     private Mat goldThresholded = new Mat();
 
     enum goldPosition {RIGHT, CENTER, LEFT};
+
+    public MineralDetector() {
+        OpenCVLoader.loadOpenCV();
+    }
 
     public goldPosition getPositions(Bitmap input) {
         ArrayList<Mineral> minerals = processFrame(input);

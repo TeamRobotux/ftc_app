@@ -17,8 +17,6 @@ import org.opencv.core.Point;
 public class RobotHardware implements IsBusy{
 
     //Testing stuff
-    public CRServo intakeL = null;
-    public CRServo intakeR = null;
     public Lift lift= null;
     public Drivetrain drivetrain = null;
     public WebcamName webcamName = null;
@@ -40,8 +38,6 @@ public class RobotHardware implements IsBusy{
     public void init(HardwareMap ahwMap) {
 
         //Testing stuff
-        intakeL = ahwMap.get(CRServo.class, "intakeL");
-        intakeR = ahwMap.get(CRServo.class, "intakeR");
         lift = new Lift(ahwMap);
         drivetrain = new Drivetrain(ahwMap);
         gyro = new TuxGyro(ahwMap);

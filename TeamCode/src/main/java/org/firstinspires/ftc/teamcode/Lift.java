@@ -9,12 +9,14 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Lift implements IsBusy{
     public TuxMotor liftPulley;
-    //TODO find actual tpi
-    private final double tpi = 20;
+    //lift has a 4:1 gear ratio
+    //1 revolution of output shaft = 1120 ticks
+    //radius of pulley = 1.45669 in
+    //TODO find diameter using calipers
+    private final double tpi = 61.184444275352;
 
     //the length of the lift in inches
-    //TODO find actual lift length
-    private final double liftLength = 10;
+    private final double liftLength = 8.8;
 
     public Lift(HardwareMap hwMap) {
         liftPulley = new TuxMotor("liftPulley", hwMap, tpi,1);
@@ -31,6 +33,10 @@ public class Lift implements IsBusy{
 
     public boolean isBusy() {
         return liftPulley.isBusy();
+    }
+
+    public void setPower(double power) {
+        liftPulley.setPower(power);
     }
 
 

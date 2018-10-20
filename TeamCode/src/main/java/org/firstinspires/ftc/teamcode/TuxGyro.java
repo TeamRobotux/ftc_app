@@ -29,6 +29,9 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
 import android.util.Log;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
@@ -43,15 +46,18 @@ import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.MotionDetection;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
+import org.opencv.core.Point;
+
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 
 import java.util.Locale;
 
-public class TuxGyro extends Thread
+public class TuxGyro implements MotionDetection.MotionDetectionListener
 {
     //----------------------------------------------------------------------------------------------
     // State
@@ -64,8 +70,12 @@ public class TuxGyro extends Thread
     Orientation angles;
     Acceleration gravity;
 
+    private static final int deltaT = 20;
+
     public double xPos = 0;
     public double yPos = 0;
+
+    public Point position = new Point(0,0);
 
     //----------------------------------------------------------------------------------------------
     // Main logic
@@ -166,16 +176,9 @@ public class TuxGyro extends Thread
         return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
     }
 
-    //TODO check this method
     @Override
-    public void run() {
-        try {
-            xPos += gravity.xAccel*Math.pow(.03,2);
-            yPos += gravity.yAccel*Math.pow(.03,2);
-            sleep(25);
-        }
-        catch(Exception e) {
-            Log.e("GyroThread", e.toString());
-        }
+    public void onMotionDetected(double vector) {
+        position.x += vector*Math.cos(imu.getAngularOrientation().firstAngle);
+        position.y += vector*Math.sin(imu.getAngularOrientation().firstAngle);
     }
 }

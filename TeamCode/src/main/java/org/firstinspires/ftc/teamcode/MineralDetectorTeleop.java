@@ -1,9 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.util.Log;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.robot.Robot;
 
 import org.corningrobotics.enderbots.endercv.CameraViewDisplay;
+import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
@@ -48,22 +53,52 @@ import java.util.Locale;
 @TeleOp(name="Example: MineralDetectorTeleop")
 public class MineralDetectorTeleop extends OpMode {
     private MineralDetector mDetector;
+    private VuforiaNavigator vNavigator;
+
+    private boolean openCVLoaded = false;
+
+    private RobotHardware robot = new RobotHardware();
     @Override
     public void init() {
-        mDetector = new MineralDetector();
+        robot.init(hardwareMap);
         // can replace with ActivityViewDisplay.getInstance() for fullscreen
-        mDetector.init(hardwareMap.appContext, CameraViewDisplay.getInstance());
         // start the vision system
-        mDetector.enable();
+        vNavigator = new VuforiaNavigator(robot, hardwareMap);
+        /*  BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(hardwareMap.appContext) {
+            @Override
+            public void onManagerConnected(int status) {
+                switch(status) {
+                    case LoaderCallbackInterface.SUCCESS:
+                        mDetector = new MineralDetector();
+                        openCVLoaded = true;
+                        break;
+                    default:
+                        super.onManagerConnected(status);
+                        break;
+                }
+
+            }
+        };
+
+        while(!openCVLoaded) {
+            try {
+                wait(100);
+                Log.d("Teleop", "waiting for opencv to load");
+            }
+            catch(Exception e) {
+                Log.e("Teleop", e.toString());
+            }
+        }*/
     }
 
     @Override
     public void loop() {
         // get a list of contours from the vision system
+        vNavigator.updateFrame();
+        //mDetector.processFrame(vNavigator.getFrame());
     }
 
     public void stop() {
         // stop the vision system
-        mDetector.disable();
     }
 }

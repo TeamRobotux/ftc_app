@@ -28,17 +28,24 @@ public class MainTeleop extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            robot.drivetrain.drive360(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
+            robot.drivetrain.drive360(gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x);
             sleep(50);
 
-            if(gamepad1.a) {
+            if(gamepad1.dpad_up) {
                 robot.lift.setPower(1);
             }
-            else if(gamepad1.b) {
+            else if(gamepad1.dpad_down) {
                 robot.lift.setPower(-1);
             }
             else {
                 robot.lift.setPower(0);
+            }
+
+            if(gamepad1.right_trigger > .5) {
+                robot.intakePulley.setPower(gamepad1.right_trigger);
+            }
+            else if(gamepad1.left_trigger > .5) {
+                robot.intakePulley.setPower(gamepad1.left_trigger);
             }
         }
     }

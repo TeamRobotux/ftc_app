@@ -28,16 +28,16 @@ public class EncoderTesting extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             if(gamepad1.a && !robot.isBusy()) {
-                robot.drivetrain.driveDistance(12);
+                robot.drivetrain.driveDistance(36);
             }
             else if(gamepad1.b && !robot.isBusy()) {
-                robot.drivetrain.driveDistance(-12);
+                robot.drivetrain.driveDistance(-36);
             }
             else if(gamepad1.x && !robot.isBusy()) {
-                robot.drivetrain.strafeDistance(12);
+                robot.drivetrain.strafeDistance(6);
             }
             else if(gamepad1.y && !robot.isBusy()) {
-                robot.drivetrain.strafeDistance(-12);
+                robot.drivetrain.strafeDistance(-6);
             }
         }
     }

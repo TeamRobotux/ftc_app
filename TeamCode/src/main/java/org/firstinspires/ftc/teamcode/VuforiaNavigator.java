@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -56,6 +57,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.YZX;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.FRONT;
+import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.UNKNOWN;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,7 +126,7 @@ public class VuforiaNavigator implements Consumer<Frame> {
     private List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
     // Select which camera you want use.  The FRONT camera is the one on the same side as the screen.
     // Valid choices are:  BACK or FRONT
-    private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
+    private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = UNKNOWN;
 
     final int CAMERA_FORWARD_DISPLACEMENT  = 110;   // eg: Camera is 110 mm in front of robot center
     final int CAMERA_VERTICAL_DISPLACEMENT = 200;   // eg: Camera is 200 mm above ground
@@ -158,6 +160,7 @@ public class VuforiaNavigator implements Consumer<Frame> {
         parameters.vuforiaLicenseKey = VUFORIA_KEY ;
         parameters.cameraDirection   = CAMERA_CHOICE;
 
+        Log.i("VNavigator", robot.webcamName.getUsbDeviceNameIfAttached());
         parameters.cameraName = robot.webcamName;
 
         this.vuforia = ClassFactory.getInstance().createVuforia(parameters);

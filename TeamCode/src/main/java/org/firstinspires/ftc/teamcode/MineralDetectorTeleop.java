@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.util.Log;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -9,9 +11,13 @@ import com.qualcomm.robotcore.robot.Robot;
 import org.corningrobotics.enderbots.endercv.CameraViewDisplay;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.android.Utils;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.videoio.VideoCapture;
 
 import java.util.List;
 import java.util.Locale;
@@ -54,6 +60,7 @@ import java.util.Locale;
 public class MineralDetectorTeleop extends OpMode {
     private MineralDetector mDetector;
     private VuforiaNavigator vNavigator;
+    private VideoCapture cap;
 
     private boolean openCVLoaded = false;
 
@@ -61,9 +68,11 @@ public class MineralDetectorTeleop extends OpMode {
     @Override
     public void init() {
         robot.init(hardwareMap);
+
+        cap = new VideoCapture();
         // can replace with ActivityViewDisplay.getInstance() for fullscreen
         // start the vision system
-        vNavigator = new VuforiaNavigator(robot, hardwareMap);
+        //vNavigator = new VuforiaNavigator(robot, hardwareMap);
         /*  BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(hardwareMap.appContext) {
             @Override
             public void onManagerConnected(int status) {
@@ -94,8 +103,11 @@ public class MineralDetectorTeleop extends OpMode {
     @Override
     public void loop() {
         // get a list of contours from the vision system
-        vNavigator.updateFrame();
+        //vNavigator.updateFrame();
         //mDetector.processFrame(vNavigator.getFrame());
+        Mat img = new Mat();
+        cap.read(img);
+        Log.i("bs", img.getClass().toString());
     }
 
     public void stop() {

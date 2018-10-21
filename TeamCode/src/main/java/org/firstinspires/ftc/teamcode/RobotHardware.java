@@ -21,6 +21,7 @@ public class RobotHardware implements IsBusy{
     public Drivetrain drivetrain = null;
     public WebcamName webcamName = null;
     public TuxGyro gyro = null;
+    public TuxMotor intakePulley = null;
 
 
     //TODO find actual values
@@ -41,8 +42,12 @@ public class RobotHardware implements IsBusy{
         lift = new Lift(ahwMap);
         drivetrain = new Drivetrain(ahwMap);
         gyro = new TuxGyro(ahwMap);
-
         webcamName = ahwMap.get(WebcamName.class, "webcam");
+
+        //radius of pulley = 1.45669
+        //output shaft ticks = 1120
+        //output length of string = 1120/2pi*r
+        intakePulley = new TuxMotor("intakePulley", ahwMap, 1120/(2*Math.PI*1.45669), 1);
     }
 
     @Override

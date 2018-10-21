@@ -22,7 +22,7 @@ public class Drivetrain implements IsBusy{
 
     public Drivetrain(HardwareMap hwMap) {
 
-        double tpi = 66.845076098596;
+        double tpi = 63.661977237;
         // 1120 pulses per 1 axle rotation (1120 tpr)
         // 4 shaft turns per 3 wheel turns (Gear Ratio of sprockets = 4:3)
         // 1 wheel turn per 4*pi inches
@@ -64,9 +64,9 @@ public class Drivetrain implements IsBusy{
     //x = strafe y = drive
     public void drive360(double x, double y, double turn) {
         driveRearR.setPower(y - x - 2*turn);
-        driveFrontR.setPower(y - 2*turn);
+        driveFrontR.setPower(y + x - 2*turn);
         driveRearL.setPower(y + x + 2*turn);
-        driveFrontL.setPower(y + 2*turn);
+        driveFrontL.setPower(y - x + 2*turn);
     }
 
 

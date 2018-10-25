@@ -69,10 +69,9 @@ public class MineralDetectorTeleop extends OpMode {
     public void init() {
         robot.init(hardwareMap);
 
-        cap = new VideoCapture();
         // can replace with ActivityViewDisplay.getInstance() for fullscreen
         // start the vision system
-        //vNavigator = new VuforiaNavigator(robot, hardwareMap);
+        vNavigator = new VuforiaNavigator(robot, hardwareMap);
         /*  BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(hardwareMap.appContext) {
             @Override
             public void onManagerConnected(int status) {

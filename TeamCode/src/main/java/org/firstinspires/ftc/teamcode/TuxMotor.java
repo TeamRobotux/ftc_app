@@ -42,6 +42,11 @@ public class TuxMotor implements IsBusy{
         moveTicks(ticks);
     }
 
+    public void moveRotation(double rotation) {
+        int ticks = (int) (ticksPerInch*rotation);
+        moveTicks(ticks);
+    }
+
 
     public void moveTicks(int ticks) {
         motor.setPower(0);

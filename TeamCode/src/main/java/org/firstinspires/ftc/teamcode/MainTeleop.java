@@ -28,25 +28,65 @@ public class MainTeleop extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            robot.drivetrain.drive360(gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x);
-            sleep(50);
 
-            if(gamepad1.dpad_up) {
-                robot.lift.setPower(1);
-            }
-            else if(gamepad1.dpad_down) {
+            //drivetrain controls
+            robot.drivetrain.drive360(gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x);
+
+            // lift controls
+            if(gamepad1.right_trigger > .5) {
                 robot.lift.setPower(-1);
+            }
+            else if(gamepad1.left_trigger > .5) {
+                robot.lift.setPower(1);
             }
             else {
                 robot.lift.setPower(0);
             }
 
-            if(gamepad1.right_trigger > .5) {
-                robot.intakePulley.setPower(gamepad1.right_trigger);
+
+            //Scoop controls
+            if(gamepad1.left_bumper) {
+                robot.scoopMotor.setPower(-.6);
             }
-            else if(gamepad1.left_trigger > .5) {
-                robot.intakePulley.setPower(gamepad1.left_trigger);
+            else if(gamepad1.right_bumper) {
+                robot.scoopMotor.setPower(.6);
             }
+            else {
+                robot.scoopMotor.setPower(0);
+            }
+
+            //Intake controls
+            if(gamepad1.dpad_right) {
+                robot.intakeLifter.setPower(.6);
+            }
+            else if(gamepad1.dpad_left) {
+                robot.intakeLifter.setPower(-.6);
+            }
+            else {
+                robot.intakeLifter.setPower(0);
+            }
+
+            if(gamepad1.dpad_up) {
+                robot.intakePulley.setPower(.75);
+            }
+            else if(gamepad1.dpad_down) {
+                robot.lift.setPower(-.75);
+            }
+            else {
+                robot.lift.setPower(0);
+            }
+
+            if(gamepad1.a) {
+                robot.intakeServo.move(-1);
+            }
+            else if(gamepad1.b) {
+                robot.intakeServo.move(1);
+            }
+            else if(gamepad1.y){
+                robot.intakeServo.move(0);
+            }
+
+            sleep(50);
         }
     }
 

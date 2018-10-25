@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 
 import org.corningrobotics.enderbots.endercv.OpenCVLoader;
 import org.corningrobotics.enderbots.endercv.OpenCVPipeline;
+import org.firstinspires.ftc.robotcore.internal.vuforia.externalprovider.VuforiaWebcam;
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;

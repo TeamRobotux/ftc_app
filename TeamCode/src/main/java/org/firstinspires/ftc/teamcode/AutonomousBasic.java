@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
@@ -9,17 +10,23 @@ import android.util.Log;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.Consumer;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraFrame;
+import org.opencv.features2d.BOWTrainer;
+
 import java.util.logging.Logger;
 
 /**
  * Created by jack on 10/15/18.
  */
 
-public abstract class AutonomousBasic extends LinearOpMode {
+public abstract class AutonomousBasic extends LinearOpMode implements Consumer<CameraFrame> {
     protected ElapsedTime runtime = new ElapsedTime();
     protected RobotHardware robot = new RobotHardware();
-    protected MineralDetector mDetector = new MineralDetector();
-    protected VuforiaNavigator vNavigator = new VuforiaNavigator(robot, hardwareMap);
+
+    protected Bitmap frame = null;
+    //protected MineralDetector mDetector = new MineralDetector();
+    // protected VuforiaNavigator vNavigator = new VuforiaNavigator(robot, hardwareMap);1
 
     abstract void runAutonomous();
 
@@ -120,13 +127,16 @@ public abstract class AutonomousBasic extends LinearOpMode {
         waitForMovement(robot.drivetrain, opMode, 2);
     }
 
-    public static void goToGoldMineral(RobotHardware robot, LinearOpMode opMode, Mineral gold) {
+    public static void grabGoldMineral(RobotHardware robot, LinearOpMode opMode, Mineral gold) {
         double sizeRatio = gold.radius/Mineral.goldSize;
 
         if(!isMineralCenteredX(robot, gold)) {
             robot.drivetrain.strafeDistance((gold.center.x-robot.cameraCenter.x-robot.cameraOffset)*Mineral.dpi);
             waitForMovement(robot, opMode, 10);
         }
+
+
+        robot.drivetrain.driveDistance(7);
 
         //TODO make robot move forward; maybe add microswitches to detect when mineral is intaked?
     }

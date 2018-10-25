@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -21,7 +22,12 @@ public class RobotHardware implements IsBusy{
     public Drivetrain drivetrain = null;
     public WebcamName webcamName = null;
     public TuxGyro gyro = null;
+
     public TuxMotor intakePulley = null;
+    public TuxCRServo intakeServo = null;
+    public TuxMotor intakeLifter = null;
+
+    public TuxMotor scoopMotor = null;
 
 
     //TODO find actual values
@@ -48,6 +54,15 @@ public class RobotHardware implements IsBusy{
         //output shaft ticks = 1120
         //output length of string = 1120/2pi*r
         intakePulley = new TuxMotor("intakePulley", ahwMap, 1120/(2*Math.PI*1.45669), 1);
+
+        //360 ticks of output shaft, 2:3 gear ratio
+        intakeLifter = new TuxMotor("intakeLifter", ahwMap, 360/2*3, 1, DcMotor.ZeroPowerBehavior.BRAKE);
+
+        intakeServo = new TuxCRServo("intakeServo", ahwMap, DcMotorSimple.Direction.FORWARD);
+
+        //output shaft ticks = 1120
+        //no gear ratio
+        scoopMotor = new TuxMotor("scoopMotor", ahwMap, 1120, 1, DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     @Override

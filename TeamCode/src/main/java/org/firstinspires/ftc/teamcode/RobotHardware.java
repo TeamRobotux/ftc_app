@@ -53,17 +53,20 @@ public class RobotHardware implements IsBusy{
         //radius of pulley = 1.45669
         //output shaft ticks = 1120
         //output length of string = 1120/2pi*r
-        intakePulley = new TuxMotor("intakePulley", ahwMap, 1120/(2*Math.PI*1.45669), 1);
+        intakePulley = new TuxMotor("intakePulley", ahwMap, 1120/(2*Math.PI*1.45669), 1120, 1);
 
-        //360 ticks of output shaft, 2:3 gear ratio
-        intakeLifter = new TuxMotor("intakeLifter", ahwMap, 360/2*3, 1, DcMotor.ZeroPowerBehavior.BRAKE);
+        //1440 ticks of output shaft, 2:3 gear ratio
+        //given rotation = .225, actual = .083333333
+        //actual tpr = .225/.083333
+        intakeLifter = new TuxMotor("intakeLifter", ahwMap, 0, (double) Math.round(1440*2/3*(0.225/((double) 1/12))), 1, DcMotor.ZeroPowerBehavior.BRAKE);
 
         intakeServo = new TuxCRServo("intakeServo", ahwMap, DcMotorSimple.Direction.FORWARD);
 
         //output shaft ticks = 1120
         //no gear ratio
-        scoopMotor = new TuxMotor("scoopMotor", ahwMap, 1120, 1, DcMotor.ZeroPowerBehavior.BRAKE);
+        scoopMotor = new TuxMotor("scoopMotor", ahwMap, 0, 1120,1, DcMotor.ZeroPowerBehavior.BRAKE);
     }
+
 
     @Override
     public boolean isBusy() {

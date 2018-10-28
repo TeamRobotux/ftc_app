@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
 
+import android.util.Log;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -28,10 +30,12 @@ public class Drivetrain implements IsBusy{
         // 1 wheel turn per 4*pi inches
         // 118.835690842 pulses per inch
 
-        driveFrontR = new TuxMotor("driveFrontR", hwMap, tpi, -1);
-        driveRearR = new TuxMotor("driveRearR", hwMap, tpi, -1);
-        driveFrontL = new TuxMotor("driveFrontL", hwMap, tpi, 1);
-        driveRearL = new TuxMotor("driveRearL", hwMap, tpi, 1);
+        double tpr = 1120*4/3;
+
+        driveFrontR = new TuxMotor("driveFrontR", hwMap, tpi, tpr, -1);
+        driveRearR = new TuxMotor("driveRearR", hwMap, tpi, tpr, -1);
+        driveFrontL = new TuxMotor("driveFrontL", hwMap, tpi, tpr, 1);
+        driveRearL = new TuxMotor("driveRearL", hwMap, tpi, tpr, 1);
 
 
 
@@ -138,4 +142,12 @@ public class Drivetrain implements IsBusy{
     }
 
 
+    public void logEncoderValues() {
+        String logString = "";
+        for(TuxMotor m : wheels) {
+            logString += m.getEncoderVal() + ", ";
+        }
+
+        Log.i("drivetrain", logString);
+    }
 }

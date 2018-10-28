@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -27,17 +28,26 @@ public class EncoderTesting extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            if(gamepad1.a && !robot.isBusy()) {
-                robot.drivetrain.driveDistance(36);
+            if(gamepad1.a) {
+                robot.scoopMotor.moveDistance(.25);
+                robot.scoopMotor.logEncoderValues();
+                sleep(50);
             }
-            else if(gamepad1.b && !robot.isBusy()) {
-                robot.drivetrain.driveDistance(-36);
+            else if(gamepad1.b) {
+                robot.scoopMotor.moveDistance(-.25);
+                robot.scoopMotor.logEncoderValues();
+                sleep(50);
             }
-            else if(gamepad1.x && !robot.isBusy()) {
-                robot.drivetrain.strafeDistance(6);
+
+            if(gamepad1.right_bumper) {
+                robot.lift.setPower(-1);
+                sleep(4900);
+                robot.lift.setPower(0);
             }
-            else if(gamepad1.y && !robot.isBusy()) {
-                robot.drivetrain.strafeDistance(-6);
+            else if(gamepad1.left_bumper) {
+                robot.lift.setPower(1);
+                sleep(7750);
+                robot.lift.setPower(0);
             }
         }
     }

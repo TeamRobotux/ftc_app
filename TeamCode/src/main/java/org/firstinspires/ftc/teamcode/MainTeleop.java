@@ -33,10 +33,10 @@ public class MainTeleop extends LinearOpMode {
             robot.drivetrain.drive360(gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x);
 
             // lift controls
-            if(gamepad1.right_trigger > .5) {
+            if(gamepad1.right_bumper) {
                 robot.lift.setPower(-1);
             }
-            else if(gamepad1.left_trigger > .5) {
+            else if(gamepad1.left_bumper) {
                 robot.lift.setPower(1);
             }
             else {
@@ -45,11 +45,11 @@ public class MainTeleop extends LinearOpMode {
 
 
             //Scoop controls
-            if(gamepad1.left_bumper) {
-                robot.scoopMotor.setPower(-.6);
+            if(gamepad1.left_trigger > .25) {
+                robot.scoopMotor.setPower(-gamepad1.left_trigger*.55);
             }
-            else if(gamepad1.right_bumper) {
-                robot.scoopMotor.setPower(.6);
+            else if(gamepad1.right_trigger > .25) {
+                robot.scoopMotor.setPower(gamepad1.right_trigger*.55);
             }
             else {
                 robot.scoopMotor.setPower(0);
@@ -57,23 +57,23 @@ public class MainTeleop extends LinearOpMode {
 
             //Intake controls
             if(gamepad1.dpad_right) {
-                robot.intakeLifter.setPower(.6);
+                robot.intakeLifter.setPower(.45);
             }
             else if(gamepad1.dpad_left) {
-                robot.intakeLifter.setPower(-.6);
+                robot.intakeLifter.setPower(-.75);
             }
             else {
                 robot.intakeLifter.setPower(0);
             }
 
-            if(gamepad1.dpad_up) {
+            if(gamepad1.dpad_down) {
                 robot.intakePulley.setPower(.75);
             }
-            else if(gamepad1.dpad_down) {
-                robot.lift.setPower(-.75);
+            else if(gamepad1.dpad_up) {
+                robot.intakePulley.setPower(-.75);
             }
             else {
-                robot.lift.setPower(0);
+                robot.intakePulley.setPower(0);
             }
 
             if(gamepad1.a) {

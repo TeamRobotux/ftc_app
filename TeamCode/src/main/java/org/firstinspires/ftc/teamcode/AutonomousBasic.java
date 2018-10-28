@@ -5,12 +5,15 @@ import android.hardware.Camera;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Consumer;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraCaptureRequest;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraCaptureSession;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraFrame;
 import org.opencv.features2d.BOWTrainer;
 
@@ -20,7 +23,7 @@ import java.util.logging.Logger;
  * Created by jack on 10/15/18.
  */
 
-public abstract class AutonomousBasic extends LinearOpMode implements Consumer<CameraFrame> {
+public abstract class AutonomousBasic extends LinearOpMode {
     protected ElapsedTime runtime = new ElapsedTime();
     protected RobotHardware robot = new RobotHardware();
 
@@ -43,6 +46,7 @@ public abstract class AutonomousBasic extends LinearOpMode implements Consumer<C
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             runAutonomous();
+            sleep(25000);
             stop();
         }
     }
@@ -98,7 +102,7 @@ public abstract class AutonomousBasic extends LinearOpMode implements Consumer<C
         robot.drivetrain.turn(0);
     }
 
-    public static void waitForMovement(IsBusy object, LinearOpMode opMode, int seconds) {
+    public static void waitForMovement(IsBusy object, LinearOpMode opMode, double seconds) {
         boolean flag = false;
         for(int i = 0; i < seconds*1000 && !flag; i+=10) {
             opMode.sleep(10);
@@ -108,7 +112,7 @@ public abstract class AutonomousBasic extends LinearOpMode implements Consumer<C
                 break;
             }
         }
-        opMode.sleep(50);
+        opMode.sleep(100);
     }
 
     public static void engageLift(RobotHardware robot, LinearOpMode opMode) {

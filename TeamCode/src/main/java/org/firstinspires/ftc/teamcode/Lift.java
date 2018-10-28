@@ -13,22 +13,33 @@ public class Lift implements IsBusy{
     //1 revolution of output shaft = 1120 ticks
     //radius of pulley = 1.45669 in
     //TODO find diameter using calipers
-    private final double tpi = 61.184444275352;
+    private final double tpi = 420*4/(Math.pow(1.45669, 2)*Math.PI);
 
     //the length of the lift in inches
-    private final double liftLength = 8.8;
+
+    //should be .75
+    private final double liftHeightUp = 2;
+    private final double liftHeightDown = 10.25;
 
     public Lift(HardwareMap hwMap) {
-        liftPulley = new TuxMotor("liftPulley", hwMap, tpi,1);
+        liftPulley = new TuxMotor("liftPulley", hwMap, tpi, 1120*4, 1);
         liftPulley.setRunMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     public void lowerLift() {
-        liftPulley.moveDistance(-liftLength);
+        liftPulley.moveDistance(-liftHeightUp);
+    }
+
+    public void setRunMode(DcMotor.RunMode runMode) {
+        liftPulley.setRunMode(runMode);
+    }
+
+    public void logEncoderValues() {
+        liftPulley.logEncoderValues();
     }
 
     public void raiseLift() {
-        liftPulley.moveDistance(liftLength);
+        liftPulley.moveDistance(liftHeightUp);
     }
 
     public boolean isBusy() {

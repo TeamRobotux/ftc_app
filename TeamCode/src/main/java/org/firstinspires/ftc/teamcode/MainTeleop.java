@@ -57,7 +57,7 @@ public class MainTeleop extends LinearOpMode {
 
             //Intake controls
             if(gamepad1.dpad_right) {
-                robot.intakeLifter.setPower(.45);
+                robot.intakeLifter.setPower(.65);
             }
             else if(gamepad1.dpad_left) {
                 robot.intakeLifter.setPower(-.75);

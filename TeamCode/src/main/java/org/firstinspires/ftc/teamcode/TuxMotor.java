@@ -56,6 +56,7 @@ public class TuxMotor implements IsBusy{
 
     public void moveRotation(double rotation) {
         int ticks = (int) Math.round(ticksPerRevolution*rotation);
+        Log.i("encoderTarget", Integer.valueOf(ticks).toString());
         moveTicks(ticks);
     }
 

@@ -28,26 +28,14 @@ public class EncoderTesting extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            if(gamepad1.a) {
-                robot.scoopMotor.moveDistance(.25);
-                robot.scoopMotor.logEncoderValues();
-                sleep(50);
-            }
-            else if(gamepad1.b) {
-                robot.scoopMotor.moveDistance(-.25);
-                robot.scoopMotor.logEncoderValues();
-                sleep(50);
-            }
 
             if(gamepad1.right_bumper) {
-                robot.lift.setPower(-1);
-                sleep(4900);
-                robot.lift.setPower(0);
+                robot.lift.raiseLift();
+                sleep(100);
             }
             else if(gamepad1.left_bumper) {
-                robot.lift.setPower(1);
-                sleep(7750);
-                robot.lift.setPower(0);
+                robot.lift.lowerLift();
+                sleep(100);
             }
         }
     }

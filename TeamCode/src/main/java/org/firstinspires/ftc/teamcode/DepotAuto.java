@@ -12,9 +12,8 @@ public class DepotAuto extends AutonomousBasic {
 
     @Override
     void runAutonomous() {
-        robot.lift.setPower(-1);
-        sleep(4200);
-        robot.lift.setPower(0);
+        robot.lift.raiseLift();
+        waitForMovement(robot.lift, this, 10);
 
         robot.drivetrain.driveDistance(6);
         sleep(100);
@@ -22,26 +21,34 @@ public class DepotAuto extends AutonomousBasic {
         waitForMovement(robot.drivetrain, this, 5);
         robot.lift.setPower(0);
 
-        robot.drivetrain.strafeDistance(-10);
+        robot.drivetrain.strafeDistance(-20);
         waitForMovement(robot, this, 3);
 
         turnDegrees(robot, this, -90, .5);
         waitForMovement(robot, this, 7);
 
+
+        /*
         robot.intakeLifter.moveRotation(.225, .4);
         waitForMovement(robot.intakeLifter, this, 1.5);
         robot.intakeLifter.setRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.intakeLifter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        */
 
-        robot.drivetrain.driveDistance(34);
+        robot.drivetrain.driveDistance(26);
         waitForMovement(robot, this, 5);
 
+        /*
         robot.intakeServo.move(1);
         sleep(2000);
         robot.intakeServo.move(0);
-
-        robot.intakeLifter.moveRotation(-.225,6);
-        waitForMovement(robot.intakeLifter, this, 1.5);
+        */
+//
+//        robot.intakeLifter.setPower(.2);
+//        sleep(250);
+//        robot.intakeLifter.setPower(-.2);
+//        sleep(250);
+//        robot.intakeLifter.setPower(0);
 
         turnDegrees(robot, this, 135, .5);
         waitForMovement(robot, this, 10);
@@ -49,7 +56,7 @@ public class DepotAuto extends AutonomousBasic {
         robot.drivetrain.strafeDistance(-25);
         waitForMovement(robot, this, 10);
 
-        robot.drivetrain.driveDistance(50);
+        robot.drivetrain.driveDistance(55);
         waitForMovement(robot, this, 10);
 
 

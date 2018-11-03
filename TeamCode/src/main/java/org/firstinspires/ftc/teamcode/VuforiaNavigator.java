@@ -126,7 +126,7 @@ public class VuforiaNavigator implements Consumer<Frame> {
     private List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
     // Select which camera you want use.  The FRONT camera is the one on the same side as the screen.
     // Valid choices are:  BACK or FRONT
-    private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = UNKNOWN;
+    private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = VuforiaLocalizer.CameraDirection.BACK;
 
     final int CAMERA_FORWARD_DISPLACEMENT  = 110;   // eg: Camera is 110 mm in front of robot center
     final int CAMERA_VERTICAL_DISPLACEMENT = 200;   // eg: Camera is 200 mm above ground
@@ -152,7 +152,7 @@ public class VuforiaNavigator implements Consumer<Frame> {
          * We can pass Vuforia the handle to a camera preview resource (on the RC phone);
          * If no camera monitor is desired, use the parameterless constructor instead (commented out below).
          */
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
         // VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
@@ -160,11 +160,13 @@ public class VuforiaNavigator implements Consumer<Frame> {
         parameters.vuforiaLicenseKey = VUFORIA_KEY ;
         parameters.cameraDirection   = CAMERA_CHOICE;
 
+
+        /* this is for using a webcam
         Log.i("VNavigator", robot.webcamName.getUsbDeviceNameIfAttached());
         parameters.cameraName = robot.webcamName;
-
-        this.vuforia = ClassFactory.getInstance().createVuforia(parameters);
-
+        parameters.cameraName = VuforiaLocalizer.CameraDirection.UNKNOWN;
+        */
+        
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
 

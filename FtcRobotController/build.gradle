@@ -28,5 +28,5 @@ repositories {
 apply from: 'build.release.gradle'
 
 dependencies {
-    compile project(path: ':openCVLibrary3')
+    implementation project(path: ':openCVLibrary3')
 }

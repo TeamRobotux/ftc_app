@@ -20,6 +20,6 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(':openCVLibrary3')
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':openCVLibrary3')
 }

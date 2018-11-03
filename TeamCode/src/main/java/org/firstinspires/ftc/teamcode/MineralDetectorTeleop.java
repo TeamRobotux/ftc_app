@@ -62,8 +62,6 @@ public class MineralDetectorTeleop extends OpMode {
     private VuforiaNavigator vNavigator;
     private VideoCapture cap;
 
-    private boolean openCVLoaded = false;
-
     private RobotHardware robot = new RobotHardware();
     @Override
     public void init() {
@@ -71,42 +69,20 @@ public class MineralDetectorTeleop extends OpMode {
 
         // can replace with ActivityViewDisplay.getInstance() for fullscreen
         // start the vision system
+
+        mDetector = new MineralDetector();
         vNavigator = new VuforiaNavigator(robot, hardwareMap);
-        /*  BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(hardwareMap.appContext) {
-            @Override
-            public void onManagerConnected(int status) {
-                switch(status) {
-                    case LoaderCallbackInterface.SUCCESS:
-                        mDetector = new MineralDetector();
-                        openCVLoaded = true;
-                        break;
-                    default:
-                        super.onManagerConnected(status);
-                        break;
-                }
+//
 
-            }
-        };
-
-        while(!openCVLoaded) {
-            try {
-                wait(100);
-                Log.d("Teleop", "waiting for opencv to load");
-            }
-            catch(Exception e) {
-                Log.e("Teleop", e.toString());
-            }
-        }*/
+        vNavigator.updateFrame();
     }
 
     @Override
     public void loop() {
+
         // get a list of contours from the vision system
-        //vNavigator.updateFrame();
-        //mDetector.processFrame(vNavigator.getFrame());
-        Mat img = new Mat();
-        cap.read(img);
-        Log.i("bs", img.getClass().toString());
+        vNavigator.updateFrame();
+        mDetector.processFrame(vNavigator.getFrame());
     }
 
     public void stop() {

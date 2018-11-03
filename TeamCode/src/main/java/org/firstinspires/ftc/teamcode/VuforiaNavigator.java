@@ -166,7 +166,7 @@ public class VuforiaNavigator implements Consumer<Frame> {
         parameters.cameraName = robot.webcamName;
         parameters.cameraName = VuforiaLocalizer.CameraDirection.UNKNOWN;
         */
-        
+
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
 

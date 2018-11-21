@@ -8,9 +8,11 @@ import android.hardware.camera2.CameraManager;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.corningrobotics.enderbots.endercv.CameraViewDisplay;
 import org.firstinspires.ftc.robotcore.external.Consumer;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraCaptureRequest;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraCaptureSession;
@@ -28,7 +30,8 @@ public abstract class AutonomousBasic extends LinearOpMode {
     protected RobotHardware robot = new RobotHardware();
 
     protected Bitmap frame = null;
-    //protected MineralDetector mDetector = new MineralDetector();
+    protected MineralDetectorPipeline mDetector;
+    protected FtcDashboard dashboard;
     // protected VuforiaNavigator vNavigator = new VuforiaNavigator(robot, hardwareMap);1
 
     abstract void runAutonomous();
@@ -38,6 +41,14 @@ public abstract class AutonomousBasic extends LinearOpMode {
         telemetry.update();
 
         robot.init(hardwareMap);
+
+        dashboard = FtcDashboard.getInstance();
+
+        mDetector = new MineralDetectorPipeline();
+
+        mDetector.init(hardwareMap.appContext, CameraViewDisplay.getInstance());
+
+        mDetector.enable();
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -131,22 +142,64 @@ public abstract class AutonomousBasic extends LinearOpMode {
         waitForMovement(robot.drivetrain, opMode, 2);
     }
 
-    public static void grabGoldMineral(RobotHardware robot, LinearOpMode opMode, Mineral gold) {
-        double sizeRatio = gold.radius/Mineral.goldSize;
 
-        if(!isMineralCenteredX(robot, gold)) {
-            robot.drivetrain.strafeDistance((gold.center.x-robot.cameraCenter.x-robot.cameraOffset)*Mineral.dpi);
-            waitForMovement(robot, opMode, 10);
+    public void disengageAndSample(RobotHardware robot, LinearOpMode opMode) {
+        robot.lift.raiseLift();
+        waitForMovement(robot.lift, this, 10);
+
+        robot.drivetrain.driveDistance(6);
+        sleep(100);
+        robot.lift.setPower(-1);
+        waitForMovement(robot.drivetrain, this, 5);
+        robot.lift.setPower(0);
+
+        robot.drivetrain.strafeDistance(-20);
+        waitForMovement(robot, this, 3);
+
+
+        //TODO optimize to make quicker?
+
+        turnDegrees(robot, this, -90, .5);
+        waitForMovement(robot, this, 7);
+
+        robot.drivetrain.driveDistance(12);
+        waitForMovement(robot, opMode, 5);
+
+        robot.drivetrain.strafeDistance(-12);
+        waitForMovement(robot, opMode, 5);
+
+        if(isSampleGold(opMode, mDetector)) {
+            //TODO grab it
+
+            robot.drivetrain.strafeDistance(-24);
         }
+        else {
+            robot.drivetrain.strafeDistance(-12);
+            waitForMovement(robot, opMode, 5);
 
+            if(isSampleGold(opMode, mDetector)) {
+                //TODO grab it
 
-        robot.drivetrain.driveDistance(7);
+                robot.drivetrain.strafeDistance(-12s);
+            }
+            else {
+                robot.drivetrain.strafeDistance(-12);
+                waitForMovement(robot, opMode, 5);
 
-        //TODO make robot move forward; maybe add microswitches to detect when mineral is intaked?
+                //TODO grab it
+            }
+        }
     }
 
     public static boolean isMineralCenteredX(RobotHardware robot, Mineral m) {
         return m.center.x < robot.cameraCenter.x- robot.cameraOffset + 20 || m.center.x < robot.cameraCenter.x- robot.cameraOffset - 20;
     }
+
+    public static boolean isSampleGold(LinearOpMode opMode, MineralDetectorPipeline mineralDetector) {
+        opMode.sleep(3000);
+
+        return mineralDetector.getFirstMineral().type == Mineral.Type.GOLD;
+    }
+
 
 }

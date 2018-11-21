@@ -2,67 +2,28 @@ package org.firstinspires.ftc.teamcode;
 
 import android.graphics.Bitmap;
 
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+
 import org.corningrobotics.enderbots.endercv.OpenCVLoader;
 import org.corningrobotics.enderbots.endercv.OpenCVPipeline;
-import org.firstinspires.ftc.robotcore.internal.vuforia.externalprovider.VuforiaWebcam;
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
-import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.imgproc.Moments;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
- * Created by guinea on 10/5/17.
- * -------------------------------------------------------------------------------------
- * Copyright (c) 2018 FTC Team 5484 Enderbots
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- *
- *
- * By downloading, copying, installing or using the software you agree to this license.
- * If you do not agree to this license, do not download, install,
- * copy or use the software.
- * -------------------------------------------------------------------------------------
- * A nice demo class for using OpenCVPipeline. This one also demonstrates how to use OpenCV to threshold
- * for a certain color (blue) and find contours of objects of that color, which is very common in
- * robotics OpenCV applications.
+ * Created by jack on 11/3/18.
  */
 
-public class MineralDetector  {
-
-    static {
-        try {
-            System.loadLibrary("opencv_java3");
-        } catch (UnsatisfiedLinkError e) {
-            OpenCVLoader.loadOpenCV();
-            // pass
-        }
-    }
+public class MineralDetectorPipeline extends OpenCVPipeline {
 
     private boolean showContours = true;
     // To keep it such that we don't have to instantiate a new Mat every call to processFrame,
@@ -71,48 +32,59 @@ public class MineralDetector  {
     private Mat whiteThresholded = new Mat();
     private Mat goldThresholded = new Mat();
 
-    enum goldPosition {RIGHT, CENTER, LEFT};
+    private Mineral silverMineral1 = new Mineral();
+    private Mineral silverMineral2 = new Mineral();
+    private Mineral goldMineral = new Mineral();
 
-    public MineralDetector() {
-    }
+    private Mineral firstMineral = new Mineral();
 
-    public goldPosition getPositions(Bitmap input) {
-        ArrayList<Mineral> minerals = processFrame(input);
+    private ArrayList<Mineral> minerals = new ArrayList<Mineral>()  ;
 
-        Mineral circle1 = new Mineral();
-        Mineral circle2 = new Mineral();
-        Mineral cube = new Mineral();
+    enum goldPosition {RIGHT, CENTER, LEFT}
 
-        boolean cubeFound = false;
+    public MineralDetector.goldPosition getPositions(TelemetryPacket t) {
+
+        if(minerals.size() == 0) { return MineralDetector.goldPosition.CENTER; }
 
         for(Mineral m : minerals) {
-            if(!cubeFound && m.type == Mineral.Type.SILVER) {
-                circle1 = m;
-                cubeFound = true;
-            }
-            else if(m.type == Mineral.Type.SILVER) {
-                circle2 = m;
+            if(m.type == Mineral.Type.SILVER) {
+                if(m.count > silverMineral1.count) {
+                    silverMineral1 = m;
+                }
+                else if(m.count > silverMineral2.count) {
+                    silverMineral2 = m;
+                }
             }
             else {
-                cube = m;
+                if(m.count > goldMineral.count) {
+                    goldMineral = m;
+                }
             }
         }
 
-        if(cube.center.x < circle1.center.x && cube.center.x < circle2.center.x) {
-            return goldPosition.LEFT;
+        double s1Pos = silverMineral1.center.x;
+        double s2Pos = silverMineral2.center.x;
+        double goldPos = goldMineral.center.x;
+
+
+
+        t.put("Spos1", s1Pos);
+        t.put("Spos2", s2Pos);
+        t.put("goldPos", goldPos);
+
+        if(goldPos < s1Pos&& goldPos < s2Pos) {
+            return MineralDetector.goldPosition.LEFT;
         }
-        else if(cube.center.x > circle1.center.x && cube.center.x > circle2.center.x) {
-            return goldPosition.RIGHT;
+        else if(goldPos > s1Pos && goldPos > s2Pos) {
+            return MineralDetector.goldPosition.RIGHT;
         }
         else {
-            return goldPosition.CENTER;
+            return MineralDetector.goldPosition.CENTER;
         }
     }
 
-    public ArrayList<Mineral> processFrame(Bitmap input) {
-
-        Mat rgba = new Mat();
-        Utils.bitmapToMat(input, rgba);
+    @Override
+    public Mat processFrame(Mat rgba, Mat gray) {
 
         // First, we change the colorspace from RGBA to HSV, which is usually better for color
         Imgproc.cvtColor(rgba, hsv, Imgproc.COLOR_RGB2HSV, 3);
@@ -124,13 +96,13 @@ public class MineralDetector  {
         Core.split(hsv, goldChannels);
 
         //create binary maps of each channel that meets the certain ranges
-        Core.inRange(whiteChannels.get(0), new Scalar(89), new Scalar(130), whiteChannels.get(0));
-        Core.inRange(whiteChannels.get(1), new Scalar(0), new Scalar(90), whiteChannels.get(1));
-        Core.inRange(whiteChannels.get(2), new Scalar(150), new Scalar(255), whiteChannels.get(2));
+        Core.inRange(whiteChannels.get(0), new Scalar(RobotConstants.silverHLow), new Scalar(RobotConstants.silverHHigh), whiteChannels.get(0));
+        Core.inRange(whiteChannels.get(1), new Scalar(RobotConstants.silverSLow), new Scalar(RobotConstants.silverSHigh), whiteChannels.get(1));
+        Core.inRange(whiteChannels.get(2), new Scalar(RobotConstants.silverVLow), new Scalar(RobotConstants.silverVHigh), whiteChannels.get(2));
 
-        Core.inRange(goldChannels.get(0), new Scalar(0), new Scalar(30), goldChannels.get(0));
-        Core.inRange(goldChannels.get(1), new Scalar(190), new Scalar(255), goldChannels.get(1));
-        Core.inRange(goldChannels.get(2), new Scalar(10), new Scalar(255), goldChannels.get(2));
+        Core.inRange(goldChannels.get(0), new Scalar(RobotConstants.goldHLow), new Scalar(RobotConstants.goldHHigh), goldChannels.get(0));
+        Core.inRange(goldChannels.get(1), new Scalar(RobotConstants.goldSLow), new Scalar(RobotConstants.goldSHigh), goldChannels.get(1));
+        Core.inRange(goldChannels.get(2), new Scalar(RobotConstants.goldVLow), new Scalar(RobotConstants.goldVHigh), goldChannels.get(2));
 
 
 
@@ -167,13 +139,13 @@ public class MineralDetector  {
 
         //Use the Hough Transform to detect circles. The circles mat is filled with the locations and radius of each circle.
         Mat whiteCircles = new Mat();
-        Imgproc.HoughCircles(whiteBinaryMap, whiteCircles, Imgproc.HOUGH_GRADIENT, .5, 100, 350, 30);
+        Imgproc.HoughCircles(whiteBinaryMap, whiteCircles, Imgproc.HOUGH_GRADIENT, RobotConstants.HoughDp, RobotConstants.HoughDist, RobotConstants.Hough1, RobotConstants.Hough2);
 
         //Draw the centers and the circles found by HoughCircles onto the base image.
         Mat retImg = new Mat();
         rgba.copyTo(retImg);
 
-        ArrayList<Mineral> minerals = new ArrayList<Mineral>();
+        ArrayList<Mineral> newMinerals = new ArrayList<Mineral>();
 
         if(!whiteCircles.empty()) {
             for(int i = 0; i < whiteCircles.rows(); i++) {
@@ -181,7 +153,9 @@ public class MineralDetector  {
                 int y = (int) Math.round(whiteCircles.get(i, 0)[1]);
                 int r = (int) Math.round(whiteCircles.get(i, 0)[2]);
 
-                minerals.add(new Mineral(new Point(x, y), r, Mineral.Type.SILVER));
+                newMinerals.add(new Mineral(new Point(x, y), r, Mineral.Type.SILVER));
+                Imgproc.circle(retImg, new Point(x, y), r, new Scalar(0, 255, 255), 4);
+                Imgproc.rectangle(retImg, new Point(x - 5, y - 5), new Point(x + 5, y + 5), new Scalar(0, 128, 255), -1);
             }
         }
 
@@ -201,16 +175,17 @@ public class MineralDetector  {
         if(!goldMapContours.isEmpty()) {
             ArrayList<MatOfPoint2f> curveContours = new ArrayList<MatOfPoint2f>();
             for(MatOfPoint2f contour:goldMapContours2f) {
-                if(Imgproc.contourArea(contour) > 5000) {
+                if(Imgproc.contourArea(contour) > 50) {
                     MatOfPoint2f approxPolyDP = new MatOfPoint2f();
-                    Imgproc.approxPolyDP(contour, approxPolyDP, .005 * Imgproc.arcLength(contour, true), true);
+                    Imgproc.approxPolyDP(contour, approxPolyDP, .05 * Imgproc.arcLength(contour, true), true);
                     curveContours.add(approxPolyDP);
 
                     Moments m = Imgproc.moments(contour);
                     int cX = (int) (m.get_m10() / m.get_m00());
                     int cY = (int) (m.get_m01() / m.get_m00());
 
-                    minerals.add(new Mineral(new Point(cX, cY), Math.sqrt(4*Imgproc.contourArea(contour)/Math.PI), Mineral.Type.GOLD));
+                    newMinerals.add(new Mineral(new Point(cX, cY), Math.sqrt(4*Imgproc.contourArea(contour)/Math.PI), Mineral.Type.GOLD));
+                    Imgproc.circle(retImg, new Point(cX, cY), 7, new Scalar(255, 255, 255), -1);
                 }
             }
             ArrayList<MatOfPoint> temp = new ArrayList<MatOfPoint>();
@@ -218,11 +193,38 @@ public class MineralDetector  {
             for(MatOfPoint2f tempC:curveContours) {
                 temp.add(new MatOfPoint(tempC.toArray()));
             }
+            Imgproc.drawContours(retImg, temp, -1, new Scalar(255, 0, 0), 4);
         }
 
-        ArrayList<ArrayList<Point>> retArr = new ArrayList<ArrayList<Point>>();
+        if(newMinerals.size() > 0) {
+            averagePosition(newMinerals);
+        }
 
-        return minerals;
+        if(newMinerals.size() > 0) {
+            firstMineral = newMinerals.get(0);
+        }
+
+        return retImg;
+    }
+
+    public void averagePosition(ArrayList<Mineral> inputMinerals) {
+        for(Mineral newMineral : inputMinerals) {
+            boolean matched = false;
+            for(Mineral oldMineral : minerals) {
+                if(newMineral.type == oldMineral.type && oldMineral.mineralIsNear(newMineral)) {
+                    oldMineral.averageLocation(newMineral);
+                    matched = true;
+                    break;
+                }
+            }
+            if(!matched) {
+                minerals.add(newMineral);
+            }
+        }
+    }
+
+    public Mineral getFirstMineral() {
+        return firstMineral;
     }
 
 

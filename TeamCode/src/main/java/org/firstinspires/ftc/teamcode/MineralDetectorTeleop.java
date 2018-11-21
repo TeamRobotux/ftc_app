@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.util.Log;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.robot.Robot;
@@ -19,6 +21,7 @@ import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoCapture;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -58,31 +61,32 @@ import java.util.Locale;
  */
 @TeleOp(name="Example: MineralDetectorTeleop")
 public class MineralDetectorTeleop extends OpMode {
-    private MineralDetector mDetector;
-    private VuforiaNavigator vNavigator;
+    private MineralDetectorPipeline mDetector;
     private VideoCapture cap;
+
+    private FtcDashboard dashboard;
 
     private RobotHardware robot = new RobotHardware();
     @Override
     public void init() {
-        robot.init(hardwareMap);
 
-        // can replace with ActivityViewDisplay.getInstance() for fullscreen
-        // start the vision system
+        dashboard = FtcDashboard.getInstance();
 
-        mDetector = new MineralDetector();
-        vNavigator = new VuforiaNavigator(robot, hardwareMap);
-//
+        mDetector = new MineralDetectorPipeline();
 
-        vNavigator.updateFrame();
+        mDetector.init(hardwareMap.appContext, CameraViewDisplay.getInstance());
+
+        mDetector.enable();
     }
 
     @Override
     public void loop() {
 
-        // get a list of contours from the vision system
-        vNavigator.updateFrame();
-        mDetector.processFrame(vNavigator.getFrame());
+        TelemetryPacket p = new TelemetryPacket();
+        p.put("Gold Pos:", mDetector.getFirstMineral().type);
+
+        dashboard.sendTelemetryPacket(p);
+
     }
 
     public void stop() {

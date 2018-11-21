@@ -24,11 +24,10 @@ public class RobotHardware implements IsBusy{
     public TuxGyro gyro = null;
 
     public TuxMotor intakePulley = null;
-    public TuxCRServo intakeServo = null;
-    public TuxMotor intakeLifter = null;
-
+    public TuxMotor intakeMotor = null;
     public TuxMotor scoopMotor = null;
 
+    public TuxCRServo intakeLifter = null;
 
     //TODO find actual values
     public final double cameraAngle = 15;
@@ -59,10 +58,9 @@ public class RobotHardware implements IsBusy{
         //given rotation = .225, actual = .083333333
         //actual tpr = .225/.083333
 
+        intakeLifter = new TuxCRServo("intakeLifterServo", ahwMap, DcMotorSimple.Direction.FORWARD);
 
-        intakeLifter = new TuxMotor("intakeLifter", ahwMap, 0, (double) Math.round(1440*2/3*(0.225/((double) 1/12))), 1, DcMotor.ZeroPowerBehavior.BRAKE);
-
-        intakeServo = new TuxCRServo("intakeServo", ahwMap, DcMotorSimple.Direction.FORWARD);
+        intakeMotor = new TuxMotor("intakeMotor", ahwMap, 560, 560, 1, DcMotor.ZeroPowerBehavior.FLOAT);
 
         //output shaft ticks = 1120
         //no gear ratio

@@ -133,7 +133,7 @@ public class VuforiaNavigator implements Consumer<Frame> {
     final int CAMERA_LEFT_DISPLACEMENT     = 0;     // eg: Camera is ON the robot's center line
 
     private Frame currentFrame = null;
-    private boolean frameUpdated = false;
+    private boolean frameUpdated = true;
 
     private OpenGLMatrix lastLocation = null;
     int cameraMonitorViewId;
@@ -302,7 +302,11 @@ public class VuforiaNavigator implements Consumer<Frame> {
     }
 
     public Bitmap getFrame() {
-        return vuforia.convertFrameToBitmap((currentFrame));
+        if(currentFrame != null) {
+            Log.i("vNavigator", currentFrame.getImage(0).toString());
+            return vuforia.convertFrameToBitmap(currentFrame.clone());
+        }
+        return null;
     }
 
     public void updatePosition() {

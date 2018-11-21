@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.roadrunner.drive.MecanumDrive;
+import com.acmerobotics.roadrunner.followers.MecanumPIDVAFollower;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -30,9 +32,11 @@ public class MainTeleop extends LinearOpMode {
         while (opModeIsActive()) {
 
             //drivetrain controls
+            //Move the wheels
             robot.drivetrain.drive360(gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x);
 
             // lift controls
+            //Lift or Lower lift
             if(gamepad1.right_bumper) {
                 robot.lift.setPower(-1);
             }
@@ -45,6 +49,7 @@ public class MainTeleop extends LinearOpMode {
 
 
             //Scoop controls
+            //Rotate scoop
             if(gamepad1.left_trigger > .25) {
                 robot.scoopMotor.setPower(-gamepad1.left_trigger*.55);
             }
@@ -56,16 +61,29 @@ public class MainTeleop extends LinearOpMode {
             }
 
             //Intake controls
+            //Move the intake up and down
             if(gamepad1.dpad_right) {
-                robot.intakeLifter.setPower(.65);
+                robot.intakeLifter.move(1);
             }
             else if(gamepad1.dpad_left) {
-                robot.intakeLifter.setPower(-.75);
+                robot.intakeLifter.move(-1);
             }
             else {
-                robot.intakeLifter.setPower(0);
+                robot.intakeLifter.move(0);
             }
 
+            //Extra controls for intake moving up or down
+            if(gamepad2.dpad_right) {
+                robot.intakeLifter.move(1);
+            }
+            else if(gamepad2.dpad_left) {
+                robot.intakeLifter.move(-1);
+            }
+            else {
+                robot.intakeLifter.move(0);
+            }
+
+            //Move the intake in and out
             if(gamepad1.dpad_down) {
                 robot.intakePulley.setPower(.75);
             }
@@ -76,18 +94,20 @@ public class MainTeleop extends LinearOpMode {
                 robot.intakePulley.setPower(0);
             }
 
+            //Move the rotating surgical tubing
             if(gamepad1.a) {
-                robot.intakeServo.move(-1);
+                robot.intakeMotor.setPower(-1);
             }
             else if(gamepad1.b) {
-                robot.intakeServo.move(1);
+                robot.intakeMotor.setPower(1);
             }
             else if(gamepad1.y){
-                robot.intakeServo.move(0);
+                robot.intakeMotor.setPower(0);
             }
 
             sleep(50);
         }
+
     }
 
 }

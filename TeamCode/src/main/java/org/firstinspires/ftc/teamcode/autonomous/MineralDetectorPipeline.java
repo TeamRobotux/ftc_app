@@ -1,12 +1,9 @@
-package org.firstinspires.ftc.teamcode;
-
-import android.graphics.Bitmap;
+package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 
-import org.corningrobotics.enderbots.endercv.OpenCVLoader;
 import org.corningrobotics.enderbots.endercv.OpenCVPipeline;
-import org.opencv.android.Utils;
+import org.firstinspires.ftc.teamcode.robot.RobotConstants;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;

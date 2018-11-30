@@ -1,25 +1,14 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.autonomous;
 
 import android.graphics.Bitmap;
-import android.hardware.Camera;
-import android.hardware.camera2.CameraAccessException;
-import android.hardware.camera2.CameraCharacteristics;
-import android.hardware.camera2.CameraManager;
-import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.corningrobotics.enderbots.endercv.CameraViewDisplay;
-import org.firstinspires.ftc.robotcore.external.Consumer;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraCaptureRequest;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraCaptureSession;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraFrame;
-import org.opencv.features2d.BOWTrainer;
-
-import java.util.logging.Logger;
+import org.firstinspires.ftc.teamcode.robot.IsBusy;
+import org.firstinspires.ftc.teamcode.robot.RobotHardware;
 
 /**
  * Created by jack on 10/15/18.
@@ -180,7 +169,7 @@ public abstract class AutonomousBasic extends LinearOpMode {
             if(isSampleGold(opMode, mDetector)) {
                 //TODO grab it
 
-                robot.drivetrain.strafeDistance(-12s);
+                robot.drivetrain.strafeDistance(-12);
             }
             else {
                 robot.drivetrain.strafeDistance(-12);

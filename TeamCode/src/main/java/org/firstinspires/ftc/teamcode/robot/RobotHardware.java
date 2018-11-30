@@ -1,12 +1,8 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.robot;
 
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.opencv.core.Point;
@@ -15,19 +11,15 @@ import org.opencv.core.Point;
  * Created by jack on 9/26/18.
  */
 
-public class RobotHardware implements IsBusy{
+public class RobotHardware implements IsBusy {
 
     //Testing stuff
     public Lift lift= null;
     public Drivetrain drivetrain = null;
-    public WebcamName webcamName = null;
     public TuxGyro gyro = null;
+    public Intake intake = null;
 
-    public TuxMotor intakePulley = null;
-    public TuxMotor intakeMotor = null;
     public TuxMotor scoopMotor = null;
-
-    public TuxCRServo intakeLifter = null;
 
     //TODO find actual values
     public final double cameraAngle = 15;
@@ -47,21 +39,8 @@ public class RobotHardware implements IsBusy{
         lift = new Lift(ahwMap);
         drivetrain = new Drivetrain(ahwMap);
         gyro = new TuxGyro(ahwMap);
-        webcamName = ahwMap.get(WebcamName.class, "webcam");
 
-        //radius of pulley = 1.45669
-        //output shaft ticks = 1120
-        //output length of string = 1120/2pi*r
-        intakePulley = new TuxMotor("intakePulley", ahwMap, 1120/(2*Math.PI*1.45669), 1120, 1);
-
-        //1440 ticks of output shaft, 2:3 gear ratio
-        //given rotation = .225, actual = .083333333
-        //actual tpr = .225/.083333
-
-        intakeLifter = new TuxCRServo("intakeLifterServo", ahwMap, DcMotorSimple.Direction.FORWARD);
-
-        intakeMotor = new TuxMotor("intakeMotor", ahwMap, 560, 560, 1, DcMotor.ZeroPowerBehavior.FLOAT);
-
+        intake = new Intake(ahwMap);
         //output shaft ticks = 1120
         //no gear ratio
         scoopMotor = new TuxMotor("scoopMotor", ahwMap, 0, 1120,1, DcMotor.ZeroPowerBehavior.BRAKE);

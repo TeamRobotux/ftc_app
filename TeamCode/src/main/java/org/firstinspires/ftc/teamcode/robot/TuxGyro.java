@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.robot;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -64,7 +64,7 @@ public class TuxGyro implements MotionDetection.MotionDetectionListener
     //----------------------------------------------------------------------------------------------
 
     // The IMU sensor object
-    BNO055IMU imu;
+    public BNO055IMU imu;
 
     // State used for updating telemetry
     Orientation angles;

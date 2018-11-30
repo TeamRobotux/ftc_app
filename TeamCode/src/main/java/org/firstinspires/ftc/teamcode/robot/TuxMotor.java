@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.robot;
 
 /**
  * Created by JackT on 11/4/2017.
@@ -9,10 +9,10 @@ import android.util.Log;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.PIDCoefficients;
 
-public class TuxMotor implements IsBusy{
+import org.firstinspires.ftc.teamcode.robot.IsBusy;
+
+public class TuxMotor implements IsBusy {
     private DcMotorEx motor;
 
     //Number of encoder pulses per revolution

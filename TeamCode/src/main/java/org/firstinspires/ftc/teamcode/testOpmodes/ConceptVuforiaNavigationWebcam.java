@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.testOpmodes;
 
 import android.graphics.Bitmap;
 
@@ -91,7 +91,6 @@ import java.util.Locale;
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
-
 @Disabled @TeleOp(name="Concept: Vuforia Nav Webcam", group ="Concept")
 public class ConceptVuforiaNavigationWebcam extends LinearOpMode {
 

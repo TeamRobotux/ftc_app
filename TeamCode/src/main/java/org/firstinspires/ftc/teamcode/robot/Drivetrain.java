@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.robot;
 
 
 import android.util.Log;
@@ -15,7 +15,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 
 public class Drivetrain implements IsBusy{
-    private TuxMotor  driveFrontR  = null;
+    private TuxMotor driveFrontR  = null;
     private TuxMotor  driveRearR  = null;
     private TuxMotor  driveFrontL  = null;
     private TuxMotor  driveRearL  = null;

@@ -1,8 +1,6 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.autonomous;
 
 import org.opencv.core.Point;
-
-import java.util.ArrayList;
 
 /**
  * Created by jack on 10/15/18.

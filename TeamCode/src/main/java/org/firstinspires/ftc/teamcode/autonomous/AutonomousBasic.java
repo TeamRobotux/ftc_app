@@ -66,7 +66,7 @@ public abstract class AutonomousBasic extends LinearOpMode {
             if (deltaAngle < adjustedDegrees-1) {
                 robot.drivetrain.turn(power);
             } else {
-                robot.drivetrain.turn(power);
+                robot.drivetrain.turn(-power);
             }
 
             if(opMode.isStopRequested()) {
@@ -82,7 +82,7 @@ public abstract class AutonomousBasic extends LinearOpMode {
 
         deltaAngle = originalAngle - robot.gyro.imu.getAngularOrientation().firstAngle;
         if(degrees == 180) {
-            adjustedDegrees = 173;
+            adjustedDegrees = 179;
         }
 
         while(deltaAngle > adjustedDegrees+1 || deltaAngle < adjustedDegrees-1) {
@@ -132,50 +132,59 @@ public abstract class AutonomousBasic extends LinearOpMode {
     }
 
 
-    public void disengageAndSample(RobotHardware robot, LinearOpMode opMode) {
-        robot.lift.raiseLift();
-        waitForMovement(robot.lift, this, 10);
+    public double disengageAndSample(RobotHardware robot, LinearOpMode opMode) {
+//        robot.lift.raiseLift();
+//        waitForMovement(robot.lift, this, 10);
+//
+//        robot.drivetrain.driveDistance(6);
+//        sleep(100);
 
-        robot.drivetrain.driveDistance(6);
-        sleep(100);
-        robot.lift.setPower(-1);
-        waitForMovement(robot.drivetrain, this, 5);
-        robot.lift.setPower(0);
+        //TODO change
+//        robot.lift.setPower(-1);
+//        waitForMovement(robot.drivetrain, this, 5);
+//        robot.lift.setPower(0);
 
-        robot.drivetrain.strafeDistance(-20);
+        robot.drivetrain.strafeDistance(-14, .8);
         waitForMovement(robot, this, 3);
-
 
         //TODO optimize to make quicker?
 
-        turnDegrees(robot, this, -90, .5);
-        waitForMovement(robot, this, 7);
+        turnDegrees(robot, this, -100, .4);
+        waitForMovement(robot, this, 8);
 
-        robot.drivetrain.driveDistance(12);
-        waitForMovement(robot, opMode, 5);
-
-        robot.drivetrain.strafeDistance(-12);
+        robot.drivetrain.strafeDistance(0, .4);
         waitForMovement(robot, opMode, 5);
 
         if(isSampleGold(opMode, mDetector)) {
-            //TODO grab it
+            robot.drivetrain.driveDistance(18, 1);
+            waitForMovement(robot, this, 2);
+            robot.drivetrain.driveDistance(-18, 1);
+            waitForMovement(robot, this, 2);
 
-            robot.drivetrain.strafeDistance(-24);
+            return -36;
         }
         else {
-            robot.drivetrain.strafeDistance(-12);
+            robot.drivetrain.strafeDistance(-20, .75);
             waitForMovement(robot, opMode, 5);
 
             if(isSampleGold(opMode, mDetector)) {
-                //TODO grab it
+                robot.drivetrain.driveDistance(18, 1);
+                waitForMovement(robot, this, 2);
+                robot.drivetrain.driveDistance(-18, 1);
+                waitForMovement(robot, this, 2);
 
-                robot.drivetrain.strafeDistance(-12);
+                return -20;
             }
             else {
-                robot.drivetrain.strafeDistance(-12);
+                robot.drivetrain.strafeDistance(-20, .75);
                 waitForMovement(robot, opMode, 5);
 
-                //TODO grab it
+                robot.drivetrain.driveDistance(18,1);
+                waitForMovement(robot, this, 2);
+                robot.drivetrain.driveDistance(-18,1);
+                waitForMovement(robot, this, 2);
+
+                return 0;
             }
         }
     }
@@ -185,7 +194,7 @@ public abstract class AutonomousBasic extends LinearOpMode {
     }
 
     public static boolean isSampleGold(LinearOpMode opMode, MineralDetectorPipeline mineralDetector) {
-        opMode.sleep(3000);
+        opMode.sleep(1000);
 
         return mineralDetector.getFirstMineral().type == Mineral.Type.GOLD;
     }

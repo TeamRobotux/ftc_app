@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.robot.RobotHardware;
 /**
  * Created by jack on 10/20/18.
  */
-@Disabled
+
 @TeleOp(name="Encoder testing", group="Linear Opmode")
 public class EncoderTesting extends LinearOpMode {
 
@@ -39,6 +39,16 @@ public class EncoderTesting extends LinearOpMode {
                 robot.lift.lowerLift();
                 sleep(100);
             }
+
+            if(gamepad1.a) {
+                robot.drivetrain.strafeDistance(24);
+                sleep(100);
+            }
+            else if(gamepad1.b) {
+                robot.drivetrain.strafeDistance(-24);
+                sleep(100);
+            }
+
         }
     }
 }

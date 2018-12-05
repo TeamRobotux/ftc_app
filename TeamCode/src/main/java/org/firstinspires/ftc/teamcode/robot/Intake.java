@@ -20,22 +20,22 @@ public class Intake implements IsBusy{
     private double openGatePos = 0;
     private double closedGatePos = .5;
 
-    private double perpIntakePos = .5;
-    private double raisedIntakePos = 1;
-    private double loweredIntakePos = .2;
+    private double perpIntakePos = .09;
+    private double raisedIntakePos = .14;
+    private double loweredIntakePos = 0;
 
-    public final double extensionThreshold = 1000;
+    public final int scoringThreshold = -228;
 
-    private double scoringPos = 1500;
+    public final int clearPosition = -666;
 
     public Intake(HardwareMap hwMap) {
         //tpi and tpr using counts of Neverrest 20 output shaft
-        grabber = new TuxMotor("intakeGrabber", hwMap, 538, 538, -1, DcMotor.ZeroPowerBehavior.FLOAT);
+        grabber = new TuxMotor("intakeGrabber", hwMap, 538, 538, -1, DcMotor.ZeroPowerBehavior.FLOAT, false);
 
         //tpr = output shaft counts of neverrest 40, tpi = tpr/ circumference = 1120/(2*pi*1.45669) = 122
-        pulley = new TuxMotor("intakePulley", hwMap, 1120/(2*Math.PI*1.45669), 1120, 1);
+        pulley = new TuxMotor("intakePulley", hwMap, 1120/(2*Math.PI*1.45669), 1120, -1);
 
-        lifter = new TuxServo("intakeLifter", hwMap, true);
+        lifter = new TuxServo("intakeLifter", hwMap, false);
         gate = new TuxServo("intakeGate", hwMap, true);
     }
 
@@ -87,7 +87,17 @@ public class Intake implements IsBusy{
         pulley.setPower(0);
     }
 
+    public void moveLifter(double position) {
+        lifter.moveTo(position);
+    }
 
+    public double getLifterPosition() {
+        return lifter.getPosition();
+    }
+
+    public void movePulley(int pos) {
+        pulley.moveToEncoderVal(pos, 1);
+    }
 
     @Override
     public boolean isBusy() {

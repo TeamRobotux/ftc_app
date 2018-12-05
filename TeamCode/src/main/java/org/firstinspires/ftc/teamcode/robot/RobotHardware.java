@@ -49,6 +49,6 @@ public class RobotHardware implements IsBusy {
 
     @Override
     public boolean isBusy() {
-        return lift.isBusy() || drivetrain.isBusy();
+        return lift.isBusy() || drivetrain.isBusy() || intake.isBusy() || scoopMotor.isBusy();
     }
 }

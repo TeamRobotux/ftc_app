@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.robot.IsBusy;
 import org.firstinspires.ftc.teamcode.robot.RobotHardware;
 
 /**
@@ -16,6 +18,8 @@ public class MainTeleop extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private RobotHardware robot = new RobotHardware();
+
+    private double servoPosition = 0;
 
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
@@ -50,27 +54,45 @@ public class MainTeleop extends LinearOpMode {
             //Scoop controls
             //Rotate scoop
             if(gamepad1.left_trigger > .25) {
-                robot.scoopMotor.setPower(-gamepad1.left_trigger*.55);
+//                robot.scoopMotor.setPower(-.4);
+                robot.scoopMotor.moveTicks(-20, .3);
             }
             else if(gamepad1.right_trigger > .25) {
-                robot.scoopMotor.setPower(gamepad1.right_trigger*.55);
+//                robot.scoopMotor.setPower(.3);
+                robot.scoopMotor.moveTicks(20, .3);
             }
             else {
                 robot.scoopMotor.setPower(0);
             }
 
-//
-//            //Intake controls
-//            //Move intake vertically
+            telemetry.addData("Scoop position", robot.scoopMotor.getEncoderVal());
+
+            //Intake controls
+            //Move intake vertically
+            if(gamepad1.dpad_right) {
+                robot.intake.raiseIntake();
+            }
+            else if(gamepad1.dpad_left) {
+                robot.intake.lowerIntake();
+            }
+            else if(gamepad1.x) {
+                robot.intake.moveIntakePerp();
+            }
+
+            //Code for determining good lifter positions
 //            if(gamepad1.dpad_right) {
-//                robot.intake.raiseIntake();
+//                if(servoPosition > 0) {
+//                    servoPosition -= .01;
+//                }
 //            }
 //            else if(gamepad1.dpad_left) {
-//                robot.intake.lowerIntake();
+//                if(servoPosition < 1) {
+//                    servoPosition += .01;
+//                }
 //            }
-//            else {
-//                robot.intake.moveIntakePerp();
-//            }
+//            robot.intake.moveLifter(servoPosition);
+            //telemetry.addData("lifterPosition", servoPosition);
+
 
             /*
             //Extra controls for intake moving up or down
@@ -117,6 +139,7 @@ public class MainTeleop extends LinearOpMode {
 
             //Test opmode controls
 
+            telemetry.addData("heading", robot.gyro.imu.getAngularOrientation().firstAngle);
             telemetry.addData("pulley position", robot.intake.getPulleyPosition());
             telemetry.update();
 
@@ -125,4 +148,22 @@ public class MainTeleop extends LinearOpMode {
 
     }
 
+    public void scoreMinerals() {
+        robot.intake.movePulley(robot.intake.scoringThreshold);
+        waitForMovement(robot.intake, 2);
+        robot.intake.movePulley(robot.intake.clearPosition);
+    }
+
+    public void waitForMovement(IsBusy object, double seconds) {
+        boolean flag = false;
+        for(int i = 0; i < seconds*1000 && !flag; i+=10) {
+            sleep(10);
+            if(!object.isBusy())
+                flag = true;
+            else if(isStopRequested()) {
+                break;
+            }
+        }
+        sleep(100);
+    }
 }

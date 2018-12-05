@@ -174,7 +174,7 @@ public class MineralDetectorPipeline extends OpenCVPipeline {
             for(MatOfPoint2f contour:goldMapContours2f) {
                 if(Imgproc.contourArea(contour) > 50) {
                     MatOfPoint2f approxPolyDP = new MatOfPoint2f();
-                    Imgproc.approxPolyDP(contour, approxPolyDP, .05 * Imgproc.arcLength(contour, true), true);
+                    Imgproc.approxPolyDP(contour, approxPolyDP, .005 * Imgproc.arcLength(contour, true), true);
                     curveContours.add(approxPolyDP);
 
                     Moments m = Imgproc.moments(contour);

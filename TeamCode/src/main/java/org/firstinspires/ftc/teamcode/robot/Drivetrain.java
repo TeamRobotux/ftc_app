@@ -22,6 +22,12 @@ public class Drivetrain implements IsBusy{
 
     private TuxMotor[] wheels;
 
+    private PIDController[] wheelControllers = new PIDController[4];
+
+
+
+    double strafeTpi = 63.661977237*24/(16.25)*24/25.25*24/24.5*24/23.75;
+
     public Drivetrain(HardwareMap hwMap) {
 
         double tpi = 63.661977237;
@@ -45,6 +51,16 @@ public class Drivetrain implements IsBusy{
         wheels[1] = driveRearR;
         wheels[2] = driveFrontR;
         wheels[3] = driveFrontL;
+
+
+        double p = 1/100;
+        double i = 0;
+        double d =0;
+        int t = 30;
+
+        for(int j = 0; j < 4; j++) {
+            wheelControllers[j] = new PIDController(wheels[j], p, i, d, t);
+        }
 
         for(TuxMotor m: wheels) {
             m.setTolerance(30);
@@ -120,10 +136,19 @@ public class Drivetrain implements IsBusy{
     }
 
     public void strafeDistance(double inches) {
-        driveFrontR.moveDistance(-inches * Math.tan(Math.PI / 180 * 50));
-        driveRearR.moveDistance(inches * Math.tan(Math.PI / 180 * 50));
-        driveFrontL.moveDistance(inches * Math.tan(Math.PI / 180 * 50));
-        driveRearL.moveDistance(-inches * Math.tan(Math.PI / 180 * 50));
+        int ticks = (int) (inches*strafeTpi + .5);
+        driveFrontR.moveTicks(-ticks);
+        driveRearR.moveTicks(ticks);
+        driveFrontL.moveTicks(ticks);
+        driveRearL.moveTicks(-ticks);
+    }
+
+    public void strafeDistance(double inches, double power) {
+        int ticks = (int) (inches*strafeTpi + .5);
+        driveFrontR.moveTicks(-ticks, power);
+        driveRearR.moveTicks(ticks, power);
+        driveFrontL.moveTicks(ticks, power);
+        driveRearL.moveTicks(-ticks, power);
     }
 
     //move a distance (in inches)
@@ -133,14 +158,31 @@ public class Drivetrain implements IsBusy{
         }
     }
 
-        public boolean isBusy() {
-        boolean busy = false;
+    public void driveDistance(double distance, double power) {
         for(TuxMotor m : wheels) {
-            busy = busy || m.isBusy();
+            m.moveDistance(distance, power);
         }
-        return busy;
     }
 
+    public boolean isBusy() {
+    boolean busy = false;
+    for(TuxMotor m : wheels) {
+        busy = busy || m.isBusy();
+    }
+    return busy;
+    }
+
+    public void driveDistanceCustom(double distance) {
+        for(int i = 0; i < 4; i++) {
+            wheelControllers[i].setGoal(wheels[i].getTicksfromDistance(distance));
+        }
+
+        while(!checkAllMotorsArrived()) {
+            for(int i = 0; i < 4; i++) {
+                wheels[i].setPower(wheelControllers[i].getOutput());
+            }
+        }
+    }
 
     public void logEncoderValues() {
         String logString = "";
@@ -149,5 +191,14 @@ public class Drivetrain implements IsBusy{
         }
 
         Log.i("drivetrain", logString);
+    }
+
+    public boolean checkAllMotorsArrived() {
+        for(PIDController p : wheelControllers) {
+            if(p.getError() > p.getTolerance()) {
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -19,11 +19,11 @@ public class TuxMotor implements IsBusy {
     private double ticksPerInch;
     private double ticksPerRevolution;
     private int reverse;
+    private boolean encoder = true;
 
     //Radius is in inches.
     public TuxMotor(String name, HardwareMap map, double tpi, double tpr, int reversed) {
         motor = (DcMotorEx) map.get(DcMotor.class, name);
-        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         ticksPerInch = tpi;
         ticksPerRevolution = tpr;
         setPower(0);
@@ -32,13 +32,13 @@ public class TuxMotor implements IsBusy {
     }
 
     public TuxMotor(String name, HardwareMap map, long tpi, double tpr, int reversed, DcMotor.ZeroPowerBehavior behavior) {
-        motor = (DcMotorEx) map.get(DcMotor.class, name);
-        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        ticksPerInch = tpi;
-        ticksPerRevolution = tpr;
-        setPower(0);
-        reverse = reversed;
+        this(name, map, tpi, tpr, reversed);
         motor.setZeroPowerBehavior(behavior);
+    }
+
+    public TuxMotor(String name, HardwareMap map, long tpi, double tpr, int reversed, DcMotor.ZeroPowerBehavior behavior, boolean useEncoder) {
+        this(name, map, tpi, tpr, reversed, behavior);
+        encoder = useEncoder;
     }
 
 
@@ -51,6 +51,10 @@ public class TuxMotor implements IsBusy {
     public void moveDistance(double inches, double power) {
         int ticks = (int) (inches*ticksPerInch + .5);
         moveTicks(ticks, power);
+    }
+
+    public int getTicksfromDistance(double d) {
+        return (int) Math.round(ticksPerInch*d);
     }
 
 
@@ -71,18 +75,17 @@ public class TuxMotor implements IsBusy {
 
 
     public void moveTicks(int ticks) {
-        motor.setPower(0);
-        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motor.setTargetPosition(ticks*reverse);
-        motor.setPower(.3);
+        moveTicks(ticks, .45);
     }
 
     public void moveTicks(int ticks, double power) {
+        moveToEncoderVal(getEncoderVal() + ticks*reverse, power);
+    }
+
+    public void moveToEncoderVal(int val, double power) {
         motor.setPower(0);
-        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motor.setTargetPosition(ticks*reverse);
+        motor.setTargetPosition(val);
         motor.setPower(power);
     }
 
@@ -101,8 +104,11 @@ public class TuxMotor implements IsBusy {
     public void setTolerance(int tolerance) { motor.setTargetPositionTolerance(tolerance);}
 
     public void setPower(double power) {
-        if(motor.getMode() != DcMotor.RunMode.RUN_WITHOUT_ENCODER) {
+        if(motor.getMode() != DcMotor.RunMode.RUN_WITHOUT_ENCODER && !encoder) {
             motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        }
+        else if(motor.getMode() != DcMotor.RunMode.RUN_USING_ENCODER) {
+            motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
         motor.setPower(power*reverse);
     }
@@ -112,7 +118,7 @@ public class TuxMotor implements IsBusy {
     }
 
     public String getPIDCoefficients(DcMotor.RunMode r) {
-        String returnString = ""+ motor.getPIDFCoefficients(r).p;
+        String returnString = " "+ motor.getPIDFCoefficients(r).p;
         returnString += " " + motor.getPIDFCoefficients(r).i;
         returnString += " " + motor.getPIDFCoefficients(r).d;
         return returnString;

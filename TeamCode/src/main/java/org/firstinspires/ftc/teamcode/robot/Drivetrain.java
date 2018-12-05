@@ -59,7 +59,7 @@ public class Drivetrain implements IsBusy{
         int t = 30;
 
         for(int j = 0; j < 4; j++) {
-            wheelControllers[j] = new PIDController(wheels[j], p, i, d, t);
+            wheelControllers[j] = new PIDController(p, i, d, t);
         }
 
         for(TuxMotor m: wheels) {
@@ -174,12 +174,77 @@ public class Drivetrain implements IsBusy{
 
     public void driveDistanceCustom(double distance) {
         for(int i = 0; i < 4; i++) {
-            wheelControllers[i].setGoal(wheels[i].getTicksfromDistance(distance));
+            wheelControllers[i].setGoal(wheels[i].getTicksfromDistance(distance), wheels[i].getEncoderVal());
         }
 
         while(!checkAllMotorsArrived()) {
             for(int i = 0; i < 4; i++) {
-                wheels[i].setPower(wheelControllers[i].getOutput());
+                wheels[i].setPower(wheelControllers[i].getOutput(wheels[i].getEncoderVal()));
+            }
+        }
+    }
+
+    public void strafeDistanceCustom(double distance) {
+        for(int i = 0; i < 4; i++) {
+            wheelControllers[i].setGoal((int) distance*strafeTpi + .5, wheels[i].getEncoderVal());
+        }
+
+        while(!checkAllMotorsArrived()) {
+            for(int i = 0; i < 4; i++) {
+
+                double initialPower = wheelControllers[i].getOutput(wheels[i].getEncoderVal());
+
+                if(i == 0 || i == 1) {
+                    initialPower = -initialPower;
+                }
+
+                wheels[i].setPower(initialPower);
+            }
+        }
+    }
+
+    public void strafeDistanceCustom(double distance, double expectedHeading, double currentAngle) {
+        for(int i = 0; i < 4; i++) {
+            wheelControllers[i].setGoal(wheels[i].getTicksfromDistance(distance), wheels[i].getEncoderVal());
+        }
+
+        while(!checkAllMotorsArrived()) {
+            for(int i = 0; i < 4; i++) {
+                double initialPower = wheelControllers[i].getOutput(wheels[i].getEncoderVal());
+                double error = (expectedHeading-currentAngle)/expectedHeading;
+
+                if(i == 0 || i == 3) {
+                    initialPower = -initialPower;
+                }
+
+                if(i < 2) {
+                    error = -error;
+                }
+
+                if(Math.abs(error) > 3) {
+                    wheels[i].setPower(initialPower + error);
+                }
+            }
+        }
+    }
+
+    public void driveDistanceCustom(double distance, double expectedHeading, double currentAngle) {
+        for(int i = 0; i < 4; i++) {
+            wheelControllers[i].setGoal((int) distance*strafeTpi + .5, wheels[i].getEncoderVal());
+        }
+
+        while(!checkAllMotorsArrived()) {
+            for(int i = 0; i < 4; i++) {
+                double initialPower = wheelControllers[i].getOutput(wheels[i].getEncoderVal());
+                double error = (expectedHeading-currentAngle)/expectedHeading;
+
+                if(i < 2) {
+                    error = -error;
+                }
+
+                if(Math.abs(error) > 3) {
+                    wheels[i].setPower(initialPower + error);
+                }
             }
         }
     }

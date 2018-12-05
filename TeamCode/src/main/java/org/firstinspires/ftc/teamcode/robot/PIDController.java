@@ -5,43 +5,40 @@ package org.firstinspires.ftc.teamcode.robot;
  */
 
 public class PIDController {
-    private TuxMotor motor;
 
     private double kp;
     private double ki;
     private double kd;
-    private int tolerance;
+    private double tolerance;
 
-    private int goal = 0;
-    private int error = 0;
-    private int lastError = 0;
+    private double goal = 0;
+    private double error = 0;
+    private double lastError = 0;
 
     private double integral = 0;
 
     private long lastTime = System.currentTimeMillis();
 
-    public PIDController(TuxMotor m, double p, double i, double d, int t) {
-        motor = m;
-
+    public PIDController(double p, double i, double d, double t) {
         kp = p;
         ki = i;
         kd = d;
         tolerance = t;
     }
 
-    public void setGoal(int newGoal) {
+    public void setGoal(double newGoal, double currentValue) {
         goal = newGoal;
 
-        error = goal - motor.getEncoderVal();
+        error = goal - currentValue;
         lastError = error;
         integral = 0;
 
         lastTime = System.currentTimeMillis();
     }
 
-    public double getOutput() {
+    public double getOutput(double currentValue) {
         long dTime = (System.currentTimeMillis() - lastTime)/1000;
-        error = goal - motor.getEncoderVal();
+        error = goal - currentValue;
 
         double derivative = (error - lastError)/dTime;
         integral += error*dTime;
@@ -51,7 +48,7 @@ public class PIDController {
         return output;
     }
 
-    public int getTolerance() {
+    public double getTolerance() {
         return tolerance;
     }
 

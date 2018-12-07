@@ -34,4 +34,9 @@ public class RobotConstants {
     public static double HoughDist = 100;
     public static int Hough1 = 400;
     public static int Hough2 = 20;
+
+    public static double PIDP = 1/100;
+    public static double PIDI = 0;
+    public static double PIDD = 0;
+    public static double PIDT = 30;
 }

@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.testOpmodes;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -24,12 +26,16 @@ public class EncoderTesting extends LinearOpMode {
 
         robot.init(hardwareMap);
 
+        FtcDashboard dashboard = FtcDashboard.getInstance();
+
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+
+            TelemetryPacket telemetry = new TelemetryPacket();
 
             if(gamepad1.right_bumper) {
                 robot.lift.raiseLift();
@@ -41,14 +47,25 @@ public class EncoderTesting extends LinearOpMode {
             }
 
             if(gamepad1.a) {
-                robot.drivetrain.strafeDistance(24);
+                robot.drivetrain.strafeDistanceCustom(24, this, dashboard);
                 sleep(100);
             }
             else if(gamepad1.b) {
-                robot.drivetrain.strafeDistance(-24);
+                robot.drivetrain.strafeDistanceCustom(-24, this, dashboard);
                 sleep(100);
             }
 
+            double[] dtError = robot.drivetrain.getError();
+            for(int i = 0; i < 4; i++) {
+                telemetry.put("wheel " + i, dtError[i]);
+            }
+
+            dashboard.sendTelemetryPacket(telemetry);
+
+            dashboard.updateConfig();
+
+
+            sleep(50);
         }
     }
 }

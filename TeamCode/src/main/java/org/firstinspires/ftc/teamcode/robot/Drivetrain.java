@@ -3,32 +3,34 @@ package org.firstinspires.ftc.teamcode.robot;
 
 import android.util.Log;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 /**
  * Created by JackT on 11/4/2017.
  */
-
-
-
-
-
 public class Drivetrain implements IsBusy{
     private TuxMotor driveFrontR  = null;
     private TuxMotor  driveRearR  = null;
     private TuxMotor  driveFrontL  = null;
     private TuxMotor  driveRearL  = null;
-
     private TuxMotor[] wheels;
 
     private PIDController[] wheelControllers = new PIDController[4];
 
 
 
-    double strafeTpi = 63.661977237*24/(16.25)*24/25.25*24/24.5*24/23.75;
+    private double strafeTpi = 63.661977237*24/(16.25)*24/25.25*24/24.5*24/23.75;
 
     public Drivetrain(HardwareMap hwMap) {
+        this(hwMap, 1/100, 0, 0, 30);
+    }
+
+    public Drivetrain(HardwareMap hwMap, double p, double i, double d, double t) {
 
         double tpi = 63.661977237;
         // 1120 pulses per 1 axle rotation (1120 tpr)
@@ -51,12 +53,6 @@ public class Drivetrain implements IsBusy{
         wheels[1] = driveRearR;
         wheels[2] = driveFrontR;
         wheels[3] = driveFrontL;
-
-
-        double p = 1/100;
-        double i = 0;
-        double d =0;
-        int t = 30;
 
         for(int j = 0; j < 4; j++) {
             wheelControllers[j] = new PIDController(p, i, d, t);
@@ -172,34 +168,40 @@ public class Drivetrain implements IsBusy{
     return busy;
     }
 
-    public void driveDistanceCustom(double distance) {
+    public void driveDistanceCustom(double distance, LinearOpMode opMode, TelemetryPacket t) {
         for(int i = 0; i < 4; i++) {
             wheelControllers[i].setGoal(wheels[i].getTicksfromDistance(distance), wheels[i].getEncoderVal());
         }
 
-        while(!checkAllMotorsArrived()) {
+        while(!checkAllMotorsArrived() || opMode.isStopRequested()) {
             for(int i = 0; i < 4; i++) {
                 wheels[i].setPower(wheelControllers[i].getOutput(wheels[i].getEncoderVal()));
             }
         }
     }
 
-    public void strafeDistanceCustom(double distance) {
+    public void strafeDistanceCustom(double distance, LinearOpMode opMode, FtcDashboard d) {
         for(int i = 0; i < 4; i++) {
             wheelControllers[i].setGoal((int) distance*strafeTpi + .5, wheels[i].getEncoderVal());
         }
 
-        while(!checkAllMotorsArrived()) {
+        TelemetryPacket packet = new TelemetryPacket();
+
+        while(!checkAllMotorsArrived() || opMode.isStopRequested()) {
             for(int i = 0; i < 4; i++) {
 
                 double initialPower = wheelControllers[i].getOutput(wheels[i].getEncoderVal());
 
-                if(i == 0 || i == 1) {
+                if(i == 0 || i == 3) {
                     initialPower = -initialPower;
                 }
 
                 wheels[i].setPower(initialPower);
+
+                packet.put("wheel_" + i, wheelControllers[i].getError());
             }
+
+            d.sendTelemetryPacket(packet);
         }
     }
 
@@ -247,6 +249,14 @@ public class Drivetrain implements IsBusy{
                 }
             }
         }
+    }
+
+    public double[] getError() {
+        double[] errorArr = new double[4];
+        for(int i = 0; i < 4; i++) {
+            errorArr[i] = wheelControllers[i].getError();
+        }
+        return errorArr;
     }
 
     public void logEncoderValues() {

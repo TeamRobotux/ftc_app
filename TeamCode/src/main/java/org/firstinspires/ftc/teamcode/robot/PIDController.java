@@ -26,7 +26,7 @@ public class PIDController {
         tolerance = t;
     }
 
-    public void setGoal(double newGoal, double currentValue) {
+    public void  setGoal(double newGoal, double currentValue) {
         goal = newGoal;
 
         error = goal - currentValue;

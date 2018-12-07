@@ -19,12 +19,15 @@ public class CraterAuto extends AutonomousBasic {
         waitForMovement(robot, this, .75);
         robot.drivetrain.strafeDistance(4, .75);
         waitForMovement(robot, this, 3);
-        robot.drivetrain.driveDistance(-48, .75);
+        robot.drivetrain.driveDistance(-48, 1);
         waitForMovement(robot, this, 3);
 
-        turnDegrees(robot, this, -45, .2);
+        turnDegrees(robot, this, -45, .6);
         waitForMovement(robot, this, 3);
-        turnDegrees(robot, this, 45, .2);
+
+        //TODO drop marker
+
+        turnDegrees(robot, this, 45, .6);
         waitForMovement(robot, this, 3);
 
         robot.drivetrain.driveDistance(66, 1);

@@ -24,14 +24,19 @@ public class Lift implements IsBusy{
 
     //should be .75
     private final double liftHeight = 7.85;
+    private final int liftHeightTicks = 11385;
 
     public Lift(HardwareMap hwMap) {
         liftPulley = new TuxMotor("liftPulley", hwMap, tpi, 1120*4, 1);
         liftPulley.setRunMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
+    public int getEncoderVal() {
+        return liftPulley.getEncoderVal();
+    }
+
     public void lowerLift() {
-        liftPulley.moveDistance(-liftHeight);
+        liftPulley.moveToEncoderVal(0, 1);
     }
 
     public void setRunMode(DcMotor.RunMode runMode) {
@@ -43,7 +48,7 @@ public class Lift implements IsBusy{
     }
 
     public void raiseLift() {
-        liftPulley.moveDistance(liftHeight);
+        liftPulley.moveToEncoderVal(liftHeightTicks,1);
     }
 
     public boolean isBusy() {

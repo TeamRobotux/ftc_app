@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.robot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.robot.Robot;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.opencv.core.Point;
@@ -21,12 +22,6 @@ public class RobotHardware implements IsBusy {
 
     public TuxMotor scoopMotor = null;
 
-    //TODO find actual values
-    public final double cameraAngle = 15;
-    public final Point cameraCenter = new Point(310, 230);
-    public final double cameraOffset = 20;
-
-
     /* Constructor */
     public RobotHardware(){
 
@@ -37,7 +32,7 @@ public class RobotHardware implements IsBusy {
 
         //Testing stuff
         lift = new Lift(ahwMap);
-        drivetrain = new Drivetrain(ahwMap);
+        drivetrain = new Drivetrain(ahwMap, RobotConstants.PIDP, RobotConstants.PIDI, RobotConstants.PIDD, RobotConstants.PIDT);
         gyro = new TuxGyro(ahwMap);
 
         intake = new Intake(ahwMap);
@@ -51,4 +46,6 @@ public class RobotHardware implements IsBusy {
     public boolean isBusy() {
         return lift.isBusy() || drivetrain.isBusy() || intake.isBusy() || scoopMotor.isBusy();
     }
+
+
 }

@@ -54,12 +54,12 @@ public class MainTeleop extends LinearOpMode {
             //Scoop controls
             //Rotate scoop
             if(gamepad1.left_trigger > .25) {
-//                robot.scoopMotor.setPower(-.4);
-                robot.scoopMotor.moveTicks(-20, .3);
+                robot.scoopMotor.setPower(.3);
+//                robot.scoopMotor.moveToEncoderVal(-10, .3);
             }
             else if(gamepad1.right_trigger > .25) {
-//                robot.scoopMotor.setPower(.3);
-                robot.scoopMotor.moveTicks(20, .3);
+                robot.scoopMotor.setPower(-.3);
+//                robot.scoopMotor.moveToEncoderVal(-458, .6);
             }
             else {
                 robot.scoopMotor.setPower(0);
@@ -80,18 +80,12 @@ public class MainTeleop extends LinearOpMode {
             }
 
             //Code for determining good lifter positions
-//            if(gamepad1.dpad_right) {
-//                if(servoPosition > 0) {
-//                    servoPosition -= .01;
-//                }
-//            }
-//            else if(gamepad1.dpad_left) {
-//                if(servoPosition < 1) {
-//                    servoPosition += .01;
-//                }
-//            }
-//            robot.intake.moveLifter(servoPosition);
-            //telemetry.addData("lifterPosition", servoPosition);
+            if(gamepad2.y) {
+                robot.intake.openGate();
+            }
+            else if(gamepad2.x) {
+                robot.intake.closeGate();
+            }
 
 
             /*
@@ -114,9 +108,17 @@ public class MainTeleop extends LinearOpMode {
             else if(gamepad1.dpad_up) {
                 robot.intake.extend();
             }
+            else if(gamepad1.left_stick_button || gamepad2.a) {
+                robot.intake.movePulley(robot.intake.scoringThreshold + 30);
+            }
+            else if(gamepad1.right_stick_button || gamepad2.b) {
+                robot.intake.movePulley(robot.intake.clearPosition);
+            }
             else {
                 robot.intake.stopExtension();
             }
+
+
 
 
             //Move the rotating surgical tubing
@@ -130,17 +132,21 @@ public class MainTeleop extends LinearOpMode {
                 robot.intake.stopIntaking();
             }
 
-//            if(robot.intake.getPulleyPosition() > robot.intake.extensionThreshold) {
-//                robot.intake.closeGate();
-//            }
-//            else {
-//                robot.intake.openGate();
-//            }
+            if(robot.intake.getPulleyPosition() < robot.intake.scoringThreshold && !(robot.intake.getPulleyPosition() < -100)) {
+                robot.intake.closeGate();
+            }
+            else {
+                robot.intake.openGate();
+            }
+
+
 
             //Test opmode controls
 
             telemetry.addData("heading", robot.gyro.imu.getAngularOrientation().firstAngle);
             telemetry.addData("pulley position", robot.intake.getPulleyPosition());
+            telemetry.addData("lift position", robot.lift.getEncoderVal());
+            telemetry.addData("gatePosition", robot.intake.gate.getPosition());
             telemetry.update();
 
             sleep(50);

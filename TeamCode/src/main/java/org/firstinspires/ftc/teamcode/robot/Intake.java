@@ -17,12 +17,13 @@ public class Intake implements IsBusy{
 
     //TODO find all these
 
-    private double openGatePos = 0;
-    private double closedGatePos = .5;
+    private double openGatePos = .7;
+    private double closedGatePos = 0;
+    private double teamMarkerGatePos = 1;
 
     private double perpIntakePos = .09;
     private double raisedIntakePos = .14;
-    private double loweredIntakePos = 0;
+    private double loweredIntakePos = .005;
 
     public final int scoringThreshold = -228;
 
@@ -36,7 +37,8 @@ public class Intake implements IsBusy{
         pulley = new TuxMotor("intakePulley", hwMap, 1120/(2*Math.PI*1.45669), 1120, -1);
 
         lifter = new TuxServo("intakeLifter", hwMap, false);
-        gate = new TuxServo("intakeGate", hwMap, true);
+        gate = new TuxServo("intakeGate", hwMap, false);
+        openGate();
     }
 
     public void moveIntakePerp() {
@@ -97,6 +99,14 @@ public class Intake implements IsBusy{
 
     public void movePulley(int pos) {
         pulley.moveToEncoderVal(pos, 1);
+    }
+
+    public void moveGate(double pos) {
+        gate.moveTo(pos);
+    }
+
+    public void scoreMarker() {
+        gate.moveTo(teamMarkerGatePos);
     }
 
     @Override

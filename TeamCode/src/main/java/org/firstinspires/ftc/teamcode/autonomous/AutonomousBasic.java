@@ -133,64 +133,56 @@ public abstract class AutonomousBasic extends LinearOpMode {
 
 
     public double disengageAndSample(RobotHardware robot, LinearOpMode opMode) {
-//        robot.lift.raiseLift();
-//        waitForMovement(robot.lift, this, 10);
-//
-//        robot.drivetrain.driveDistance(6);
-//        sleep(100);
+        robot.lift.raiseLift();
+        waitForMovement(robot.lift, this, 10);
 
-        //TODO change
-//        robot.lift.setPower(-1);
-//        waitForMovement(robot.drivetrain, this, 5);
-//        robot.lift.setPower(0);
+        robot.drivetrain.driveDistance(6);
+        sleep(100);
+        waitForMovement(robot, this, 2);
 
         robot.drivetrain.strafeDistance(-14, .8);
-        waitForMovement(robot, this, 3);
+        waitForMovement(robot.drivetrain, this, 1);
 
         //TODO optimize to make quicker?
 
-        turnDegrees(robot, this, -100, .4);
-        waitForMovement(robot, this, 8);
+        turnDegrees(robot, this, -100, .6);
+        waitForMovement(robot, this, 4);
 
-        robot.drivetrain.strafeDistance(0, .4);
-        waitForMovement(robot, opMode, 5);
+        robot.drivetrain.strafeDistance(5, 1);
+        waitForMovement(robot, opMode, 15);
 
         if(isSampleGold(opMode, mDetector)) {
             robot.drivetrain.driveDistance(18, 1);
-            waitForMovement(robot, this, 2);
-            robot.drivetrain.driveDistance(-18, 1);
-            waitForMovement(robot, this, 2);
+            waitForMovement(robot, this, 1.5);
+            robot.drivetrain.driveDistance(-22, 1);
+            waitForMovement(robot, this, 1.5);
 
             return -36;
         }
         else {
-            robot.drivetrain.strafeDistance(-20, .75);
-            waitForMovement(robot, opMode, 5);
+            robot.drivetrain.strafeDistance(-19, .75);
+            waitForMovement(robot, opMode, 1.5);
 
             if(isSampleGold(opMode, mDetector)) {
                 robot.drivetrain.driveDistance(18, 1);
-                waitForMovement(robot, this, 2);
-                robot.drivetrain.driveDistance(-18, 1);
-                waitForMovement(robot, this, 2);
+                waitForMovement(robot, this, 1.5);
+                robot.drivetrain.driveDistance(-22, 1);
+                waitForMovement(robot, this, 1.5);
 
                 return -20;
             }
             else {
-                robot.drivetrain.strafeDistance(-20, .75);
-                waitForMovement(robot, opMode, 5);
+                robot.drivetrain.strafeDistance(-20, 1);
+                waitForMovement(robot, opMode, 1.5);
 
                 robot.drivetrain.driveDistance(18,1);
-                waitForMovement(robot, this, 2);
-                robot.drivetrain.driveDistance(-18,1);
-                waitForMovement(robot, this, 2);
+                waitForMovement(robot, this, 1.5);
+                robot.drivetrain.driveDistance(-22,1);
+                waitForMovement(robot, this, 1.5);
 
                 return 0;
             }
         }
-    }
-
-    public static boolean isMineralCenteredX(RobotHardware robot, Mineral m) {
-        return m.center.x < robot.cameraCenter.x- robot.cameraOffset + 20 || m.center.x < robot.cameraCenter.x- robot.cameraOffset - 20;
     }
 
     public static boolean isSampleGold(LinearOpMode opMode, MineralDetectorPipeline mineralDetector) {

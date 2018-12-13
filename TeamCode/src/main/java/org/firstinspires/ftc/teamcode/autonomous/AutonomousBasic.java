@@ -138,7 +138,7 @@ public abstract class AutonomousBasic extends LinearOpMode {
 
         robot.drivetrain.driveDistance(6);
         sleep(100);
-        waitForMovement(robot, this, 2);
+        waitForMovement(robot, this, 1);
 
         robot.drivetrain.strafeDistance(-14, .8);
         waitForMovement(robot.drivetrain, this, 1);
@@ -146,41 +146,47 @@ public abstract class AutonomousBasic extends LinearOpMode {
         //TODO optimize to make quicker?
 
         turnDegrees(robot, this, -100, .6);
-        waitForMovement(robot, this, 4);
+        waitForMovement(robot, this, 3);
 
         robot.drivetrain.strafeDistance(5, 1);
         waitForMovement(robot, opMode, 15);
 
         if(isSampleGold(opMode, mDetector)) {
-            robot.drivetrain.driveDistance(18, 1);
+            robot.drivetrain.strafeDistance(6, 1);
+            waitForMovement(robot, this, 1);
+            robot.drivetrain.driveDistance(18,1);
             waitForMovement(robot, this, 1.5);
-            robot.drivetrain.driveDistance(-22, 1);
+            robot.drivetrain.driveDistance(-22,1);
             waitForMovement(robot, this, 1.5);
 
-            return -36;
+            return -40;
         }
         else {
             robot.drivetrain.strafeDistance(-19, .75);
             waitForMovement(robot, opMode, 1.5);
 
             if(isSampleGold(opMode, mDetector)) {
-                robot.drivetrain.driveDistance(18, 1);
-                waitForMovement(robot, this, 1.5);
-                robot.drivetrain.driveDistance(-22, 1);
-                waitForMovement(robot, this, 1.5);
-
-                return -20;
-            }
-            else {
-                robot.drivetrain.strafeDistance(-20, 1);
-                waitForMovement(robot, opMode, 1.5);
-
+                robot.drivetrain.strafeDistance(6, 1);
+                waitForMovement(robot, this, 1);
                 robot.drivetrain.driveDistance(18,1);
                 waitForMovement(robot, this, 1.5);
                 robot.drivetrain.driveDistance(-22,1);
                 waitForMovement(robot, this, 1.5);
 
-                return 0;
+                return -24;
+            }
+            else {
+                robot.drivetrain.strafeDistance(-20, 1);
+                waitForMovement(robot, opMode, 1.5);
+
+                robot.drivetrain.strafeDistance(6, 1);
+                waitForMovement(robot, this, 1);
+                robot.drivetrain.driveDistance(18,1);
+                waitForMovement(robot, this, 1.5);
+                robot.drivetrain.driveDistance(-22,1);
+                waitForMovement(robot, this, 1.5);
+
+                return -4;
             }
         }
     }
@@ -188,7 +194,7 @@ public abstract class AutonomousBasic extends LinearOpMode {
     public static boolean isSampleGold(LinearOpMode opMode, MineralDetectorPipeline mineralDetector) {
         opMode.sleep(1000);
 
-        return mineralDetector.getFirstMineral().type == Mineral.Type.GOLD;
+        return mineralDetector.getLowestMineral().type == Mineral.Type.GOLD;
     }
 
 

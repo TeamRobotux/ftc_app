@@ -34,8 +34,9 @@ public class MineralDetectorPipeline extends OpenCVPipeline {
     private Mineral goldMineral = new Mineral();
 
     private Mineral firstMineral = new Mineral();
+    private Mineral lowestMineral = new Mineral();
 
-    private ArrayList<Mineral> minerals = new ArrayList<Mineral>()  ;
+    private ArrayList<Mineral> minerals = new ArrayList<Mineral>();
 
     enum goldPosition {RIGHT, CENTER, LEFT}
 
@@ -198,7 +199,8 @@ public class MineralDetectorPipeline extends OpenCVPipeline {
         }
 
         if(newMinerals.size() > 0) {
-            firstMineral = newMinerals.get(0);
+            ArrayList<Mineral> sortedMinerals = sortMinerals(newMinerals);
+            lowestMineral = sortedMinerals.get(sortedMinerals.size()-1);
         }
 
         return retImg;
@@ -222,6 +224,30 @@ public class MineralDetectorPipeline extends OpenCVPipeline {
 
     public Mineral getFirstMineral() {
         return firstMineral;
+    }
+
+    private ArrayList<Mineral> sortMinerals(ArrayList<Mineral> m) {
+        int n = m.size();
+        for (int i=1; i<n; ++i)
+        {
+            Mineral key = m.get(i);
+            int j = i-1;
+
+            /* Move elements of arr[0..i-1], that are
+               greater than key, to one position ahead
+               of their current position */
+            while (j>=0 && m.get(j).center.y > key.center.y)
+            {
+                m.set(j+1, m.get(j));
+                j = j-1;
+            }
+            m.set(j+1, key);
+        }
+        return m;
+    }
+
+    public Mineral getLowestMineral() {
+        return lowestMineral;
     }
 
 

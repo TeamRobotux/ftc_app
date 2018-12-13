@@ -18,7 +18,7 @@ public class Intake implements IsBusy{
     //TODO find all these
 
     private double openGatePos = .7;
-    private double closedGatePos = 0;
+    private double closedGatePos = .05;
     private double teamMarkerGatePos = 1;
 
     private double perpIntakePos = .09;
@@ -66,11 +66,11 @@ public class Intake implements IsBusy{
     }
 
     public void intake() {
-        grabber.setPower(1);
+        grabber.setPower(.75);
     }
 
     public void outtake() {
-        grabber.setPower(-1);
+        grabber.setPower(-.75);
     }
 
     public void stopIntaking() {

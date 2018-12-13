@@ -58,7 +58,7 @@ public class MainTeleop extends LinearOpMode {
 //                robot.scoopMotor.moveToEncoderVal(-10, .3);
             }
             else if(gamepad1.right_trigger > .25) {
-                robot.scoopMotor.setPower(-.3);
+                robot.scoopMotor.moveToEncoderVal(-500, .5);
 //                robot.scoopMotor.moveToEncoderVal(-458, .6);
             }
             else {
@@ -102,10 +102,10 @@ public class MainTeleop extends LinearOpMode {
             */
 
             //Move the intake in and out
-            if(gamepad1.dpad_down) {
+            if(gamepad1.dpad_down || gamepad2.dpad_down) {
                 robot.intake.retract();
             }
-            else if(gamepad1.dpad_up) {
+            else if(gamepad1.dpad_up || gamepad2.dpad_up) {
                 robot.intake.extend();
             }
             else if(gamepad1.left_stick_button || gamepad2.a) {
@@ -132,7 +132,7 @@ public class MainTeleop extends LinearOpMode {
                 robot.intake.stopIntaking();
             }
 
-            if(robot.intake.getPulleyPosition() < robot.intake.scoringThreshold && !(robot.intake.getPulleyPosition() < -100)) {
+            if(robot.intake.getPulleyPosition() < robot.intake.scoringThreshold) {
                 robot.intake.closeGate();
             }
             else {
@@ -147,6 +147,7 @@ public class MainTeleop extends LinearOpMode {
             telemetry.addData("pulley position", robot.intake.getPulleyPosition());
             telemetry.addData("lift position", robot.lift.getEncoderVal());
             telemetry.addData("gatePosition", robot.intake.gate.getPosition());
+            telemetry.addData("switchState", robot.sideSwitch.getState());
             telemetry.update();
 
             sleep(50);

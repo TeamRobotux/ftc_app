@@ -22,6 +22,8 @@ public class RobotHardware implements IsBusy {
 
     public TuxMotor scoopMotor = null;
 
+    public TuxSwitch sideSwitch = null;
+
     /* Constructor */
     public RobotHardware(){
 
@@ -39,6 +41,8 @@ public class RobotHardware implements IsBusy {
         //output shaft ticks = 1120
         //no gear ratio
         scoopMotor = new TuxMotor("scoopMotor", ahwMap, 0, 1120,1, DcMotor.ZeroPowerBehavior.BRAKE);
+
+        sideSwitch = new TuxSwitch("sideSwitch", ahwMap);
     }
 
 

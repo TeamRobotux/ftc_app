@@ -11,34 +11,25 @@ public class DepotAuto extends AutonomousBasic {
 
     @Override
     void runAutonomous() {
-        double movementNeeded = disengageAndSample(robot, this);
+        double movementNeeded = disengageAndSampleDepot(robot, this);
 
+        robot.drivetrain.driveDistance(20, 1);
+        waitForMovement(robot, this, .75);
 
-        robot.drivetrain.driveDistance(25);
-        waitForMovement(robot, this, 2);
+        robot.drivetrain.strafeDistance(movementNeeded + 12, 1);
+        waitForMovement(robot, this, .75);
 
-        robot.intake.scoreMarker();
-        sleep(400);
-//        robot.drivetrain.strafeDistance(-16 + movementNeeded, 1);
-//        waitForMovement(robot, this, 3);
-//        turnDegrees(robot,this, 35, .6);
-//        waitForMovement(robot, this, 3);
-//
-//        robot.drivetrain.strafeDistance(-5, 1);
-//        waitForMovement(robot, this, .75);
-//        robot.drivetrain.strafeDistance(4, 1);
-//        waitForMovement(robot, this, .75);
-//        robot.drivetrain.driveDistance(-48, 1);
-//        waitForMovement(robot, this, 2);
-//
-//        turnDegrees(robot, this, 45, 1);
-//        waitForMovement(robot, this, .75);
-//
-//
-//        turnDegrees(robot, this, -45, 1);
-//        waitForMovement(robot, this, 3);
-//
-//        robot.drivetrain.driveDistance(66, 1);
+        turnDegrees(robot, this, -135, .6);
+        waitForMovement(robot, this, 1.5);
 
+        robot.markerServo.moveTo(robot.markerScore);
+        sleep(1000);
+        robot.markerServo.moveTo(robot.markerVert);
+
+        robot.drivetrain.strafeDistance(-10, .6);
+        waitForMovement(robot, this, 1);
+
+        robot.drivetrain.driveDistance(-66, 1);
+        waitForMovement(robot, this, 10);
     }
 }

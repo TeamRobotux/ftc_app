@@ -201,6 +201,8 @@ public class MineralDetectorPipeline extends OpenCVPipeline {
         if(newMinerals.size() > 0) {
             ArrayList<Mineral> sortedMinerals = sortMinerals(newMinerals);
             lowestMineral = sortedMinerals.get(sortedMinerals.size()-1);
+
+            firstMineral = newMinerals.get(0);
         }
 
         return retImg;

@@ -35,34 +35,23 @@ public class EncoderTesting extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            TelemetryPacket telemetry = new TelemetryPacket();
+            //TelemetryPacket telemetry = new TelemetryPacket();
 
-            if(gamepad1.right_bumper) {
-                robot.lift.raiseLift();
-                sleep(100);
+            double currentPos = robot.markerServo.getPosition();
+            if(gamepad1.a && currentPos < 1) {
+                robot.markerServo.moveTo(currentPos + .01);
             }
-            else if(gamepad1.left_bumper) {
-                robot.lift.lowerLift();
-                sleep(100);
-            }
-
-            if(gamepad1.a) {
-                robot.drivetrain.strafeDistanceCustom(24, this, dashboard);
-                sleep(100);
-            }
-            else if(gamepad1.b) {
-                robot.drivetrain.strafeDistanceCustom(-24, this, dashboard);
-                sleep(100);
+            else if(gamepad1.b && currentPos > 0) {
+                robot.markerServo.moveTo(currentPos - .01);
             }
 
-            double[] dtError = robot.drivetrain.getError();
-            for(int i = 0; i < 4; i++) {
-                telemetry.put("wheel " + i, dtError[i]);
-            }
+            telemetry.addData("servoPos", robot.markerServo.getPosition());
 
-            dashboard.sendTelemetryPacket(telemetry);
+            //dashboard.sendTelemetryPacket(telemetry);
 
-            dashboard.updateConfig();
+            //dashboard.updateConfig();
+
+            telemetry.update();
 
 
             sleep(50);

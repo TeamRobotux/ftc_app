@@ -14,6 +14,9 @@ import org.opencv.core.Point;
 
 public class RobotHardware implements IsBusy {
 
+    public double markerVert = .62;
+    public double markerScore = .14;
+
     //Testing stuff
     public Lift lift= null;
     public Drivetrain drivetrain = null;
@@ -21,8 +24,11 @@ public class RobotHardware implements IsBusy {
     public Intake intake = null;
 
     public TuxMotor scoopMotor = null;
+    public TuxServo scoopServo = null;
 
     public TuxSwitch sideSwitch = null;
+
+    public TuxServo markerServo = null;
 
     /* Constructor */
     public RobotHardware(){
@@ -41,8 +47,12 @@ public class RobotHardware implements IsBusy {
         //output shaft ticks = 1120
         //no gear ratio
         scoopMotor = new TuxMotor("scoopMotor", ahwMap, 0, 1120,1, DcMotor.ZeroPowerBehavior.BRAKE);
+        scoopServo = new TuxServo("scoopServo", ahwMap, true);
 
         sideSwitch = new TuxSwitch("sideSwitch", ahwMap);
+
+        markerServo = new TuxServo("markerServo", ahwMap, false);
+        markerServo.moveTo(.5);
     }
 
 

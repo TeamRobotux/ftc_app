@@ -17,7 +17,7 @@ public class Intake implements IsBusy{
 
     //TODO find all these
 
-    private double openGatePos = .7;
+    public double openGatePos = .7;
     private double closedGatePos = .05;
     private double teamMarkerGatePos = 1;
 
@@ -25,9 +25,9 @@ public class Intake implements IsBusy{
     private double raisedIntakePos = .14;
     private double loweredIntakePos = .005;
 
-    public final int scoringThreshold = -228;
+    public final int scoringThreshold = -150;
 
-    public final int clearPosition = -666;
+    public final int clearPosition = -466;
 
     public Intake(HardwareMap hwMap) {
         //tpi and tpr using counts of Neverrest 20 output shaft

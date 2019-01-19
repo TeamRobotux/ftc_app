@@ -15,7 +15,6 @@ public class Lift implements IsBusy{
     //TODO find diameter using calipers
     //given distance 2, actual distance 6.1
     //2 *tpi/6.1
-
     //hook to hook = 2.375
 
     private double tpi = ((((1440*4/(Math.pow(1.45669/2, 2)*Math.PI))*2/6.1*2/5.85)*2/.5)*2/3)*6/5.25*6/5.74*6.5/6.2;
@@ -24,7 +23,7 @@ public class Lift implements IsBusy{
 
     //should be .75
     private final double liftHeight = 7.85;
-    private final int liftHeightTicks = 11385;
+    private final int liftHeightTicks = 9822;
 
     public Lift(HardwareMap hwMap) {
         liftPulley = new TuxMotor("liftPulley", hwMap, tpi, 1120*4, 1);

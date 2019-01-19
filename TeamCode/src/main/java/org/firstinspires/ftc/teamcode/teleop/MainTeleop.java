@@ -34,6 +34,8 @@ public class MainTeleop extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
+            robot.markerServo.moveTo(.75);
+
             //drivetrain controls
             //Move the wheels
             robot.drivetrain.drive360(gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x);
@@ -54,16 +56,21 @@ public class MainTeleop extends LinearOpMode {
             //Scoop controls
             //Rotate scoop
             if(gamepad1.left_trigger > .25) {
-                robot.scoopMotor.setPower(.3);
-//                robot.scoopMotor.moveToEncoderVal(-10, .3);
+                //robot.scoopMotor.setPower(.3);
+                robot.scoopMotor.moveToEncoderVal(-10, .2);
             }
             else if(gamepad1.right_trigger > .25) {
-                robot.scoopMotor.moveToEncoderVal(-500, .5);
-//                robot.scoopMotor.moveToEncoderVal(-458, .6);
+                //robot.scoopMotor.setPower(-.3);
+                robot.scoopServo.moveTo(.72);
+                robot.scoopMotor.moveToEncoderVal(-462, .2);
             }
             else {
                 robot.scoopMotor.setPower(0);
             }
+            if(robot.scoopMotor.getEncoderVal() > -200 && gamepad1.right_trigger <= .25) {
+                robot.scoopServo.moveTo(.19);
+            }
+
 
             telemetry.addData("Scoop position", robot.scoopMotor.getEncoderVal());
 
@@ -78,15 +85,6 @@ public class MainTeleop extends LinearOpMode {
             else if(gamepad1.x) {
                 robot.intake.moveIntakePerp();
             }
-
-            //Code for determining good lifter positions
-            if(gamepad2.y) {
-                robot.intake.openGate();
-            }
-            else if(gamepad2.x) {
-                robot.intake.closeGate();
-            }
-
 
             /*
             //Extra controls for intake moving up or down
@@ -132,7 +130,7 @@ public class MainTeleop extends LinearOpMode {
                 robot.intake.stopIntaking();
             }
 
-            if(robot.intake.getPulleyPosition() < robot.intake.scoringThreshold) {
+            if(robot.intake.getPulleyPosition() < robot.intake.scoringThreshold && !(gamepad2.y)) {
                 robot.intake.closeGate();
             }
             else {

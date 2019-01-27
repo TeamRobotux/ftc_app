@@ -52,7 +52,7 @@ public class RobotHardware implements IsBusy {
         sideSwitch = new TuxSwitch("sideSwitch", ahwMap);
 
         markerServo = new TuxServo("markerServo", ahwMap, false);
-        markerServo.moveTo(.5);
+        markerServo.moveTo(markerVert);
     }
 
 

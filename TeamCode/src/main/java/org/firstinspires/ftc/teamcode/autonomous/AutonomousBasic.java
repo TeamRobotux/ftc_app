@@ -54,50 +54,71 @@ public abstract class AutonomousBasic extends LinearOpMode {
     }
 
     public static void turnDegrees(RobotHardware robot, LinearOpMode opMode, int degrees, double power) {
-        float originalAngle = robot.gyro.imu.getAngularOrientation().firstAngle;
-        float deltaAngle = 0;
-        int adjustedDegrees = degrees;
+        double originalAngle = robot.gyro.imu.getAngularOrientation().firstAngle;
+        double deltaAngle = 0;
+        double targetAngle = originalAngle + degrees;
 
-        if(degrees == 180) {
-            adjustedDegrees = 160;
+        double angleAdd = 0;
+        double lastAngle = originalAngle;
+
+        double p = 2;
+
+        if(Math.abs(degrees) > 180) {
+            degrees %= 360;
+            degrees = degrees - (degrees/Math.abs(degrees))*360;
         }
 
-        while (deltaAngle > adjustedDegrees+1 || deltaAngle < adjustedDegrees-1) {
-            deltaAngle = originalAngle - robot.gyro.imu.getAngularOrientation().firstAngle;
+        if(degrees + originalAngle > 180) {
 
-            if (deltaAngle < adjustedDegrees-1) {
-                robot.drivetrain.turn(power);
-            } else {
-                robot.drivetrain.turn(-power);
-            }
-
-            if(opMode.isStopRequested()) {
-                break;
-            }
-
-            opMode.telemetry.addData("heading: ", deltaAngle);
-            opMode.telemetry.update();
         }
+        if(degrees > 0) {
+            while(deltaAngle < degrees-1.5) {
 
-        robot.drivetrain.turn(0);
-        opMode.sleep(100);
+                if(deltaAngle < -1) {
+                    angleAdd = 360;
+                }
 
-        deltaAngle = originalAngle - robot.gyro.imu.getAngularOrientation().firstAngle;
-        if(degrees == 180) {
-            adjustedDegrees = 179;
-        }
+                deltaAngle = robot.gyro.imu.getAngularOrientation().firstAngle - originalAngle + angleAdd;
 
-        while(deltaAngle > adjustedDegrees+1 || deltaAngle < adjustedDegrees-1) {
-            deltaAngle = originalAngle - robot.gyro.imu.getAngularOrientation().firstAngle;
+                robot.drivetrain.turn(-power * p * (degrees-deltaAngle)/degrees);
 
-            if (deltaAngle < adjustedDegrees-1) {
-                robot.drivetrain.turn(.25);
-            } else {
-                robot.drivetrain.turn(-.25);
+                if(opMode.isStopRequested()) {
+                    break;
+                }
+
+                opMode.telemetry.addData("angleAdd", angleAdd);
+                opMode.telemetry.addData("originalAngle", originalAngle);
+                opMode.telemetry.addData("DeltaAngle", deltaAngle);
+                opMode.telemetry.addData("TargetAngle", degrees);
+                opMode.telemetry.addData("heading", robot.gyro.imu.getAngularOrientation().firstAngle);
+                opMode.telemetry.update();
+
+                lastAngle = robot.gyro.imu.getAngularOrientation().firstAngle;
             }
+        }
+        else if(degrees < 0) {
+            while(deltaAngle > degrees-1.5) {
 
-            if(opMode.isStopRequested()) {
-                break;
+                if(deltaAngle > 1) {
+                    angleAdd = 360;
+                }
+
+                deltaAngle = robot.gyro.imu.getAngularOrientation().firstAngle - originalAngle - angleAdd;
+
+                robot.drivetrain.turn(power*p*(degrees-deltaAngle)/degrees);
+
+                if(opMode.isStopRequested()) {
+                    break;
+                }
+
+                opMode.telemetry.addData("angleAdd", angleAdd);
+                opMode.telemetry.addData("originalAngle", originalAngle);
+                opMode.telemetry.addData("DeltaAngle", deltaAngle);
+                opMode.telemetry.addData("TargetAngle", degrees);
+                opMode.telemetry.addData("heading", robot.gyro.imu.getAngularOrientation().firstAngle);
+                opMode.telemetry.update();
+
+                lastAngle = robot.gyro.imu.getAngularOrientation().firstAngle;
             }
         }
 
@@ -154,7 +175,7 @@ public abstract class AutonomousBasic extends LinearOpMode {
 
         //TODO optimize to make quicker?
 
-        turnDegrees(robot, this, -100, .6);
+        turnDegrees(robot, this, 90, .6);
         waitForMovement(robot.drivetrain, this, 1.5);
 
         robot.drivetrain.strafeDistance(5, 1);

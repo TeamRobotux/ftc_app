@@ -23,7 +23,7 @@ public class Lift implements IsBusy{
 
     //should be .75
     private final double liftHeight = 7.85;
-    private final int liftHeightTicks = 9822;
+    private final int liftHeightTicks = 11915;
 
     public Lift(HardwareMap hwMap) {
         liftPulley = new TuxMotor("liftPulley", hwMap, tpi, 1120*4, 1);
@@ -47,7 +47,7 @@ public class Lift implements IsBusy{
     }
 
     public void raiseLift() {
-        liftPulley.moveToEncoderVal(liftHeightTicks,1);
+        liftPulley.moveToEncoderVal(-liftHeightTicks,1);
     }
 
     public boolean isBusy() {

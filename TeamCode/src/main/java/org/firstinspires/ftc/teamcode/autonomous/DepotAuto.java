@@ -13,23 +13,27 @@ public class DepotAuto extends AutonomousBasic {
     void runAutonomous() {
         double movementNeeded = disengageAndSampleDepot(robot, this);
 
-        robot.drivetrain.driveDistance(20, 1);
+        robot.drivetrain.driveDistance(10, 1);
         waitForMovement(robot, this, .75);
 
-        robot.drivetrain.strafeDistance(movementNeeded + 12, 1);
-        waitForMovement(robot, this, .75);
-
-        turnDegrees(robot, this, -135, .6);
+        turnDegrees(robot, this, 135, .5);
         waitForMovement(robot, this, 1.5);
+
+        robot.drivetrain.strafeDistance(-movementNeeded/Math.sqrt(2) +20 ,1);
+        waitForMovement(robot, this, .75);
 
         robot.markerServo.moveTo(robot.markerScore);
         sleep(1000);
         robot.markerServo.moveTo(robot.markerVert);
 
-        robot.drivetrain.strafeDistance(-10, .6);
+        robot.drivetrain.strafeDistance(-5, .6);
         waitForMovement(robot, this, 1);
 
-        robot.drivetrain.driveDistance(-66, 1);
+        robot.drivetrain.driveDistance(72, 1);
+        sleep(2000);
+        robot.intake.extend();
         waitForMovement(robot, this, 10);
+        sleep(1000);
+        robot.intake.stopExtension();
     }
 }

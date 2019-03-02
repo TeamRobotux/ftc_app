@@ -21,13 +21,13 @@ public class Intake implements IsBusy{
     private double closedGatePos = .05;
     private double teamMarkerGatePos = 1;
 
-    private double perpIntakePos = .09;
+    private double perpIntakePos = .065;
     private double raisedIntakePos = .14;
     private double loweredIntakePos = .005;
 
-    public final int scoringThreshold = -150;
+    public final int scoringThreshold = -141;
 
-    public final int clearPosition = -466;
+    public final int clearPosition = -630;
 
     public Intake(HardwareMap hwMap) {
         //tpi and tpr using counts of Neverrest 20 output shaft

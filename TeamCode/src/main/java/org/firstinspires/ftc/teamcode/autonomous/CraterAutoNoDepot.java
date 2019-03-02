@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 /**
  * Created by jack on 10/27/18.
  */
-@Autonomous(name = "crater auto", group = "Linear Opmode")
-public class CraterAuto extends AutonomousBasic {
+@Autonomous(name = "crater auto no depot", group = "Linear Opmode")
+public class CraterAutoNoDepot extends AutonomousBasic {
 
     @Override
     void runAutonomous() {
@@ -19,28 +19,12 @@ public class CraterAuto extends AutonomousBasic {
         waitForMovement(robot, this, .75);
         robot.drivetrain.strafeDistance(4, 1);
         waitForMovement(robot, this, .75);
-        robot.drivetrain.driveDistance(-54, 1);
-        waitForMovement(robot, this, 1);
 
-        robot.markerServo.moveTo(robot.markerScore);
-        sleep(1000);
-        robot.markerServo.moveTo(robot.markerVert);
-
-        robot.drivetrain.driveDistance(39, 1);
-        waitForMovement(robot, this, 5);
-
-        robot.drivetrain.strafeDistance(-12, 1);
-        waitForMovement(robot, this, .75);
-        robot.drivetrain.strafeDistance(4, 1);
-        waitForMovement(robot, this, .75);
-
-        robot.drivetrain.driveDistance(35, 1);
-        waitForMovement(robot, this, 5);
+        robot.drivetrain.driveDistance(24, 1);
+        waitForMovement(robot, this, 10);
 
         robot.intake.extend();
-        sleep(500);
-        robot.intake.stopExtension();
-
+        sleep(250);
 
         //for simple crater
 //

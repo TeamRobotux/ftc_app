@@ -61,8 +61,8 @@ public class MainTeleop extends LinearOpMode {
             }
             else if(gamepad1.right_trigger > .25) {
                 //robot.scoopMotor.setPower(-.3);
-                robot.scoopServo.moveTo(.72);
-                robot.scoopMotor.moveToEncoderVal(-462, .2);
+                robot.scoopServo.moveTo(.67);
+                robot.scoopMotor.moveToEncoderVal(-492, .2);
             }
             else {
                 robot.scoopMotor.setPower(0);
@@ -130,7 +130,7 @@ public class MainTeleop extends LinearOpMode {
                 robot.intake.stopIntaking();
             }
 
-            if(robot.intake.getPulleyPosition() < robot.intake.scoringThreshold && !(gamepad2.y)) {
+            if(robot.intake.getPulleyPosition() < robot.intake.scoringThreshold && !(gamepad2.y) && robot.intake.lifter.getPosition() < .11) {
                 robot.intake.closeGate();
             }
             else {

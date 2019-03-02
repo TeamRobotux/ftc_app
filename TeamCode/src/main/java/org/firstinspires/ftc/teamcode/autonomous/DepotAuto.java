@@ -22,9 +22,11 @@ public class DepotAuto extends AutonomousBasic {
         robot.drivetrain.strafeDistance(-movementNeeded/Math.sqrt(2) +20 ,1);
         waitForMovement(robot, this, .75);
 
+        //robot.drivetrain.driveDistance(-(movementNeeded+40)*.3, 1);
+        //waitForMovement(robot, this, 1);
+
         robot.markerServo.moveTo(robot.markerScore);
         sleep(1000);
-        robot.markerServo.moveTo(robot.markerVert);
 
         robot.drivetrain.strafeDistance(-5, .6);
         waitForMovement(robot, this, 1);

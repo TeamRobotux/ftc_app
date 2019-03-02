@@ -157,7 +157,7 @@ public abstract class AutonomousBasic extends LinearOpMode {
 
     public double disengageAndSample(RobotHardware robot, LinearOpMode opMode) {
         double retValue = disengageAndSampleDepot(robot, opMode);
-        robot.drivetrain.driveDistance(-18, 1);
+        robot.drivetrain.driveDistance(-12, 1);
         waitForMovement(robot.drivetrain, this, .5);
 
         return retValue;
@@ -167,10 +167,13 @@ public abstract class AutonomousBasic extends LinearOpMode {
         robot.lift.raiseLift();
         waitForMovement(robot.lift, this, 7);
 
-        robot.drivetrain.driveDistance(6);
+        robot.drivetrain.driveDistance(3);
         waitForMovement(robot.drivetrain, this, 1);
 
         robot.drivetrain.strafeDistance(-14, .8);
+        waitForMovement(robot.drivetrain, this, 1);
+
+        robot.drivetrain.driveDistance(4.5);
         waitForMovement(robot.drivetrain, this, 1);
 
         //TODO optimize to make quicker?
@@ -178,13 +181,13 @@ public abstract class AutonomousBasic extends LinearOpMode {
         turnDegrees(robot, this, 90, .6);
         waitForMovement(robot.drivetrain, this, 1.5);
 
-        robot.drivetrain.strafeDistance(5, 1);
-        waitForMovement(robot.drivetrain, opMode, .75);
+        //robot.drivetrain.strafeDistance(5, 1);
+        //waitForMovement(robot.drivetrain, opMode, .75);
 
         if(isSampleGold(opMode, mDetector)) {
-            robot.drivetrain.strafeDistance(6, 1);
+            robot.drivetrain.strafeDistance(8, 1);
             waitForMovement(robot.drivetrain, this, .5);
-            robot.drivetrain.driveDistance(18,1);
+            robot.drivetrain.driveDistance(14,1);
             waitForMovement(robot.drivetrain, this, .5);
 
             return -40;
@@ -194,7 +197,7 @@ public abstract class AutonomousBasic extends LinearOpMode {
             waitForMovement(robot.drivetrain, opMode, .75);
 
             if(isSampleGold(opMode, mDetector)) {
-                robot.drivetrain.strafeDistance(6, 1);
+                robot.drivetrain.strafeDistance(8, 1);
                 waitForMovement(robot.drivetrain, this, .5);
                 robot.drivetrain.driveDistance(18,1);
                 waitForMovement(robot.drivetrain, this, .5);

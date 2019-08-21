@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -74,8 +75,10 @@ public class PracticeHardware
         hwMap = ahwMap;
 
         rDrvWheel = hwMap.get(DcMotor.class,"rDrvWheel");
+        rDrvWheel.setDirection(DcMotorSimple.Direction.REVERSE);
         lDrvWheel = hwMap.get(DcMotor.class,"lDrvWheel");
         rLiftArm = hwMap.get(DcMotor.class,"rLiftArm");
+        rLiftArm.setDirection(DcMotorSimple.Direction.REVERSE);
         lLiftArm = hwMap.get(DcMotor.class,"lLiftArm");
         rGrabber = hwMap.get(Servo.class,"rGrabber");
         lGrabber = hwMap.get(Servo.class,"lGrabber");

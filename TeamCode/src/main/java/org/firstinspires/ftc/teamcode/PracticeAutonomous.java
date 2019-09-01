@@ -1,6 +1,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -22,7 +23,7 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Basic: Iterative OpMode", group="Iterative Opmode")
+@Autonomous(name="Basic: Start Autonomous", group="Iterative Opmode")
 public class PracticeAutonomous extends OpMode
 {
     // Declare OpMode members.
@@ -53,9 +54,13 @@ public class PracticeAutonomous extends OpMode
      */
     @Override
     public void start() {
-        runtime.reset();
 
-        
+
+        runtime.reset();
+        robot.setDrivetrainMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.setDrivetrainMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        robot.driveInches(10.0);
 
     }
 

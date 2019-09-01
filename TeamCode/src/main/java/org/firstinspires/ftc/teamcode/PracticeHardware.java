@@ -83,5 +83,18 @@ public class PracticeHardware
         rGrabber = hwMap.get(Servo.class,"rGrabber");
         lGrabber = hwMap.get(Servo.class,"lGrabber");
     }
+
+    public void setDrivetrainMode(DcMotor.RunMode mode) {
+        rDrvWheel.setMode(mode);
+        lDrvWheel.setMode(mode);
+    }
+
+    public void driveInches(double numInches){
+        double ticPerInch40 = 19.8943682;
+        lDrvWheel.setTargetPosition((int) (ticPerInch40 * numInches + 0.5));
+        rDrvWheel.setTargetPosition((int) (ticPerInch40 * numInches + 0.5));
+    }
+
+
 }
 
